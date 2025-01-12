@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ar://playdead - Contribute</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./assets/style.css">
+</head>
+<body>
+    <img id="app-logo" class="logo" src="./assets/app-logo.png" alt="ar://playdead Logo">
+    <h1>Contribute to ar://playdead</h1>
+
+    <div class="content">
+        <h2>Album Specification</h2>
+        <p>Each album should include the following files and structure:</p>
+
+        <h3>1. <code>album.json</code></h3>
+        <p>The metadata file describing the album. Example:</p>
+        <pre>
+{
+    "band": "Grateful Dead",
+    "title": "Live at Barton Hall",
+    "date": "May 8, 1977",
+    "source": "Audience recording",
+    "info": "more_info.txt",
+    "tracks": [
+        {"number": 1, "title": "New Minglewood Blues"},
+        {"number": 2, "title": "Loser"}
+    ]
+}
+        </pre>
+        <p><strong>Note:</strong> The <code>tracks</code> field is optional. If omitted, the app will auto-generate track titles based on filenames.</p>
+
+        <h3>2. Tracks Folder</h3>
+        <p>Place all track files in a <code>Tracks/</code> folder.</p>
+        <p><strong>Naming Format:</strong> Use numbers to indicate track order followed by the track name in any style, e.g., <code>01 Track Name.mp3</code> or <code>1-Track Name.flac</code>.</p>
+        <p><strong>Supported Formats:</strong> .mp3, .flac, .wav</p>
+
+        <h3>3. Album Cover</h3>
+        <p>Include an image file named <code>album_cover.png</code> for the album's cover art.</p>
+        <p>Recommended size: 600x600 pixels (optional, but preferred).</p>
+
+        <h3>4. Additional Information (Optional)</h3>
+        <p>Add a file (e.g., <code>more_info.txt</code>) for album notes, recording details, or other information. Reference this in the <code>info</code> field of <code>album.json</code>.</p>
+
+        <h2>Folder Structure Example</h2>
+        <pre>
+/Album
+├── album.json
+├── album_cover.png
+├── more_info.txt
+├── Tracks/
+│   ├── 01 Track Name.mp3
+│   ├── 2 - Another Track Name.flac
+│   ├── 3.TrackName.wav
+        </pre>
+
+        <h2>How to Submit</h2>
+        <ol>
+            <li><strong>Upload the Album Folder to Arweave:</strong>
+                Use your preferred Arweave client (e.g., <a href="https://ardrive.io" target="_blank">ArDrive</a>) to upload the album folder and its contents.
+            </li>
+            <li><strong>Create the Album Manifest (<code>album_manifest</code>):</strong>
+                Generate a manifest for the album folder:
+                <pre>
+{
+    "manifest": "arweave/paths",
+    "version": "0.1.0",
+    "index": {
+        "path": "album.json"
+    },
+    "paths": {
+        "album.json": { "id": "TXID_OF_ALBUM_JSON" },
+        "album_cover.png": { "id": "TXID_OF_ALBUM_COVER" },
+        "Tracks/01 Track Name.mp3": { "id": "TXID_OF_TRACK" },
+        "Tracks/2 - Another Track Name.flac": { "id": "TXID_OF_TRACK" },
+        "more_info.txt": { "id": "TXID_OF_INFO_FILE" }
+    }
+}
+                </pre>
+            </li>
+            <li><strong>Share the Manifest TXID:</strong>
+                Provide the <code>album_manifest</code> TXID for inclusion in the catalog.
+            </li>
+        </ol>
+    </div>
+</body>
+</html>

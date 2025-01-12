@@ -6,14 +6,14 @@
     <!-- Metadata -->
     <meta property="og:title" content="Dead For(actually)ever via ar://playdead" />
     <meta property="og:description" content="Always dead, always jamming." />
-    <meta property="og:image" content="https://arweave.net/6F5j_Hb-p8YVcLgK7zgyIfteakEf4V548Q75C-6uCWs" />
+    <meta property="og:image" content="https://arweave.net/RnSVS1mJevWaxYY9W9YlgYPVzPA9Ona8yOd8zxYk8ms" />
     <meta property="og:url" content="https://playdead.arweave.net" />
     <meta property="og:type" content="website" />
 
-    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="Dead For(actually)ever via ar://playdead" />
     <meta name="twitter:description" content="Always dead, always jamming." />
-    <meta name="twitter:image" content="https://arweave.net/6F5j_Hb-p8YVcLgK7zgyIfteakEf4V548Q75C-6uCWs" />
+    <meta name="twitter:image" content="https://arweave.net/RnSVS1mJevWaxYY9W9YlgYPVzPA9Ona8yOd8zxYk8ms" />
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -26,23 +26,32 @@
 </head>
 <body>
     <img id="album-cover" class="cover" src="" alt="Album Cover">
+    
+    <!-- Laser Mode Elements -->
+    <canvas id="laser-visualizer"></canvas>
+    <div class="controls">
+        <button id="toggle-visualizer" class="control-button">Laser Show</button>
+    </div>
+    
+
     <div id="album-info" class="album-info">
         <h1 id="album-band" class="band"></h1>
         <h2 id="album-title" class="title"></h2>
         <p id="album-date" class="date"><span id="date-value"></span></p>
         <p id="album-source" class="source"><strong>Source:</strong> <span id="source-value"></span></p>
     </div>
+   
     <div class="media-player">
         <h3 id="current-track-title">Select a Track</h3>
         <audio id="audio-player" controls style="width: 100%; max-width: 600px;">
             <source id="audio-source" src="" type="audio/mpeg">
         </audio>
         <div class="controls">
-            <button id="prev-button"><<</button>
-            <button id="play-button">></button>
-            <button id="next-button">>></button>
-            <button id="eject-button">⏏</button>
-            <button id="info-button">i</button>
+            <button id="prev-button" title="Back"><<</button>
+            <button id="play-button" title="Play/Pause">></button>
+            <button id="next-button" title="Forward">>></button>
+            <button id="eject-button" title="Eject">⏏</button>
+            <button id="info-button" title="Album Info">i</button>
         </div>
     </div>
     <div class="tracklist">
@@ -60,178 +69,12 @@
     </div>
     <footer>
         <p><strong>ar://playdead</strong> by @JonnieSparkles and ChatGPT</p>
+        <a href="./changelog.txt" target="_blank">v3.3</a>
     </footer>
-
-    <script>
-        // Function to detect the gateway domain dynamically
-        function detectGatewayDomain() {
-            const hostname = window.location.hostname;
-
-            // Split the hostname into parts
-            const parts = hostname.split(".");
-
-            // Determine gateway domain (everything after the first dot)
-            let gateway = parts.length > 1
-                ? `${window.location.protocol}//${parts.slice(1).join(".")}`
-                : window.location.origin;
-
-            // Exception: If gateway is "ar.io", default to "arweave.net"
-            if (gateway.includes("ar.io")) {
-                gateway = "https://arweave.net";
-            }
-
-            return gateway;
-        }
-
-        let currentTrackIndex = 0;
-        let tracks = [];
-        let audioPlayer, audioSource, currentTrackTitle;
-
-        function loadTrack(index) {
-            const track = tracks[index];
-
-            if (!track.url) {
-                alert(`Track is missing: ${track.title}`);
-                return;
-            }
-
-            audioPlayer.pause();
-            audioSource.src = track.url;
-            audioPlayer.load();
-            currentTrackTitle.textContent = track.title;
-
-            const trackRows = document.querySelectorAll("#tracklist-body tr");
-            trackRows.forEach((row, i) => row.classList.toggle("active", i === index));
-        }
-
-        function playCurrentTrack() {
-            audioPlayer.play();
-            document.getElementById("play-button").textContent = "||";
-        }
-
-        async function loadAlbum() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const albumTxid = urlParams.get("album");
-
-            if (!albumTxid) {
-                console.error("No album specified in the URL.");
-                return;
-            }
-
-            try {
-                const gateway = detectGatewayDomain();
-                const manifestUrl = `${gateway}/raw/${albumTxid}/`;
-                const manifestResponse = await fetch(manifestUrl);
-                const manifest = await manifestResponse.json();
-
-                const albumJsonUrl = `${gateway}/${albumTxid}/album.json`;
-                const albumResponse = await fetch(albumJsonUrl);
-                const albumData = await albumResponse.json();
-
-                const albumCoverId = manifest.paths["album_cover.png"]?.id;
-                document.getElementById("album-cover").src = albumCoverId
-                    ? `${gateway}/${albumCoverId}`
-                    : "./assets/default-cover.png";
-                document.getElementById("album-band").textContent = albumData.band || "Unknown Band";
-                document.getElementById("album-title").textContent = albumData.title || "Untitled Album";
-                document.getElementById("date-value").textContent = albumData.date || "Unknown Date";
-                document.getElementById("source-value").textContent = albumData.source || "Unknown Source";
-
-                if (albumData.info) {
-                    const infoButton = document.getElementById("info-button");
-                    if (albumData.info.endsWith(".txt")) {
-                        const infoId = manifest.paths[albumData.info]?.id;
-                        infoButton.style.display = infoId ? "inline-block" : "none";
-                        infoButton.onclick = () => window.open(`${gateway}/${infoId}`, "_blank");
-                    } else {
-                        infoButton.style.display = "inline-block";
-                        infoButton.onclick = () => alert(albumData.info);
-                    }
-                }
-
-                const trackEntries = Object.keys(manifest.paths).filter(path => path.startsWith("Tracks/"));
-                const manifestTracks = trackEntries.map((path) => {
-                    const filename = path.split("/").pop();
-                    const trackNumber = parseInt(filename.match(/^\d+/)); // Extract the leading number
-                    return {
-                        title: filename.replace(/^\d+_-_/g, "").replace(/\.[^/.]+$/, ""), // Default title from filename
-                        url: `${gateway}/${manifest.paths[path].id}`,
-                        number: trackNumber || 0, // Fallback number
-                    };
-                }).sort((a, b) => a.number - b.number);
-
-                tracks = manifestTracks.map(manifestTrack => {
-                    const albumTrack = albumData.tracks?.find(t => t.number === manifestTrack.number);
-                    return {
-                        title: albumTrack?.title || manifestTrack.title, // Use album.json title if available
-                        url: manifestTrack.url,
-                        number: manifestTrack.number,
-                    };
-                });
-
-                const tracklistBody = document.getElementById("tracklist-body");
-                tracklistBody.innerHTML = "";
-                tracks.forEach((track, index) => {
-                    const row = document.createElement("tr");
-                    row.className = "track";
-                    row.innerHTML = `<td>${track.number}</td><td>${track.title}</td>`;
-                    row.onclick = () => {
-                        loadTrack(index);
-                        playCurrentTrack();
-                    };
-                    tracklistBody.appendChild(row);
-                });
-
-                setupPlayer();
-            } catch (error) {
-                console.error("Error loading album:", error.message);
-            }
-        }
-
-        function setupPlayer() {
-            audioPlayer = document.getElementById("audio-player");
-            audioSource = document.getElementById("audio-source");
-            currentTrackTitle = document.getElementById("current-track-title");
-
-            document.getElementById("play-button").onclick = () => {
-                if (audioPlayer.paused) playCurrentTrack();
-                else {
-                    audioPlayer.pause();
-                    document.getElementById("play-button").textContent = ">";
-                }
-            };
-
-            document.getElementById("prev-button").onclick = () => {
-                if (audioPlayer.currentTime > 2) audioPlayer.currentTime = 0;
-                else if (currentTrackIndex > 0) {
-                    loadTrack(--currentTrackIndex);
-                    playCurrentTrack();
-                }
-            };
-
-            document.getElementById("next-button").onclick = () => {
-                if (currentTrackIndex < tracks.length - 1) {
-                    loadTrack(++currentTrackIndex);
-                    playCurrentTrack();
-                }
-            };
-
-            audioPlayer.onended = () => {
-                if (currentTrackIndex < tracks.length - 1) {
-                    loadTrack(++currentTrackIndex);
-                    playCurrentTrack();
-                }
-            };
-
-            document.getElementById("eject-button").onclick = () => {
-                window.location.href = "index.html";
-            };
-
-            loadTrack(0);
-        }
-
-        window.onload = loadAlbum;
-    </script>
+   
+    <script src="./scripts/utils.js" defer></script>
+    <script src="./scripts/player.js" defer></script>
+    <script src="./scripts/laser-show.js" defer></script>
 
 </body>
 </html>

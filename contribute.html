@@ -5,12 +5,32 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="./assets/style.css">
+
+    <!-- Favicon -->
+    <link rel="icon" href="./assets/favicon.ico" type="image/x-icon">
+
 </head>
 <body>
+    <button id="back-button" onclick="window.location.href='index.html'" title="Back to Albums">←</button>
     <img id="app-logo" class="logo" src="./assets/app-logo.png" alt="ar://playdead Logo">
     <h1>Contribute to ar://playdead</h1>
 
     <div class="content">
+        <h2>About ar://playdead</h2>
+        <p>
+            ar://playdead is a community-driven platform that celebrates and preserves music forever.
+            Albums uploaded here are saved on Arweave, a decentralized network that ensures permanent,
+            uncensorable storage. Whether you're sharing audience recordings or public domain music,
+            your contributions will live on as part of this timeless archive.
+        </p>
+
+        <h2>Contribution Guidelines</h2>
+        <p>
+            We accept audience recordings and music that is explicitly open-source or in the public domain.
+            Please ensure that any music you upload respects these guidelines to honor the artists and their
+            communities.
+        </p>
+
         <h2>Album Specification</h2>
         <p>Each album should include the following files and structure:</p>
 
@@ -18,6 +38,8 @@
         <p>The metadata file describing the album. Example:</p>
         <pre>
 {
+    "version": "1.1.0",
+    "type": "audio",
     "band": "Grateful Dead",
     "title": "Live at Barton Hall",
     "date": "May 8, 1977",

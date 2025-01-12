@@ -5,24 +5,27 @@ IMMEDIATE FOCUS
 FUTURE UPDATES
 --------------
 Near Future:
-- [✓] Add a "Contribute" HTML page or Markdown file describing album formatting requirements.
 - [ ] Add "Check if pins work" to ensure pinning reliability for hosted files.
 - [ ] Finalize tagging schema.
 - [ ] Add support to load albums via **ArNS** (Arweave Name System) name.
-- [ ] Laser mode!
+- [ ] catalog.json linked via ArNS.
+- [ ] Enhanced laser mode ideas: audio-reactive visuals, particle effects, dynamic backgrounds, interactive controls.
+- [ ] social sharing 
 
 Testing and Improvements:
+- [ ] Create a "test album" with different conditions.
 - [ ] Verify album loading robustness against various track naming conventions:
-      - Single/double-digit numbering.
-      - Different file extensions (e.g., `.mp3`, `.wav`).
+     - Single/double-digit numbering.
+     - Different file extensions (e.g., `.mp3`, `.wav`).
 - [ ] Test app functionality with edge-case gateway URLs and **sandboxed subdomains**:
-      - E.g., `65hkx5gp.arweave.net`, `frank.arweave.co.uk`.
+     - E.g., `65hkx5gp.arweave.net`, `frank.arweave.co.uk`.
 
-UI/UX:
-- [ ] Evaluate breaking the current single HTML structure into modular files for easier maintenance.
 
 WISHLIST / IDEAS
 ----------------
 
 - [ ] AO process for managing catalogs.
 - [ ] Implement "Load Catalog" feature to load an entirely custom catalog with different themes.
+- [ ] Custom themes
+- [ ] Videos
+

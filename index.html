@@ -1,122 +1,93 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Grateful Dead via ar://playdead</title>
+    <title>ar://playdead</title>
 
-    <!-- Open Graph Metadata -->
-    <meta property="og:title" content="Grateful Dead via ar://playdead" />
+    <!-- Metadata -->
+    <meta property="og:title" content="Dead For(actually)ever via ar://playdead" />
     <meta property="og:description" content="Always dead, always jamming." />
     <meta property="og:image" content="https://arweave.net/6F5j_Hb-p8YVcLgK7zgyIfteakEf4V548Q75C-6uCWs" />
     <meta property="og:url" content="https://playdead.arweave.net" />
     <meta property="og:type" content="website" />
 
-    <!-- Twitter Card Metadata -->
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="Grateful Dead via ar://playdead" />
+    <meta name="twitter:title" content="Dead For(actually)ever via ar://playdead" />
     <meta name="twitter:description" content="Always dead, always jamming." />
     <meta name="twitter:image" content="https://arweave.net/6F5j_Hb-p8YVcLgK7zgyIfteakEf4V548Q75C-6uCWs" />
 
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <style>
-        body {
-            background: linear-gradient(to bottom, #ff4500, #8b0000, #4b0082);
-            color: #fff;
-            font-family: 'Arial', sans-serif;
-            text-align: center;
-            margin: 0;
-            padding: 20px;
-        }
-        .logo {
-            max-width: 150px;
-            margin: 20px auto;
-        }
-        h1 {
-            font-size: 2.5em;
-            text-shadow: 2px 2px 0px rgba(0, 0, 0, 1);
-            margin-bottom: 20px;
-        }
-        .album-list {
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 20px;
-            background: rgba(0, 0, 0, 0.6);
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
-        }
-        .album-item {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 10px;
-            margin-bottom: 10px;
-            color: #ffdd00;
-            text-decoration: none;
-            font-size: 1.2em;
-            border-radius: 5px;
-            background: rgba(75, 0, 130, 0.3);
-            text-shadow: 1px 1px 0px rgba(0, 0, 0, 1);
-            box-shadow: 2px 2px 0px rgba(0, 0, 0, 1);
-        }
-        .album-item:hover {
-            background: rgba(255, 69, 0, 0.6);
-            color: #fff;
-            box-shadow: 3px 3px 0px rgba(0, 0, 0, 1);
-        }
-        .album-item img {
-            width: 30px;
-            height: 30px;
-            margin-right: 10px;
-        }
-        footer {
-            margin-top: 30px;
-            font-size: 0.8em;
-            color: #ccc;
-        }
-    </style>
+    <!-- Favicon -->
+    <link rel="icon" href="./assets/favicon.ico" type="image/x-icon">
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
-    <img id="album-logo" class="logo" src="/6F5j_Hb-p8YVcLgK7zgyIfteakEf4V548Q75C-6uCWs" alt="Steal your face">
+    <img id="app-logo" class="logo" src="./assets/app-logo.png" alt="Steal your face">
     <h1>ar://playdead</h1>
+
     <div id="album-list" class="album-list">Loading...</div>
+
+    <!-- Load Tape Section -->
+    <div id="load-tape" class="manual-album-entry">
+        <input id="manual-txid" type="text" placeholder="Load Tape TXID" />
+        <button id="load-album-button">
+            <img src="./assets/icon-cassette.png" alt="Load Tape">
+        </button>
+        <button id="info-button" title="Learn how to format albums" onclick="window.open('contribute.html', '_blank')">i</button>
+    </div>
+
     <footer>
         <p><strong>ar://playdead</strong> by @JonnieSparkles and ChatGPT</p>
+        <p>v2.1</p>
     </footer>
 
     <script>
         async function loadAlbumList() {
-            const albumUrl = "albums.json"; // JSON file containing the album list
+            const catalogUrl = "catalog.json"; // Path to the catalog JSON
+            const gateway = window.location.origin; // Dynamically resolve the gateway based on the current URL
 
             try {
-                // Fetch the album list
-                const response = await fetch(albumUrl);
-                const albums = await response.json();
+                const response = await fetch(catalogUrl);
+                if (!response.ok) throw new Error(`Failed to fetch catalog.json`);
+                const catalog = await response.json();
 
-                // Populate the album list
                 const albumList = document.getElementById("album-list");
-                albumList.innerHTML = ""; // Clear "Loading..." text
+                albumList.innerHTML = ""; // Clear the "Loading..." text
 
-                albums.forEach(album => {
+                catalog.forEach(albumRef => {
+                    // Create the album item
                     const albumItem = document.createElement("a");
-                    albumItem.href = `player.html?album=${album.file}`;
+                    albumItem.href = `player.html?album=${albumRef.txid}`;
                     albumItem.className = "album-item";
 
+                    // Use default cover for all albums
                     const icon = document.createElement("img");
-                    icon.src = "/l6QcQmQjPPcI-6y0fmUJu7IGtvPwAgz4rfYn_wHP0jo"; // Replace with your tape icon file
-                    icon.alt = "Tape Icon";
+                    icon.src = "./assets/icon-cassette.png"; // Default album cover
+                    icon.alt = "Default Album Cover";
 
                     const albumName = document.createElement("span");
-                    albumName.textContent = album.name;
+                    albumName.textContent = `${albumRef.band || "Unknown Band"} - ${albumRef.title || "Untitled Album"}`;
 
                     albumItem.appendChild(icon);
                     albumItem.appendChild(albumName);
                     albumList.appendChild(albumItem);
                 });
             } catch (error) {
-                console.error("Error loading album list:", error);
+                console.error("Error loading catalog:", error.message);
             }
         }
+
+        document.getElementById("load-album-button").onclick = () => {
+            const txid = document.getElementById("manual-txid").value.trim();
+            if (txid) {
+                window.location.href = `player.html?album=${txid}`;
+            } else {
+                alert("Please enter a valid TXID.");
+            }
+        };
 
         // Load the album list on page load
         window.onload = loadAlbumList;

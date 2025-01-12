@@ -1,0 +1,37 @@
+v3.3
+-fixed gradient background
+-added album cover animation when playing
+-added album cover animation when loading tracks
+-added player button animations
+-added track title transition
+-added tracklist hover effect to currently playing track
+-added keyboard controls to the player (space for play/pause, arrow keys for navigation)
+-added back button to contribute.html
+-added loading state animations to index.html
+-new logo!
+
+v3.2
+-added button titles
+
+v3.1
+-fixed "next track" bug on player.js
+-moved "load track" above album list on index.html
+-added changelog link to version #
+-changed sharecard preview to "summary"
+
+v3
+- improved contribution guide.
+- broke out player.html into modular JS files for easier maintenance.
+- added laser show!
+
+v2
+- dynamic album loading.
+- robust gateway routing.
+- by popular demand, a favicon.
+- custom tapes with a contribution guide.
+
+v1
+- album loading based on album.json linked txids.
+
+v0
+- basic functionality, no dynamic loading.

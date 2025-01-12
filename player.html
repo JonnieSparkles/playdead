@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Grateful Dead via ar://playdead</title>
+
+    <!-- Open Graph Metadata -->
+    <meta property="og:title" content="Grateful Dead via ar://playdead" />
+    <meta property="og:description" content="Always dead, always jamming." />
+    <meta property="og:image" content="https://arweave.net/6F5j_Hb-p8YVcLgK7zgyIfteakEf4V548Q75C-6uCWs" />
+    <meta property="og:url" content="https://playdead.arweave.net" />
+    <meta property="og:type" content="website" />
+
+    <!-- Twitter Card Metadata -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Grateful Dead via ar://playdead" />
+    <meta name="twitter:description" content="Always dead, always jamming." />
+    <meta name="twitter:image" content="https://arweave.net/6F5j_Hb-p8YVcLgK7zgyIfteakEf4V548Q75C-6uCWs" />
+
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <style>
+        /* Existing styles */
+        body { background: linear-gradient(to bottom, #ff4500, #8b0000, #4b0082); color: #fff; font-family: 'Arial', sans-serif; text-align: center; margin: 0; padding: 20px; }
+        .logo { max-width: 150px; margin: 20px auto; }
+        h1 { font-size: 2.5em; text-shadow: 2px 1px 0px rgba(0, 0, 0, 1); margin-bottom: 5px; }
+        h2 { font-size: 2em; text-shadow: 2px 1px 0px rgba(0, 0, 0, 1); margin-top: 10px; }
+        .album-info p { margin: 5px 0; }
+        .media-player h3 { margin-bottom: 10px; text-shadow: 1px 1px 0px rgba(0, 0, 0, 1); }
+        .media-player { margin-bottom: 20px; }
+        .controls button { margin: 0 5px; padding: 8px 12px; font-size: 16px; cursor: pointer; border: none; border-radius: 5px; background-color: #444; color: #fff; box-shadow: 2px 2px 6px rgba(0, 0, 0, 1); }
+        .controls button:hover { background-color: #666; }
+        #eject-button { background-color: #8b0000; }
+        #eject-button:hover { background-color: #ff4500; }
+        .tracklist { margin-top: 20px; padding: 10px; max-width: 600px; margin: auto; background: rgba(0, 0, 0, 0.6); border-radius: 10px; box-shadow: 0 0 15px rgba(0, 0, 0, 0.8); }
+        .track { padding: 10px; cursor: pointer; color: #ffdd00; border-bottom: 1px solid #444; }
+        .track:hover { background: rgba(255, 255, 255, 0.1); }
+        .track.active { background: rgba(75, 0, 130, 0.5); font-weight: bold; color: #ffffff; }
+        footer { margin-top: 30px; font-size: 0.8em; color: #ccc; }
+
+        /* Info button styles */
+        #info-button {
+            margin-left: 5px;
+            padding: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 50%;
+            background-color: #444;
+            color: #fff;
+            box-shadow: 2px 2px 6px rgba(0, 0, 0, 1);
+            width: 32px;
+            height: 32px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+        }
+
+        #info-button:hover {
+            background-color: #666;
+        }
+    </style>
+</head>
+<body>
+    <img id="album-logo" class="logo" src="" alt="Album Logo">
+    <div id="album-info" class="album-info">
+        <p id="album-band" class="band"></p>
+        <p id="album-title" class="title"></p>
+        <p id="album-date" class="date"><strong>Date:</strong> <span id="date-value"></span></p>
+        <p id="album-source" class="source"><strong>Source:</strong> <span id="source-value"></span></p>
+    </div>
+    <div class="media-player">
+        <h3 id="current-track-title">Select a Track</h3>
+        <audio id="audio-player" controls style="width: 100%; max-width: 600px;">
+            <source id="audio-source" src="" type="audio/mpeg">
+        </audio>
+        <div class="controls">
+            <button id="prev-button"><<</button>
+            <button id="play-button">></button>
+            <button id="next-button">>></button>
+            <button id="eject-button">⏏</button>
+            <button id="info-button">i</button>
+        </div>
+    </div>
+    <div id="tracklist" class="tracklist"></div>
+    <footer>
+        <p><strong>ar://playdead</strong> by @JonnieSparkles and ChatGPT</p>
+    </footer>
+
+    <script>
+        document.getElementById("eject-button").onclick = () => {
+            window.location.href = "index.html";
+        };
+
+        async function loadAlbum() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const albumFile = urlParams.get("album") || "barton-hall";
+            const albumUrl = `${albumFile}.json`;
+
+            try {
+                const response = await fetch(albumUrl);
+                const albumData = await response.json();
+                const gateway = window.location.origin;
+
+                document.getElementById("album-logo").src = `${gateway}/${albumData.logo || ""}`;
+                document.getElementById("album-band").textContent = albumData.band || "";
+                document.getElementById("album-title").textContent = albumData.title || "";
+                document.getElementById("date-value").textContent = albumData.date || "";
+                document.getElementById("source-value").textContent = albumData.source || "";
+
+                if (albumData.more_info) {
+                    document.getElementById("info-button").style.display = "inline-block";
+                    document.getElementById("info-button").onclick = () => {
+                        window.open(`${gateway}/${albumData.more_info}`, "_blank");
+                    };
+                } else {
+                    document.getElementById("info-button").style.display = "none";
+                }
+
+                const tracklist = document.getElementById("tracklist");
+                tracklist.innerHTML = "";
+                albumData.tracks.forEach((track, index) => {
+                    if (track.title && track.txid) {
+                        const trackElement = document.createElement("div");
+                        trackElement.className = "track";
+                        trackElement.textContent = `${index + 1}. ${track.title}`;
+                        trackElement.dataset.txid = track.txid;
+                        tracklist.appendChild(trackElement);
+                    }
+                });
+
+                setupPlayer(albumData.tracks.filter(track => track.title && track.txid));
+            } catch (error) {
+                console.error("Error loading album:", error);
+            }
+        }
+
+        function setupPlayer(tracks) {
+            const tracklist = document.querySelectorAll(".track");
+            const audioPlayer = document.getElementById("audio-player");
+            const audioSource = document.getElementById("audio-source");
+            const currentTrackTitle = document.getElementById("current-track-title");
+            const playButton = document.getElementById("play-button");
+            const prevButton = document.getElementById("prev-button");
+            const nextButton = document.getElementById("next-button");
+
+            let currentTrackIndex = 0;
+
+            function loadTrack(index) {
+                if (index < 0 || index >= tracks.length) return;
+                currentTrackIndex = index;
+                const track = tracks[index];
+                audioSource.src = `${window.location.origin}/${track.txid}`;
+                audioPlayer.load();
+                currentTrackTitle.textContent = track.title;
+
+                tracklist.forEach((el, i) => {
+                    el.classList.toggle("active", i === index);
+                });
+            }
+
+            playButton.onclick = () => {
+                if (audioPlayer.paused) {
+                    audioPlayer.play();
+                    playButton.textContent = "||";
+                } else {
+                    audioPlayer.pause();
+                    playButton.textContent = ">";
+                }
+            };
+
+            prevButton.onclick = () => {
+                if (audioPlayer.currentTime > 2) {
+                    audioPlayer.currentTime = 0;
+                } else if (currentTrackIndex > 0) {
+                    loadTrack(currentTrackIndex - 1);
+                    audioPlayer.play();
+                }
+            };
+
+            nextButton.onclick = () => {
+                if (currentTrackIndex < tracks.length - 1) {
+                    loadTrack(currentTrackIndex + 1);
+                    audioPlayer.play();
+                }
+            };
+
+            audioPlayer.onended = () => {
+                if (currentTrackIndex < tracks.length - 1) {
+                    loadTrack(currentTrackIndex + 1);
+                    audioPlayer.play();
+                }
+            };
+
+            tracklist.forEach((el, index) => {
+                el.onclick = () => {
+                    loadTrack(index);
+                    audioPlayer.play();
+                };
+            });
+
+            loadTrack(0);
+        }
+
+        window.onload = loadAlbum;
+    </script>
+</body>
+</html>

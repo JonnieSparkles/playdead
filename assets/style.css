@@ -193,6 +193,8 @@ pre {
     padding: 3px;
     background: linear-gradient(45deg, #ff4500, #8b0000, #4b0082, #ff4500);
     background-size: 300% 300%;
+    opacity: 0;  /* Start hidden */
+    animation: fadeIn 1s ease-in forwards;  /* Apply animation */
 }
 
 /* Only apply animations when .is-playing class is present */
@@ -504,4 +506,9 @@ pre {
         transform: rotate(0) scale(1);
         opacity: 1;
     }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }

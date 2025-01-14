@@ -64,7 +64,11 @@ async function loadAlbum() {
         const albumData = await albumResponse.json();
 
         const albumCoverId = manifest.paths["album_cover.png"]?.id;
-        document.getElementById("album-cover").src = albumCoverId
+        const albumCover = document.getElementById("album-cover");
+        albumCover.style.animation = 'none';  // Reset animation
+        albumCover.offsetHeight;  // Trigger reflow
+        albumCover.style.animation = null;  // Re-enable animation
+        albumCover.src = albumCoverId
             ? `${gateway}/${albumCoverId}`
             : "./assets/default-cover.png";
         document.getElementById("album-band").textContent = albumData.band || "Unknown Band";

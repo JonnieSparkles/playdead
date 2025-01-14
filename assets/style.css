@@ -512,3 +512,13 @@ pre {
     from { opacity: 0; }
     to { opacity: 1; }
 }
+
+/* Simple fade in for contribute page logo */
+.contribute-page #app-logo {
+    opacity: 0;
+    animation: fadeIn 1s ease-in forwards;
+}
+
+.contribute-page #app-logo.loading {
+    animation: fadeIn 1s ease-in forwards;
+}

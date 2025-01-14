@@ -1,3 +1,7 @@
+v3.4
+-added album cover animation to fade in
+-changed contribute page logo to fade in
+
 v3.3
 -fixed gradient background
 -added album cover animation when playing

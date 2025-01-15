@@ -193,12 +193,18 @@ pre {
     padding: 3px;
     background: linear-gradient(45deg, #ff4500, #8b0000, #4b0082, #ff4500);
     background-size: 300% 300%;
-    opacity: 0;  /* Start hidden */
-    animation: fadeIn 1s ease-in forwards;  /* Apply animation */
+    opacity: 0;
+    animation: fadeIn 1s ease-in forwards;
+    
+    /* Add these to reserve space before image loads */
+    min-width: 200px;
+    min-height: 200px;
+    display: block;
 }
 
 /* Only apply animations when .is-playing class is present */
 #album-cover.is-playing {
+    opacity: 1; /* Ensure visibility during playing state */
     animation: 
         albumPulse 2s infinite ease-in-out,
         gradientBorder 8s ease infinite;
@@ -509,8 +515,9 @@ pre {
 }
 
 @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+    0% { opacity: 0; }
+    30% { opacity: 0; } /* Add a small delay before starting */
+    100% { opacity: 1; }
 }
 
 /* Simple fade in for contribute page logo */

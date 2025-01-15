@@ -29,6 +29,10 @@ function loadTrack(index) {
 
     // Handle video vs audio content
     if (track.type === 'video') {
+        // Hide album cover for video content
+        const albumCover = document.getElementById('album-cover');
+        albumCover.style.display = 'none';
+        
         // Switch to video player if not already present
         if (!document.getElementById('video-player')) {
             const videoPlayer = document.createElement('video');
@@ -38,8 +42,12 @@ function loadTrack(index) {
             audioPlayer.parentNode.replaceChild(videoPlayer, audioPlayer);
             audioPlayer = videoPlayer; // Reuse existing variable for consistency
         }
-        audioPlayer.src = track.url;  // Set source directly on video element
+        audioPlayer.src = track.url;
     } else {
+        // Show album cover for audio content
+        const albumCover = document.getElementById('album-cover');
+        albumCover.style.display = 'block';
+        
         // Switch back to audio player if needed
         if (document.getElementById('video-player')) {
             const audioElement = document.createElement('audio');

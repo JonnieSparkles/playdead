@@ -59,15 +59,15 @@ function loadTrack(index) {
             const videoPlayer = document.getElementById('video-player');
             videoPlayer.parentNode.replaceChild(audioElement, videoPlayer);
             audioPlayer = audioElement;
+            // Add event listeners for audio player after it's created
+            audioPlayer.addEventListener('play', updatePlayButton);
+            audioPlayer.addEventListener('pause', updatePauseButton);
         }
         audioSource = audioPlayer.querySelector('source') || document.createElement('source');
         audioSource.src = track.url;
         if (!audioSource.parentNode) {
             audioPlayer.appendChild(audioSource);
         }
-        // Add event listeners for audio player
-        audioElement.addEventListener('play', updatePlayButton);
-        audioElement.addEventListener('pause', updatePauseButton);
     }
 
     audioPlayer.load();

@@ -1,5 +1,6 @@
 IMMEDIATE TODO
 =============
+-add buffering feedback to video player
 
 
 FUTURE WORK

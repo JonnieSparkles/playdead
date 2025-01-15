@@ -38,9 +38,12 @@ function loadTrack(index) {
             const videoPlayer = document.createElement('video');
             videoPlayer.id = 'video-player';
             videoPlayer.controls = true;
-            videoPlayer.style.maxWidth = '100%';  // Make sure video fits container
+            videoPlayer.style.maxWidth = '100%';
+            // Add event listeners immediately after creating video player
+            videoPlayer.addEventListener('play', updatePlayButton);
+            videoPlayer.addEventListener('pause', updatePauseButton);
             audioPlayer.parentNode.replaceChild(videoPlayer, audioPlayer);
-            audioPlayer = videoPlayer; // Reuse existing variable for consistency
+            audioPlayer = videoPlayer;
         }
         audioPlayer.src = track.url;
     } else {
@@ -62,6 +65,9 @@ function loadTrack(index) {
         if (!audioSource.parentNode) {
             audioPlayer.appendChild(audioSource);
         }
+        // Add event listeners for audio player
+        audioElement.addEventListener('play', updatePlayButton);
+        audioElement.addEventListener('pause', updatePauseButton);
     }
 
     audioPlayer.load();
@@ -76,7 +82,9 @@ function loadTrack(index) {
 function playCurrentTrack() {
     audioPlayer.play();
     document.getElementById("play-button").textContent = "||";
-    document.getElementById("album-cover").classList.add("is-playing");
+    if (document.getElementById("album-cover")) {
+        document.getElementById("album-cover").classList.add("is-playing");
+    }
 }
 
 // Load album metadata and tracks
@@ -178,13 +186,33 @@ function setupPlayer() {
     audioSource = document.getElementById("audio-source");
     currentTrackTitle = document.getElementById("current-track-title");
 
+    // Add event listeners to sync play/pause state
+    audioPlayer.addEventListener('play', () => {
+        document.getElementById("play-button").textContent = "||";
+        const albumCover = document.getElementById("album-cover");
+        if (albumCover) {
+            albumCover.classList.add("is-playing");
+        }
+    });
+
+    audioPlayer.addEventListener('pause', () => {
+        document.getElementById("play-button").textContent = ">";
+        const albumCover = document.getElementById("album-cover");
+        if (albumCover) {
+            albumCover.classList.remove("is-playing");
+        }
+    });
+
     document.getElementById("play-button").onclick = () => {
         if (audioPlayer.paused) {
             playCurrentTrack();
         } else {
             audioPlayer.pause();
             document.getElementById("play-button").textContent = ">";
-            document.getElementById("album-cover").classList.remove("is-playing");
+            const albumCover = document.getElementById("album-cover");
+            if (albumCover) {
+                albumCover.classList.remove("is-playing");
+            }
         }
     };
 
@@ -253,3 +281,12 @@ function setupPlayer() {
 
 // Initialize the album on page load
 window.onload = loadAlbum;
+
+// Add these helper functions
+function updatePlayButton() {
+    document.getElementById("play-button").textContent = "||";
+}
+
+function updatePauseButton() {
+    document.getElementById("play-button").textContent = ">";
+}

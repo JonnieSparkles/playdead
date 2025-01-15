@@ -139,23 +139,41 @@ async function loadAlbum() {
         
         const manifestTracks = mediaEntries.map((path) => {
             const filename = path.split("/").pop();
-            const trackNumber = parseInt(filename.match(/^\d+/));
             const isVideo = path.startsWith("Reels/");
+            
+            // Improved number parsing for both video and audio files
+            let trackNumber;
+            if (isVideo) {
+                // For video files, try to match "1 - ", "1-", "1.", etc.
+                const numberMatch = filename.match(/^(\d+)[\s-_.]/);
+                trackNumber = numberMatch ? parseInt(numberMatch[1]) : 1;  // Default to 1 for videos
+            } else {
+                // For audio files, keep existing logic
+                trackNumber = parseInt(filename.match(/^\d+/)) || 0;
+            }
+
             return {
-                title: filename.replace(/^\d+_?-_/g, "").replace(/\.[^/.]+$/, ""),
+                title: filename
+                    .replace(/^\d+[\s-_.]+/, '')  // Remove leading numbers and separators
+                    .replace(/\.[^/.]+$/, ''),     // Remove file extension
                 url: `${gateway}/${manifest.paths[path].id}`,
-                number: trackNumber || 0,
+                number: trackNumber,
                 type: isVideo ? 'video' : 'audio'
             };
         }).sort((a, b) => a.number - b.number);
 
         tracks = manifestTracks.map(manifestTrack => {
-            const albumTrack = albumData.reels?.find(t => t.number === manifestTrack.number) || 
-                             albumData.tracks?.find(t => t.number === manifestTrack.number);
+            // Look for matching track in album.json
+            const albumTrack = manifestTrack.type === 'video' 
+                ? albumData.reels?.find(t => t.number === manifestTrack.number)
+                : albumData.tracks?.find(t => t.number === manifestTrack.number);
+
+            console.log('Matching:', manifestTrack, 'with:', albumTrack); // Debug log
+
             return {
                 title: albumTrack?.title || manifestTrack.title,
                 url: manifestTrack.url,
-                number: manifestTrack.number,
+                number: albumTrack?.number || manifestTrack.number,
                 type: manifestTrack.type,
                 duration: albumTrack?.duration
             };

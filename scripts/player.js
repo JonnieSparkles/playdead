@@ -4,14 +4,14 @@ let currentTrackIndex = 0;
 let tracks = [];
 let audioPlayer, audioSource, currentTrackTitle;
 
-// Load and set the current track
+// Load and set the current media
 function loadTrack(index) {
+    currentTrackIndex = index;
+    const track = tracks[currentTrackIndex];
+    
     // Show loading state
     const albumCover = document.getElementById('album-cover');
     albumCover.classList.add('loading');
-    
-    currentTrackIndex = index;
-    const track = tracks[currentTrackIndex];
     
     // Remove active class from all rows
     document.querySelectorAll('.tracklist tbody tr').forEach(row => {
@@ -27,13 +27,41 @@ function loadTrack(index) {
         currentTrackTitle.classList.remove('changing');
     }, 300);
 
-    audioSource.src = track.url;
+    // Handle video vs audio content
+    if (track.type === 'video') {
+        // Switch to video player if not already present
+        if (!document.getElementById('video-player')) {
+            const videoPlayer = document.createElement('video');
+            videoPlayer.id = 'video-player';
+            videoPlayer.controls = true;
+            videoPlayer.style.maxWidth = '100%';  // Make sure video fits container
+            audioPlayer.parentNode.replaceChild(videoPlayer, audioPlayer);
+            audioPlayer = videoPlayer; // Reuse existing variable for consistency
+        }
+        audioPlayer.src = track.url;  // Set source directly on video element
+    } else {
+        // Switch back to audio player if needed
+        if (document.getElementById('video-player')) {
+            const audioElement = document.createElement('audio');
+            audioElement.id = 'audio-player';
+            audioElement.controls = true;
+            const videoPlayer = document.getElementById('video-player');
+            videoPlayer.parentNode.replaceChild(audioElement, videoPlayer);
+            audioPlayer = audioElement;
+        }
+        audioSource = audioPlayer.querySelector('source') || document.createElement('source');
+        audioSource.src = track.url;
+        if (!audioSource.parentNode) {
+            audioPlayer.appendChild(audioSource);
+        }
+    }
+
     audioPlayer.load();
     
-    // Remove loading state when audio is ready
+    // Remove loading state when media is ready
     audioPlayer.addEventListener('canplay', () => {
         albumCover.classList.remove('loading');
-    }, { once: true });  // Only listen once per load
+    }, { once: true });
 }
 
 // Play the current track
@@ -88,23 +116,32 @@ async function loadAlbum() {
             }
         }
 
-        const trackEntries = Object.keys(manifest.paths).filter(path => path.startsWith("Tracks/"));
-        const manifestTracks = trackEntries.map((path) => {
+        // Modified track loading to handle videos
+        const mediaEntries = Object.keys(manifest.paths).filter(path => 
+            path.startsWith("Tracks/") || path.startsWith("Reels/")
+        );
+        
+        const manifestTracks = mediaEntries.map((path) => {
             const filename = path.split("/").pop();
-            const trackNumber = parseInt(filename.match(/^\d+/)); // Extract the leading number
+            const trackNumber = parseInt(filename.match(/^\d+/));
+            const isVideo = path.startsWith("Reels/");
             return {
                 title: filename.replace(/^\d+_?-_/g, "").replace(/\.[^/.]+$/, ""),
                 url: `${gateway}/${manifest.paths[path].id}`,
-                number: trackNumber || 0, // Fallback number
+                number: trackNumber || 0,
+                type: isVideo ? 'video' : 'audio'
             };
         }).sort((a, b) => a.number - b.number);
 
         tracks = manifestTracks.map(manifestTrack => {
-            const albumTrack = albumData.tracks?.find(t => t.number === manifestTrack.number);
+            const albumTrack = albumData.reels?.find(t => t.number === manifestTrack.number) || 
+                             albumData.tracks?.find(t => t.number === manifestTrack.number);
             return {
                 title: albumTrack?.title || manifestTrack.title,
                 url: manifestTrack.url,
                 number: manifestTrack.number,
+                type: manifestTrack.type,
+                duration: albumTrack?.duration
             };
         });
 

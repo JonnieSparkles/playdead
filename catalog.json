@@ -1,35 +1,42 @@
 [
       {
+        "type": "video",
         "title": "Live at The Centrum on 1988-04-09",
         "band": "VIDEO - Grateful Dead",
         "txid": "98Gn6POm8PeG-2Y44mpBxIYht9MFgRQMCmsUABgYaFQ"
     },   
     {
+        "type": "audio",
         "title": "Dear Jerry: Celebrating the Music of Jerry Garcia",
         "band": "Various",
         "txid": "zczt2W9rb5OZBoee52VavSjnbw9kjFf74trWza2w2O4"
     },      
     {
+        "type": "audio",
         "title": "Goosemas XI, Night 2 - North Charleston Coliseum",
         "band": "Goose",
         "txid": "8r7ReTZgOhIrzT6QIdXXAEyFIlUGC27DKsC7ThpXYAo"
     },   
     {
+        "type": "audio",
         "title": "Nassau Coliseum on 1990-03-29, Set 2",
         "band": "Grateful Dead",
         "txid": "lzkpqTzg4pP8MFT5rzgp678kpXYe-0JjghmIa1uxFv4"
     },    
     {
+        "type": "audio",
         "title": "Oracle Park on 2023-07-16",
         "band": "Dead & Company",
         "txid": "BnbxVXfAhrNF3FdlWGHAt4fEL1pxJiKz2bxSyBCyyJg"
     },
     {
+        "type": "audio",
         "title": "Oakland Auditorium on 1981-12-27",
         "band": "Grateful Dead",
         "txid": "vGo9_7HuwwoclBgEZ2EhHB2Z_Myvn-lTK09LzmzpTxM"
     },   
     {
+        "type": "audio",
         "title": "Barton Hall on 1977-05-08",
         "band": "Grateful Dead",
         "txid": "wdkOraAuXXzSERXxmp2Cm5IgjBBDCRxKPuO9qgzYPbo"

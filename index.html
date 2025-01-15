@@ -68,7 +68,7 @@
                     albumItem.style.setProperty('--animation-order', index);
                     albumItem.innerHTML = `
                         <span>${album.band} - ${album.title}</span>
-                        <img src="./assets/icon-cassette.png" alt="Tape">
+                        <img src="./assets/${album.type === 'video' ? 'icon-recorder.png' : 'icon-cassette.png'}" alt="Play">
                     `;
                     albumList.appendChild(albumItem);
                 });

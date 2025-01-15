@@ -35,7 +35,10 @@
         <p>Each album should include the following files and structure:</p>
 
         <h3>1. <code>album.json</code></h3>
-        <p>The metadata file describing the album. Example:</p>
+        <p>The metadata file describing the album. Examples:</p>
+        
+        <!-- Audio Album Example -->
+        <p><strong>Audio Album:</strong></p>
         <pre>
 {
     "version": "1.1.0",
@@ -51,30 +54,51 @@
     ]
 }
         </pre>
-        <p><strong>Note:</strong> The <code>tracks</code> field is optional. If omitted, the app will auto-generate track titles based on filenames.</p>
 
-        <h3>2. Tracks Folder</h3>
-        <p>Place all track files in a <code>Tracks/</code> folder.</p>
-        <p><strong>Naming Format:</strong> Use numbers to indicate track order followed by the track name in any style, e.g., <code>01 Track Name.mp3</code> or <code>1-Track Name.flac</code>.</p>
-        <p><strong>Supported Formats:</strong> .mp3, .flac, .wav</p>
-
-        <h3>3. Album Cover</h3>
-        <p>Include an image file named <code>album_cover.png</code> for the album's cover art.</p>
-        <p>Recommended size: 600x600 pixels (optional, but preferred).</p>
-
-        <h3>4. Additional Information (Optional)</h3>
-        <p>Add a file (e.g., <code>more_info.txt</code>) for album notes, recording details, or other information. Reference this in the <code>info</code> field of <code>album.json</code>.</p>
-
-        <h2>Folder Structure Example</h2>
+        <!-- Video Album Example -->
+        <p><strong>Video Album:</strong></p>
         <pre>
-/Album
-├── album.json
-├── album_cover.png
-├── more_info.txt
-├── Tracks/
-│   ├── 01 Track Name.mp3
-│   ├── 2 - Another Track Name.flac
-│   ├── 3.TrackName.wav
+{
+    "version": "1.1.0",
+    "type": "video",
+    "band": "Grateful Dead",
+    "title": "Live at The Centrum",
+    "date": "April 9, 1988",
+    "source": "Audience recording",
+    "info": "more_info.txt",
+    "reels": [
+        {"number": 1, "title": "Complete Show", "duration": 8400}
+    ]
+}
+        </pre>
+
+        <h3>2. Media Files</h3>
+        <p>Place media files in the appropriate folder:</p>
+        <ul>
+            <li><strong>Audio:</strong> Place all track files in a <code>Tracks/</code> folder.</li>
+            <li><strong>Video:</strong> Place all video files in a <code>Reels/</code> folder.</li>
+        </ul>
+        <p><strong>Naming Format:</strong> Use numbers to indicate track/reel order followed by the name in any style:</p>
+        <ul>
+            <li>Audio: <code>01 - Track Name.mp3</code> or <code>1_Track Name.flac</code></li>
+            <li>Video: <code>01 - Show Part 1.mp4</code> or <code>1_Complete Show.webm</code></li>
+        </ul>
+        <p><strong>Supported Formats:</strong></p>
+        <ul>
+            <li>Audio: .mp3, .flac, .wav</li>
+            <li>Video: .mp4, .webm</li>
+        </ul>
+
+        <h2>Folder Structure Examples</h2>
+        <pre>
+/Audio Album                      /Video Album
+├── album.json                    ├── album.json
+├── album_cover.png               ├── album_cover.png
+├── more_info.txt                 ├── more_info.txt
+├── Tracks/                       ├── Reels/
+│   ├── 01 Track Name.mp3         │   ├── 1 - Complete Show.mp4
+│   ├── 2 - Another Track.flac    │   └── 2 - Encore.mp4
+│   └── 3.Track Name.wav
         </pre>
 
         <h2>How to Submit</h2>

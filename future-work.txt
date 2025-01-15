@@ -1,31 +1,30 @@
-IMMEDIATE FOCUS
----------------
+IMMEDIATE TODO
+=============
+-add buffering feedback to video player
 
 
-FUTURE UPDATES
---------------
-Near Future:
-- [ ] Add "Check if pins work" to ensure pinning reliability for hosted files.
-- [ ] Finalize tagging schema.
-- [ ] Add support to load albums via **ArNS** (Arweave Name System) name.
-- [ ] catalog.json linked via ArNS.
-- [ ] Enhanced laser mode ideas: audio-reactive visuals, particle effects, dynamic backgrounds, interactive controls.
-- [ ] social sharing 
+FUTURE WORK
+===========
 
-Testing and Improvements:
-- [ ] Create a "test album" with different conditions.
-- [ ] Verify album loading robustness against various track naming conventions:
+Features:
+-AO process for managing catalogs.
+-Implement "Load Catalog" feature to load an entirely custom catalog with different themes.
+-Custom themes
+-Enhanced laser mode ideas: audio-reactive visuals, particle effects, dynamic backgrounds, interactive controls.
+-Add "Check if pins work" to ensure pinning reliability for hosted files.
+-Finalize tagging schema.
+-Add support to load albums via **ArNS** (Arweave Name System) name.
+-catalog.json linked via ArNS.
+
+
+Maintenance:
+-Create a "test album" with different conditions.
+-Verify album loading robustness against various track naming conventions:
      - Single/double-digit numbering.
      - Different file extensions (e.g., `.mp3`, `.wav`).
-- [ ] Test app functionality with edge-case gateway URLs and **sandboxed subdomains**:
+-Test app functionality with edge-case gateway URLs and **sandboxed subdomains**:
      - E.g., `65hkx5gp.arweave.net`, `frank.arweave.co.uk`.
 
 
-WISHLIST / IDEAS
-----------------
-
-- [ ] AO process for managing catalogs.
-- [ ] Implement "Load Catalog" feature to load an entirely custom catalog with different themes.
-- [ ] Custom themes
-- [ ] Videos
-
+Bugs:
+-

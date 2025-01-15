@@ -1,25 +1,5 @@
 IMMEDIATE TODO
 =============
--new feature: video support
-  -restructure album.json to support videos
-  -add video to catalog.json
-  -add basic video player functionality
-  -add video controls (play/pause, seek, volume)
-  -add video support to index.html
-  -style video player to match app theme
-  -implement video handling in laser mode
-  -add video file format validation
-  -add video loading progress indicator
-  -add error handling for failed video loads
-  -add video buffering indicator
-  -revise to semantic versioning
-  -review custom tape loading (works + icon)
-  -update documentation:
-    -readme.md
-    -contribute.html
-    -changelog.txt
-  -test video playback across browsers
-  -test video loading from Arweave gateways
 
 
 

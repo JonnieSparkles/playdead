@@ -1,3 +1,7 @@
+v4.0.0
+-changes to semantic versioning
+-added video album support
+
 v3.4
 -added album cover animation to fade in
 -changed contribute page logo to fade in

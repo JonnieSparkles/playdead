@@ -184,6 +184,8 @@ pre {
 #album-cover {
     max-width: 200px;
     max-height: 200px;
+    width: auto;  /* Let the image determine its size */
+    height: auto; /* Let the image determine its size */
     margin: 10px auto;
     border: 1px solid #000;
     border-radius: 5px;
@@ -191,20 +193,16 @@ pre {
     object-fit: contain;
     transition: all 0.3s ease;
     padding: 3px;
-    background: linear-gradient(45deg, #ff4500, #8b0000, #4b0082, #ff4500);
-    background-size: 300% 300%;
+    display: block;
     opacity: 0;
     animation: fadeIn 1s ease-in forwards;
-    
-    /* Add these to reserve space before image loads */
-    min-width: 200px;
-    min-height: 200px;
-    display: block;
 }
 
-/* Only apply animations when .is-playing class is present */
+/* Move gradient background to only show during playing state */
 #album-cover.is-playing {
-    opacity: 1; /* Ensure visibility during playing state */
+    opacity: 1;
+    background: linear-gradient(45deg, #ff4500, #8b0000, #4b0082, #ff4500);
+    background-size: 300% 300%;
     animation: 
         albumPulse 2s infinite ease-in-out,
         gradientBorder 8s ease infinite;

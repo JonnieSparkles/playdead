@@ -2,12 +2,10 @@ IMMEDIATE TODO
 =============
 
 
-
 FUTURE WORK
 ===========
 
 Features:
--Create a tool that takes Markdown files as input and generates corresponding HTML.
 -AO process for managing catalogs.
 -Implement "Load Catalog" feature to load an entirely custom catalog with different themes.
 -Custom themes

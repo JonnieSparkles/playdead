@@ -1,5 +1,5 @@
 v4.0.0
--changes to semantic versioning
+-changed to semantic versioning
 -added video album support
 
 v3.4

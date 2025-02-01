@@ -43,6 +43,15 @@ Want to add content to ar://playdead? Check out the [contribution guide](contrib
 - File structure requirements
 - Upload instructions
 
+## Tools
+
+### File Renaming Tool
+A Python utility to help prepare media files for ar://playdead:
+- Automatically formats track/reel filenames
+- Supports all media formats (.mp3, .flac, .wav, .mp4, .webm)
+- Shows preview before making changes
+- Located in `tools/file-renaming-tool/`
+
 ## Technical Details
 
 Built with vanilla web technologies:

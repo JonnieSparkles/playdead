@@ -1,6 +1,12 @@
 IMMEDIATE TODO
 =============
 -add buffering feedback to video player
+-check adaptive laser mode works with video
+-check adaptive laser mode works on mobile
+-update app version to 4.1.0
+-center intensity slider button on slider
+-check intensity is still working
+-fix album cover animation when playing
 
 
 FUTURE WORK
@@ -10,7 +16,6 @@ Features:
 -AO process for managing catalogs.
 -Implement "Load Catalog" feature to load an entirely custom catalog with different themes.
 -Custom themes
--Enhanced laser mode ideas: audio-reactive visuals, particle effects, dynamic backgrounds, interactive controls.
 -Add "Check if pins work" to ensure pinning reliability for hosted files.
 -Finalize tagging schema.
 -Add support to load albums via **ArNS** (Arweave Name System) name.

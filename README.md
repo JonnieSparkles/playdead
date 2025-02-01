@@ -52,6 +52,13 @@ A Python utility to help prepare media files for ar://playdead:
 - Shows preview before making changes
 - Located in `tools/file-renaming-tool/`
 
+### Album Templates
+Reference templates for creating new albums:
+- Audio album structure and metadata
+- Video album structure and metadata
+- Example `album.json` configurations
+- Located in `templates/`
+
 ## Technical Details
 
 Built with vanilla web technologies:

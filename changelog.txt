@@ -1,6 +1,8 @@
 v4.1.0
--added adaptive laser mode
+-made laser show dynamic based on audio playing
+-added new laser show mode: spotlights
 -fixed album cover animation when pausing tracks
+
 
 v4.0.0
 -changed to semantic versioning

@@ -1,12 +1,9 @@
 IMMEDIATE TODO
 =============
--add buffering feedback to video player
 -check adaptive laser mode works with video
 -check adaptive laser mode works on mobile
 -update app version to 4.1.0
--center intensity slider button on slider
--check intensity is still working
--fix album cover animation when playing
+-replace / fix spotlights mode with something else
 
 
 FUTURE WORK

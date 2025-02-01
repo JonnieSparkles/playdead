@@ -5,7 +5,7 @@ const audioElement = document.getElementById('audio-player');
 
 let isVisualizerActive = false;
 let currentModeIndex = -1; // Start with off (-1)
-const modes = ["wave", "classic", "starburst"];
+const modes = ["wave", "classic", "spotlights"];
 let lasers = [];
 
 // Timing-based animation parameters
@@ -185,137 +185,103 @@ const laserModes = {
     },
     classic: {
         init: () => Array.from({ length: 15 }, () => new Laser(2, 4)),
-        animate: (lasers) => {
+        animate: (lasers, ctx, canvas, getAudioIntensity, audioElement, animationTime) => {
             const intensity = getAudioIntensity();
             const intensityDelta = intensity - lastIntensity;
-            
-            ctx.fillStyle = "rgba(0, 0, 0, 0.15)";
+            const isAudioPlaying = !audioElement.paused;
+
+            // Smooth transition for fade effect
+            const fadeAlpha = isAudioPlaying ? 0.15 : 0.05;
+            ctx.fillStyle = `rgba(0, 0, 0, ${fadeAlpha})`;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
+
             lasers.forEach(laser => {
                 laser.update(intensity, intensityDelta);
                 laser.draw();
             });
-            
+
             lastIntensity = intensity;
             animationTime += animationSpeed * 0.3;
         }
     },
-    starburst: {
+    spotlights: {
         init: () => ({
-            bursts: Array.from({ length: 3 }, () => ({
-                rays: Array.from({ length: 12 }, (_, i) => ({
-                    angle: (i * Math.PI * 2) / 12 + random(-0.2, 0.2),  // Initial angle variation
-                    length: random(200, 400),
-                    hue: random(0, 360),
-                    opacity: random(0.6, 1),
-                    speed: random(3, 6),
-                    spinRate: random(-0.02, 0.02)  // Added spin for each ray
-                })),
-                age: random(0, 1),
-                x: canvas.width * random(0.2, 0.8),  // Better spread across screen
-                y: canvas.height * random(0.2, 0.8),
-                scale: random(0.8, 1.2)  // Size variation
+            spotlights: Array.from({ length: 5 }, () => ({
+                x: Math.random() * window.innerWidth,
+                y: 0, // Start from the top
+                angle: Math.random() * Math.PI * 0.5 + Math.PI * 0.25,
+                sweepSpeed: Math.random() * 0.02 + 0.01,
+                sweepAngle: 0,
+                sweepRange: Math.PI * 0.3,
+                hue: Math.random() * 360,
+                beamLength: Math.max(window.innerWidth, window.innerHeight),
+                beamWidth: Math.random() * 50 + 30,
+                pulsePhase: Math.random() * Math.PI * 2,
+                currentAlpha: 0.3,
+                currentWidth: 0
             }))
         }),
-        animate: (state) => {
+        animate: (state, ctx, canvas, getAudioIntensity, audioElement, animationTime) => {
             const intensity = getAudioIntensity();
             const isAudioPlaying = !audioElement.paused;
-            
-            ctx.fillStyle = "rgba(0, 0, 0, 0.15)";
+            const transitionSpeed = 0.05;
+
+            ctx.fillStyle = `rgba(0, 0, 0, ${isAudioPlaying ? 0.15 : 0.08})`;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
-            
-            // Dynamic burst creation based on intensity
-            if (isAudioPlaying && intensity > 0.7 && Math.random() < 0.2 + (intensity * 0.3)) {
-                const burstCount = Math.floor(random(8, 16));  // Variable ray count
-                state.bursts.push({
-                    rays: Array.from({ length: burstCount }, (_, i) => ({
-                        angle: (i * Math.PI * 2) / burstCount + random(-0.3, 0.3),
-                        length: random(300, 600) * (1 + intensity),  // Longer rays on high intensity
-                        hue: random(0, 360),
-                        opacity: 1,
-                        speed: random(3, 6),
-                        spinRate: random(-0.02, 0.02)
-                    })),
-                    age: 0,
-                    x: canvas.width * random(0.1, 0.9),
-                    y: canvas.height * random(0.1, 0.9),
-                    scale: random(0.8, 1.2) * (1 + intensity * 0.5)
-                });
-            }
-            
-            state.bursts = state.bursts.filter(burst => {
-                burst.age += 0.015 * (isAudioPlaying ? (1 + intensity) : 0.3);
-                
-                if (burst.age > 1) return false;
-                
-                burst.rays.forEach(ray => {
-                    // Add spin to ray angle
-                    ray.angle += ray.spinRate * (isAudioPlaying ? (1 + intensity) : 0.3);
-                    
-                    const length = ray.length * burst.scale * 
-                        (1 - burst.age * 0.7) * // Fade out
-                        (1 + intensity * 2) *   // Intensity scaling
-                        (1 + Math.sin(animationTime * 2) * 0.1); // Subtle pulse
-                    
-                    const endX = burst.x + Math.cos(ray.angle) * length;
-                    const endY = burst.y + Math.sin(ray.angle) * length;
-                    
-                    const gradient = ctx.createLinearGradient(burst.x, burst.y, endX, endY);
-                    
-                    const brightness = isAudioPlaying ? 
-                        50 + (intensity * 30) : 
-                        40 + Math.sin(animationTime * 2) * 10; // Subtle pulse when paused
-                    
-                    const alpha = ray.opacity * (1 - burst.age) * (isAudioPlaying ? 
-                        0.8 + (intensity * 0.2) : 
-                        0.4 + Math.sin(animationTime) * 0.2); // Breathing effect when paused
-                    
-                    gradient.addColorStop(0, `hsla(${ray.hue}, 100%, ${brightness}%, ${alpha})`);
-                    gradient.addColorStop(0.5, `hsla(${ray.hue + 30}, 100%, ${brightness}%, ${alpha * 0.5})`);
-                    gradient.addColorStop(1, `hsla(${ray.hue}, 100%, ${brightness}%, 0)`);
-                    
-                    ctx.beginPath();
-                    ctx.moveTo(burst.x, burst.y);
-                    ctx.lineTo(endX, endY);
-                    ctx.strokeStyle = gradient;
-                    ctx.lineWidth = isAudioPlaying ? 
-                        2 + (intensity * 3) * (1 - burst.age) : 
-                        1 + Math.sin(animationTime * 2) * 0.5;
-                    ctx.stroke();
-                    
-                    // Enhanced glow effect
-                    ctx.lineWidth = ctx.lineWidth * 2;
-                    ctx.strokeStyle = `hsla(${ray.hue}, 100%, ${brightness}%, ${alpha * 0.3})`;
-                    ctx.stroke();
-                });
-                
-                return true;
+
+            state.spotlights.forEach((spotlight, index) => {
+                spotlight.sweepSpeed += ((isAudioPlaying ? (0.01 + intensity * 0.03) : 0.01) - spotlight.sweepSpeed) * transitionSpeed;
+                spotlight.sweepAngle += spotlight.sweepSpeed;
+
+                const targetAlpha = isAudioPlaying ? (0.3 + intensity * 0.7) : 0.2;
+                spotlight.currentAlpha += (targetAlpha - spotlight.currentAlpha) * transitionSpeed;
+
+                const currentAngle = spotlight.angle + Math.sin(spotlight.sweepAngle) * spotlight.sweepRange * (isAudioPlaying ? (1 + intensity) : 0.5);
+
+                const endX = spotlight.x + Math.cos(currentAngle) * spotlight.beamLength;
+                const endY = spotlight.y + Math.sin(currentAngle) * spotlight.beamLength;
+
+                const gradient = ctx.createLinearGradient(spotlight.x, spotlight.y, endX, endY);
+                gradient.addColorStop(0, `hsla(${spotlight.hue}, 100%, 50%, ${spotlight.currentAlpha})`);
+                gradient.addColorStop(1, `hsla(${spotlight.hue}, 100%, 50%, 0)`);
+
+                spotlight.pulsePhase += isAudioPlaying ? (0.1 + intensity * 0.1) : 0.05;
+                const pulseAmount = Math.sin(spotlight.pulsePhase) * 0.5 + 0.5;
+                const targetWidth = spotlight.beamWidth * (1 + (isAudioPlaying ? (pulseAmount * intensity) : pulseAmount * 0.2));
+                spotlight.currentWidth += (targetWidth - spotlight.currentWidth) * transitionSpeed;
+
+                ctx.beginPath();
+                ctx.moveTo(spotlight.x, spotlight.y);
+                ctx.lineTo(endX, endY);
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = spotlight.currentWidth;
+                ctx.lineCap = 'round';
+                ctx.stroke();
+
+                const glowSize = isAudioPlaying ? (5 + intensity * 5) : 5;
+                const glowAlpha = isAudioPlaying ? (0.5 + intensity * 0.5) : 0.3;
+
+                ctx.beginPath();
+                ctx.arc(spotlight.x, spotlight.y, glowSize * 2, 0, Math.PI * 2);
+                ctx.fillStyle = `hsla(${spotlight.hue}, 100%, 50%, ${glowAlpha * 0.3})`;
+                ctx.fill();
+
+                ctx.beginPath();
+                ctx.arc(spotlight.x, spotlight.y, glowSize, 0, Math.PI * 2);
+                ctx.fillStyle = `hsla(${spotlight.hue}, 100%, 50%, ${glowAlpha})`;
+                ctx.fill();
+
+                if (isAudioPlaying && intensity > 0.7 && Math.random() > 0.92) {
+                    spotlight.hue = (spotlight.hue + Math.random() * 60) % 360;
+                }
+
+                const moveSpeed = isAudioPlaying ? (2 + intensity * 3) : 1;
+                spotlight.x += Math.sin(animationTime * 0.5 + index) * moveSpeed;
+                if (spotlight.x < 0) spotlight.x = canvas.width;
+                if (spotlight.x > canvas.width) spotlight.x = 0;
             });
-            
-            // Dynamic minimum burst count based on intensity
-            const minBursts = isAudioPlaying ? 
-                Math.max(2, Math.floor(3 + intensity * 2)) : 
-                2;
-            
-            while (state.bursts.length < minBursts) {
-                state.bursts.push({
-                    rays: Array.from({ length: Math.floor(random(8, 16)) }, (_, i) => ({
-                        angle: (i * Math.PI * 2) / 12 + random(-0.3, 0.3),
-                        length: random(200, 400),
-                        hue: random(0, 360),
-                        opacity: random(0.6, 1),
-                        speed: random(3, 6),
-                        spinRate: random(-0.02, 0.02)
-                    })),
-                    age: random(0, 0.5),
-                    x: canvas.width * random(0.1, 0.9),
-                    y: canvas.height * random(0.1, 0.9),
-                    scale: random(0.8, 1.2)
-                });
-            }
-            
-            animationTime += animationSpeed * (isAudioPlaying ? (1 + intensity) : 0.3);
+
+            return animationTime + (isAudioPlaying ? 0.015 : 0.01);
         }
     }
 };
@@ -324,7 +290,8 @@ const laserModes = {
 function animate() {
     if (!isVisualizerActive) return;
     
-    laserModes[modes[currentModeIndex]].animate(lasers);
+    const currentMode = modes[currentModeIndex].toLowerCase();
+    laserModes[currentMode].animate(lasers, ctx, canvas, getAudioIntensity, audioElement, animationTime);
     requestAnimationFrame(animate);
 }
 
@@ -345,7 +312,7 @@ function toggleMode() {
 
     isVisualizerActive = true;
     resizeCanvas();
-    const currentMode = modes[currentModeIndex];
+    const currentMode = modes[currentModeIndex].toLowerCase();
     console.log(`Initializing ${currentMode} mode`); // Debug log
     lasers = laserModes[currentMode].init();
     canvas.style.display = "block";
@@ -415,3 +382,109 @@ function getAudioIntensity() {
 // Initial resize
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
+
+// Separate mode logic into individual functions or files
+function initClassicMode(canvas) {
+    return Array.from({ length: 15 }, () => new Laser(canvas, 2, 4));
+}
+
+function animateClassicMode(lasers, ctx, canvas, getAudioIntensity, audioElement, animationTime) {
+    const intensity = getAudioIntensity();
+    const intensityDelta = intensity - lastIntensity;
+    const isAudioPlaying = !audioElement.paused;
+
+    ctx.fillStyle = `rgba(0, 0, 0, ${isAudioPlaying ? 0.15 : 0.05})`;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    lasers.forEach(laser => {
+        const transitionedDelta = isAudioPlaying ? intensityDelta : intensityDelta * 0.3;
+        laser.update(intensity, transitionedDelta, audioElement, animationTime);
+        laser.draw(ctx);
+    });
+
+    lastIntensity = intensity;
+    return animationTime + (isAudioPlaying ? 0.015 : 0.008);
+}
+
+// Example of a more modular approach for lights mode
+function initLightsMode() {
+    return {
+        lights: Array.from({ length: 8 }, () => ({
+            x: Math.random() * window.innerWidth,
+            y: -20,
+            angle: Math.random() * Math.PI * 0.5 + Math.PI * 0.25,
+            sweepSpeed: Math.random() * 0.02 + 0.01,
+            sweepAngle: 0,
+            sweepRange: Math.PI * 0.4,
+            hue: Math.random() * 360,
+            beamLength: Math.max(window.innerWidth, window.innerHeight) * 1.5,
+            beamWidth: Math.random() * 40 + 20,
+            pulsePhase: Math.random() * Math.PI * 2,
+            currentAlpha: 0.3,
+            currentWidth: 0
+        }))
+    };
+}
+
+function animateLightsMode(state, ctx, canvas, getAudioIntensity, audioElement, animationTime) {
+    const intensity = getAudioIntensity();
+    const isAudioPlaying = !audioElement.paused;
+    const transitionSpeed = 0.05;
+
+    ctx.fillStyle = `rgba(0, 0, 0, ${isAudioPlaying ? 0.15 : 0.08})`;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    state.lights.forEach((light, index) => {
+        light.sweepSpeed += ((isAudioPlaying ? (0.01 + intensity * 0.03) : 0.01) - light.sweepSpeed) * transitionSpeed;
+        light.sweepAngle += light.sweepSpeed;
+
+        const targetAlpha = isAudioPlaying ? (0.3 + intensity * 0.7) : 0.2;
+        light.currentAlpha += (targetAlpha - light.currentAlpha) * transitionSpeed;
+
+        const currentAngle = light.angle + Math.sin(light.sweepAngle) * light.sweepRange * (isAudioPlaying ? (1 + intensity) : 0.5);
+
+        const endX = light.x + Math.cos(currentAngle) * light.beamLength;
+        const endY = light.y + Math.sin(currentAngle) * light.beamLength;
+
+        const gradient = ctx.createLinearGradient(light.x, light.y, endX, endY);
+        gradient.addColorStop(0, `hsla(${light.hue}, 100%, 50%, ${light.currentAlpha})`);
+        gradient.addColorStop(1, `hsla(${light.hue}, 100%, 50%, 0)`);
+
+        light.pulsePhase += isAudioPlaying ? (0.1 + intensity * 0.1) : 0.05;
+        const pulseAmount = Math.sin(light.pulsePhase) * 0.5 + 0.5;
+        const targetWidth = light.beamWidth * (1 + (isAudioPlaying ? (pulseAmount * intensity) : pulseAmount * 0.2));
+        light.currentWidth += (targetWidth - light.currentWidth) * transitionSpeed;
+
+        ctx.beginPath();
+        ctx.moveTo(light.x, light.y);
+        ctx.lineTo(endX, endY);
+        ctx.strokeStyle = gradient;
+        ctx.lineWidth = light.currentWidth;
+        ctx.lineCap = 'round';
+        ctx.stroke();
+
+        const glowSize = isAudioPlaying ? (5 + intensity * 5) : 5;
+        const glowAlpha = isAudioPlaying ? (0.5 + intensity * 0.5) : 0.3;
+
+        ctx.beginPath();
+        ctx.arc(light.x, light.y, glowSize * 2, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${light.hue}, 100%, 50%, ${glowAlpha * 0.3})`;
+        ctx.fill();
+
+        ctx.beginPath();
+        ctx.arc(light.x, light.y, glowSize, 0, Math.PI * 2);
+        ctx.fillStyle = `hsla(${light.hue}, 100%, 50%, ${glowAlpha})`;
+        ctx.fill();
+
+        if (isAudioPlaying && intensity > 0.7 && Math.random() > 0.92) {
+            light.hue = (light.hue + Math.random() * 60) % 360;
+        }
+
+        const moveSpeed = isAudioPlaying ? (2 + intensity * 3) : 1;
+        light.x += Math.sin(animationTime * 0.5 + index) * moveSpeed;
+        if (light.x < 0) light.x = canvas.width;
+        if (light.x > canvas.width) light.x = 0;
+    });
+
+    return animationTime + (isAudioPlaying ? 0.015 : 0.01);
+}

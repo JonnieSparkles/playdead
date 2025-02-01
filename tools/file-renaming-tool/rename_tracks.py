@@ -2,9 +2,10 @@ import os
 import re
 from pathlib import Path
 
-def clean_filename(filename):
-    # Remove invalid characters from filename
-    return re.sub(r'[<>:"/\\|?*]', '', filename)
+def clean_filename(filename, index):
+    # Remove invalid characters and add track number
+    clean_name = re.sub(r'[<>:"/\\|?*]', '', filename)
+    return f"{index:02d} - {clean_name}"
 
 def get_media_files(directory):
     # Get all supported media files
@@ -18,12 +19,7 @@ def main():
     # Read the track names from tracks.txt
     try:
         with open('tracks.txt', 'r', encoding='utf-8') as f:
-            new_names = []
-            for line in f:
-                # Remove line numbers and pipe symbols if present
-                clean_line = line.split('|')[-1].strip()
-                if clean_line:
-                    new_names.append(clean_line)
+            new_names = [line.strip() for line in f if line.strip()]
     except FileNotFoundError:
         print("Error: tracks.txt not found!")
         print("Please create tracks.txt with one track name per line.")
@@ -47,19 +43,19 @@ def main():
     # Preview changes
     print("\nProposed changes:")
     print("----------------")
-    for old, new in zip(current_files, new_names):
+    for i, (old, new) in enumerate(zip(current_files, new_names), 1):
         ext = Path(old).suffix
-        new_filename = clean_filename(f"{new}{ext}")
+        new_filename = clean_filename(new, i) + ext
         print(f"{old} -> {new_filename}")
 
     # Ask for confirmation
     response = input("\nProceed with renaming? (yes/no): ")
 
     if response.lower() == 'yes':
-        for old_name, new_name in zip(current_files, new_names):
+        for i, (old_name, new_name) in enumerate(zip(current_files, new_names), 1):
             try:
                 ext = Path(old_name).suffix
-                new_filename = clean_filename(f"{new_name}{ext}")
+                new_filename = clean_filename(new_name, i) + ext
                 os.rename(old_name, new_filename)
                 print(f"Renamed: {old_name} -> {new_filename}")
             except Exception as e:

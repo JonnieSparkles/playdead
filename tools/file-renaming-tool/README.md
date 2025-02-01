@@ -1,18 +1,20 @@
 # ar://playdead File Renaming Tool
 
-A Python script to help prepare media files for ar://playdead albums by batch renaming them according to a track listing.
+A utility to prepare media files for ar://playdead albums by automatically formatting filenames to match the required structure.
 
 ## Features
-- Supports audio (.mp3, .flac, .wav) and video (.mp4, .webm) files
-- Preserves file extensions
-- Validates filenames for compatibility
+- Supports all ar://playdead media formats (.mp3, .flac, .wav, .mp4, .webm)
+- Automatically adds track numbers (01, 02, etc.)
+- Follows ar://playdead naming convention
 - Shows preview before making changes
 - UTF-8 support for international characters
 
 ## Setup
-1. Place `rename_tracks.py` in the folder with your media files
-2. Create `tracks.txt` in the same folder with your track names
-3. One track name per line in `tracks.txt`, for example:
+1. Place `rename_tracks.py` in your album folder
+2. Create `tracks.txt` with your track names (one per line)
+3. Make sure your media files are in the same folder
+
+Example tracks.txt:
 
 ```
 Track 1

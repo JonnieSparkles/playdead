@@ -184,8 +184,8 @@ pre {
 #album-cover {
     max-width: 200px;
     max-height: 200px;
-    width: auto;  /* Let the image determine its size */
-    height: auto; /* Let the image determine its size */
+    width: auto;
+    height: auto;
     margin: 10px auto;
     border: 1px solid #000;
     border-radius: 5px;
@@ -194,16 +194,17 @@ pre {
     transition: all 0.3s ease;
     padding: 3px;
     display: block;
-    opacity: 0;
-    animation: fadeIn 1s ease-in forwards;
+    opacity: 0;  /* Start invisible */
+    animation: fadeIn 1s ease-in forwards;  /* Initial fade in */
 }
 
-/* Move gradient background to only show during playing state */
+/* Only add gradient effects during playback, don't touch opacity */
 #album-cover.is-playing {
-    opacity: 1;
+    opacity: 1;  /* Ensure visibility during playback */
     background: linear-gradient(45deg, #ff4500, #8b0000, #4b0082, #ff4500);
     background-size: 300% 300%;
     animation: 
+        fadeIn 1s ease-in forwards,  /* Keep the fade in */
         albumPulse 2s infinite ease-in-out,
         gradientBorder 8s ease infinite;
 }
@@ -406,16 +407,16 @@ pre {
     to { transform: rotate(360deg); }
 }
 
-/* Add loading state to album cover */
+/* Add loading state */
 #album-cover.loading {
-    opacity: 0.6;
-    animation: pulse 1.5s ease infinite;
+    opacity: 0;
+    animation: fadeIn 1s ease-in forwards;
 }
 
-@keyframes pulse {
-    0% { opacity: 0.6; }
-    50% { opacity: 0.8; }
-    100% { opacity: 0.6; }
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    30% { opacity: 0; } /* Add a small delay before starting */
+    100% { opacity: 1; }
 }
 
 #back-button {
@@ -510,12 +511,6 @@ pre {
         transform: rotate(0) scale(1);
         opacity: 1;
     }
-}
-
-@keyframes fadeIn {
-    0% { opacity: 0; }
-    30% { opacity: 0; } /* Add a small delay before starting */
-    100% { opacity: 1; }
 }
 
 /* Simple fade in for contribute page logo */

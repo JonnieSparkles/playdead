@@ -1,3 +1,7 @@
+v4.1.0
+-added adaptive laser mode
+-fixed album cover animation when pausing tracks
+
 v4.0.0
 -changed to semantic versioning
 -added video album support

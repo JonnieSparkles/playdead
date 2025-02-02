@@ -1,36 +1,49 @@
-# ar://playdead File Renaming Tool
+# ar://playdead Album Setup Tool
 
-A utility to prepare media files for ar://playdead albums by automatically formatting filenames to match the required structure.
+A utility to prepare albums for ar://playdead by managing album metadata and filenames.
 
 ## Features
+- Creates and manages album.json files
 - Supports all ar://playdead media formats (.mp3, .flac, .wav, .mp4, .webm)
-- Automatically adds track numbers (01, 02, etc.)
-- Follows ar://playdead naming convention
+- Automatically formats filenames with track numbers (01, 02, etc.)
 - Shows preview before making changes
 - UTF-8 support for international characters
 
 ## Setup
-1. Place `rename_tracks.py` in your album folder
-2. Create `tracks.txt` with your track names (one per line)
-3. Make sure your media files are in the same folder
-
-Example tracks.txt:
-
-```
-Track 1
-Track 2
-Track 3
-```
+Place `setup_album.py` in your album folder root directory.
 
 ## Usage
-1. Open terminal/command prompt
-2. Navigate to folder containing the script and files
-3. Run: `python rename_tracks.py`
-4. Review the preview
-5. Type 'yes' to proceed or 'no' to cancel
+Run: `python setup_album.py`
+
+Choose from four modes:
+
+1. Generate album.json from files
+   - Scans media files in Tracks/ or Reels/
+   - Prompts for album metadata
+   - Creates album.json with track/reel listings
+
+2. Rename files based on album.json
+   - Uses existing album.json to rename files
+   - Adds proper track numbers
+   - Removes invalid characters
+   - Shows preview before making changes
+
+3. Create blank album.json template
+   - Creates a new album.json with empty fields
+   - Includes placeholder track/reel entries
+   - Won't overwrite existing file without confirmation
+
+4. Create complete album folder structure
+   - Creates all necessary directories (Tracks/, Reels/)
+   - Generates blank album.json template
+   - Creates empty more_info.txt
+   - Adds placeholder album_cover.png
+   - Adds placeholder media files
+   - Perfect for starting a new album from scratch
 
 ## Notes
 - Always backup your files before renaming
-- Files are matched to track names in alphabetical order
+- Files should be in Tracks/ (for audio) or Reels/ (for video)
 - Invalid characters are automatically removed from filenames
 - The script preserves original file extensions
+- Trailing spaces are automatically cleaned from filenames

@@ -3,15 +3,16 @@ import re
 import json
 from pathlib import Path
 from datetime import datetime
+from typing import Optional, Tuple, List, Dict
 
-def clean_filename(filename, index):
+def clean_filename(filename: str, index: int) -> str:
     # Remove invalid characters and add track number
     clean_name = re.sub(r'[<>:"/\\|?*]', '', filename)
     # Remove trailing spaces and dots
     clean_name = clean_name.rstrip(' .')
     return f"{index:02d} - {clean_name}"
 
-def get_media_files(directory):
+def get_media_files(directory: str) -> Tuple[List[str], str]:
     # Get all supported media files from Tracks/ or Reels/ directory
     extensions = ('.mp3', '.flac', '.wav', '.mp4', '.webm')
     media_dir = 'Reels' if any(f.lower().endswith(('.mp4', '.webm')) for f in os.listdir(directory)) else 'Tracks'
@@ -152,8 +153,53 @@ def rename_from_json():
 
     return album_data, current_files, media_dir, media_list
 
+def create_album_structure():
+    print("\nWill create the following structure:")
+    print("├── album.json")
+    print("├── more_info.txt")
+    print("├── album_cover.png")
+    print("├── Tracks/")
+    print("│   └── 01 - Track 1.mp3")
+    print("└── Reels/")
+    print("    └── 01 - Reel 1.mp4")
+    
+    response = input("\nProceed with creation? (yes/no): ")
+    if response.lower() != 'yes':
+        print("Operation cancelled")
+        return
+    
+    # Create directories
+    os.makedirs('Tracks', exist_ok=True)
+    os.makedirs('Reels', exist_ok=True)
+    
+    # Create blank album.json
+    album_data = create_blank_album_json()
+    json_str = json.dumps(album_data, indent=4, ensure_ascii=False)
+    json_str = re.sub(
+        r'(\s+){\s+"number":\s+(\d+),\s+"title":\s+"([^"]+)"\s+}',
+        r'\1{"number": \2, "title": "\3"}',
+        json_str
+    )
+    
+    with open('album.json', 'w', encoding='utf-8') as f:
+        f.write(json_str)
+    
+    # Create more_info.txt
+    with open('more_info.txt', 'w', encoding='utf-8') as f:
+        f.write("Album information\n")
+    
+    # Create placeholder files
+    with open(os.path.join('Tracks', '01 - Track 1.mp3'), 'w') as f:
+        f.write('')
+    with open(os.path.join('Reels', '01 - Reel 1.mp4'), 'w') as f:
+        f.write('')
+    with open('album_cover.png', 'w') as f:
+        f.write('')
+        
+    print("\nCreated album directory structure!")
+
 def main():
-    print("ar://playdead File Renaming Tool")
+    print("ar://playdead Album Setup Tool")
     print("================================\n")
 
     # Ask user which mode to use
@@ -161,7 +207,17 @@ def main():
     print("1. Generate album.json from files")
     print("2. Rename files based on album.json")
     print("3. Create blank album.json template")
-    mode = input("Enter 1, 2, or 3: ").strip()
+    print("4. Create complete album folder structure")
+    mode = input("Enter 1, 2, 3, or 4: ").strip()
+
+    if mode == "4":
+        if os.path.exists('album.json') or os.path.exists('Tracks') or os.path.exists('Reels'):
+            response = input("Some files/folders already exist. Override? (yes/no): ")
+            if response.lower() != 'yes':
+                print("Operation cancelled")
+                return
+        create_album_structure()
+        return
 
     if mode == "1":
         result = rename_from_files()

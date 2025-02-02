@@ -1,3 +1,16 @@
+/**
+ * Laser Show Visualizer
+ * Provides three visualization modes:
+ * - wave: Circular wave patterns that respond to audio intensity
+ * - classic: Moving laser beams with color transitions
+ * - spotlights: Dynamic spotlight effects with fog simulation
+ * 
+ * Integrates with audio/video player and responds to:
+ * - Audio/Video playback status
+ * - Playback state changes
+ * - Window resizing
+ * - Media type switching (audio/video)
+ */
 const canvas = document.getElementById("laser-visualizer");
 const ctx = canvas.getContext("2d");
 const toggleButton = document.getElementById("toggle-visualizer");
@@ -15,11 +28,6 @@ const animationSpeed = 0.05;
 // Intensity multiplier for all modes
 const intensityMultiplier = 0.75;
 
-// Add status indicator
-const statusIndicator = document.createElement('div');
-statusIndicator.style.display = 'none';  // Hide it instead of showing status
-document.body.appendChild(statusIndicator);
-
 // Enhanced tracking without Web Audio API
 let lastIntensity = 0;
 const smoothingFactor = 0.15;
@@ -27,11 +35,6 @@ let lastAudioTime = 0;
 let intensityHistory = new Array(15).fill(0);
 let lastDelta = 0;
 let peakThreshold = 0.1;
-
-// Remove unused frequency analysis code since we're not using Web Audio API
-const getFrequencyData = () => {
-    return { bass: 0, mids: 0, highs: 0 };
-};
 
 // Classic Laser Class with improved dynamics
 class Laser {
@@ -161,18 +164,18 @@ class Laser {
     }
 }
 
-// Laser Modes
+// Consolidate mode initialization and animation into a cleaner structure
 const laserModes = {
     wave: {
         init: () => ({
             waves: Array.from({ length: 5 }, (_, i) => ({
                 radius: i * 50,
                 opacity: 1 - (i * 0.2),
-                speed: 3 + (i * 0.5),  // Increased base speed
+                speed: 3 + (i * 0.5),
                 hue: (i * 60) % 360
             }))
         }),
-        animate: (state) => {
+        animate: (state, ctx, canvas, getAudioIntensity, audioElement, animationTime) => {
             const intensity = getAudioIntensity();
             const isAudioPlaying = !audioElement.paused;
             
@@ -206,25 +209,22 @@ const laserModes = {
             });
             
             animationTime += animationSpeed * (isAudioPlaying ? (1 + intensity) : 0.3);
+            return animationTime + (isAudioPlaying ? 0.015 : 0.008);
         }
     },
     classic: {
-        init: () => {
-            const colorSchemes = [
-                [350, 45, 85],      // Red, Orange, Yellow (warm)
-                [180, 210, 240],    // Aqua, Cyan, Blue (cool)
-                [280, 315, 350],    // Purple, Magenta, Red (rich)
-                [45, 85, 125],      // Orange, Yellow, Spring Green
-                [200, 240, 280]     // Blue, Azure, Purple
-            ];
-            
-            return {
-                lasers: Array.from({ length: 15 }, (_, i) => new Laser(2, 4, i % 3)),
-                colorSchemes,
-                currentScheme: 0,
-                schemeTransition: 0
-            };
-        },
+        init: () => ({
+            lasers: Array.from({ length: 15 }, (_, i) => new Laser(2, 4, i % 3)),
+            colorSchemes: [
+                [350, 45, 85],
+                [180, 210, 240],
+                [280, 315, 350],
+                [45, 85, 125],
+                [200, 240, 280]
+            ],
+            currentScheme: 0,
+            schemeTransition: 0
+        }),
         animate: (state, ctx, canvas, getAudioIntensity, audioElement, animationTime) => {
             const intensity = getAudioIntensity();
             const intensityDelta = intensity - lastIntensity;
@@ -496,24 +496,24 @@ const laserModes = {
     }
 };
 
-// Animation Loop
+// Simplify animation loop
 function animate() {
     if (!isVisualizerActive) return;
     
     const currentMode = modes[currentModeIndex].toLowerCase();
-    laserModes[currentMode].animate(lasers, ctx, canvas, getAudioIntensity, audioElement, animationTime);
-    requestAnimationFrame(animate);
+    const mode = laserModes[currentMode];
+    
+    if (mode) {
+        animationTime = mode.animate(lasers, ctx, canvas, getAudioIntensity, audioElement, animationTime);
+        requestAnimationFrame(animate);
+    }
 }
 
-// Update toggle function with debug logs
+// Simplify toggle function
 function toggleMode() {
     currentModeIndex = (currentModeIndex + 1) % (modes.length + 1);
-    console.log(`Switching to mode index: ${currentModeIndex}`); // Debug log
-    
-    animationTime = 0;
     
     if (currentModeIndex === modes.length) {
-        console.log("Turning off visualizer"); // Debug log
         isVisualizerActive = false;
         canvas.style.display = "none";
         ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -522,11 +522,15 @@ function toggleMode() {
 
     isVisualizerActive = true;
     resizeCanvas();
+    
     const currentMode = modes[currentModeIndex].toLowerCase();
-    console.log(`Initializing ${currentMode} mode`); // Debug log
-    lasers = laserModes[currentMode].init();
-    canvas.style.display = "block";
-    animate();
+    const mode = laserModes[currentMode];
+    
+    if (mode) {
+        lasers = mode.init();
+        canvas.style.display = "block";
+        animate();
+    }
 }
 
 toggleButton.addEventListener("click", toggleMode);
@@ -545,156 +549,60 @@ function random(min, max) {
     return Math.random() * (max - min) + min;
 }
 
-// Clean up getAudioIntensity function - remove unused frequency components
+// Clean up getAudioIntensity function
 function getAudioIntensity() {
     if (!audioElement.paused) {
         const timeGap = Math.abs(audioElement.currentTime - lastAudioTime) > 0.1;
         lastAudioTime = audioElement.currentTime;
         
-        if (timeGap) {
-            return lastIntensity;
-        }
+        if (timeGap) return lastIntensity;
         
-        // Simplified time components
         const bassTime = (audioElement.currentTime % 0.2) * Math.PI * 10;
         const midTime = (audioElement.currentTime % 0.1) * Math.PI * 20;
         
-        // Combine different frequencies
         const bassComponent = Math.abs(Math.sin(bassTime)) * 0.6;
         const midComponent = Math.abs(Math.sin(midTime)) * 0.4;
         
         const rawIntensity = (bassComponent + midComponent) * intensityMultiplier;
         
+        // Update intensity history
         intensityHistory.shift();
         intensityHistory.push(rawIntensity);
         
-        const localAverage = intensityHistory.slice(0, -1).reduce((a, b) => a + b) / (intensityHistory.length - 1);
-        const variance = Math.abs(rawIntensity - localAverage);
-        
-        const peakEnhanced = variance > 0.1 ? 
-            rawIntensity * 2.5 : 
-            rawIntensity * 0.8;
-        
-        const smoothedIntensity = lastIntensity * (1 - smoothingFactor) + peakEnhanced * smoothingFactor;
-        
-        // Simplified status display
-        if (statusIndicator.style.display !== 'none') {
-            statusIndicator.textContent = `🎵 Intensity: ${Math.round(smoothedIntensity * 100)}%`;
-            statusIndicator.style.backgroundColor = smoothedIntensity > 0.7 ? 'rgba(255, 0, 0, 0.3)' : 'rgba(0, 255, 0, 0.3)';
-        }
-        
+        const smoothedIntensity = calculateSmoothedIntensity(rawIntensity);
         return Math.max(0, Math.min(1, smoothedIntensity));
     }
     
     return (Math.sin(animationTime) * 0.3 + 0.5) * intensityMultiplier;
 }
 
+// Helper function for intensity smoothing
+function calculateSmoothedIntensity(rawIntensity) {
+    const localAverage = intensityHistory.slice(0, -1).reduce((a, b) => a + b) / (intensityHistory.length - 1);
+    const variance = Math.abs(rawIntensity - localAverage);
+    
+    const peakEnhanced = variance > 0.1 ? 
+        rawIntensity * 2.5 : 
+        rawIntensity * 0.8;
+    
+    return lastIntensity * (1 - smoothingFactor) + peakEnhanced * smoothingFactor;
+}
+
 // Initial resize
 window.addEventListener('resize', resizeCanvas);
 resizeCanvas();
 
-// Separate mode logic into individual functions or files
-function initClassicMode(canvas) {
-    return Array.from({ length: 15 }, () => new Laser(canvas, 2, 4));
-}
+// Add cleanup for canvas when switching tracks
+audioElement.addEventListener('loadstart', () => {
+    if (isVisualizerActive) {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+    }
+});
 
-function animateClassicMode(lasers, ctx, canvas, getAudioIntensity, audioElement, animationTime) {
-    const intensity = getAudioIntensity();
-    const intensityDelta = intensity - lastIntensity;
-    const isAudioPlaying = !audioElement.paused;
-
-    ctx.fillStyle = `rgba(0, 0, 0, ${isAudioPlaying ? 0.15 : 0.05})`;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    lasers.forEach(laser => {
-        const transitionedDelta = isAudioPlaying ? intensityDelta : intensityDelta * 0.3;
-        laser.update(intensity, transitionedDelta, audioElement, animationTime);
-        laser.draw(ctx);
-    });
-
-    lastIntensity = intensity;
-    return animationTime + (isAudioPlaying ? 0.015 : 0.008);
-}
-
-// Example of a more modular approach for lights mode
-function initLightsMode() {
-    return {
-        lights: Array.from({ length: 8 }, () => ({
-            x: Math.random() * window.innerWidth,
-            y: -20,
-            angle: Math.random() * Math.PI * 0.5 + Math.PI * 0.25,
-            sweepSpeed: Math.random() * 0.02 + 0.01,
-            sweepAngle: 0,
-            sweepRange: Math.PI * 0.4,
-            hue: Math.random() * 360,
-            beamLength: Math.max(window.innerWidth, window.innerHeight) * 1.5,
-            beamWidth: Math.random() * 40 + 20,
-            pulsePhase: Math.random() * Math.PI * 2,
-            currentAlpha: 0.3,
-            currentWidth: 0
-        }))
-    };
-}
-
-function animateLightsMode(state, ctx, canvas, getAudioIntensity, audioElement, animationTime) {
-    const intensity = getAudioIntensity();
-    const isAudioPlaying = !audioElement.paused;
-    const transitionSpeed = 0.05;
-
-    ctx.fillStyle = `rgba(0, 0, 0, ${isAudioPlaying ? 0.15 : 0.08})`;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-    state.lights.forEach((light, index) => {
-        light.sweepSpeed += ((isAudioPlaying ? (0.01 + intensity * 0.03) : 0.01) - light.sweepSpeed) * transitionSpeed;
-        light.sweepAngle += light.sweepSpeed;
-
-        const targetAlpha = isAudioPlaying ? (0.3 + intensity * 0.7) : 0.2;
-        light.currentAlpha += (targetAlpha - light.currentAlpha) * transitionSpeed;
-
-        const currentAngle = light.angle + Math.sin(light.sweepAngle) * light.sweepRange * (isAudioPlaying ? (1 + intensity) : 0.5);
-
-        const endX = light.x + Math.cos(currentAngle) * light.beamLength;
-        const endY = light.y + Math.sin(currentAngle) * light.beamLength;
-
-        const gradient = ctx.createLinearGradient(light.x, light.y, endX, endY);
-        gradient.addColorStop(0, `hsla(${light.hue}, 100%, 50%, ${light.currentAlpha})`);
-        gradient.addColorStop(1, `hsla(${light.hue}, 100%, 50%, 0)`);
-
-        light.pulsePhase += isAudioPlaying ? (0.1 + intensity * 0.1) : 0.05;
-        const pulseAmount = Math.sin(light.pulsePhase) * 0.5 + 0.5;
-        const targetWidth = light.beamWidth * (1 + (isAudioPlaying ? (pulseAmount * intensity) : pulseAmount * 0.2));
-        light.currentWidth += (targetWidth - light.currentWidth) * transitionSpeed;
-
-        ctx.beginPath();
-        ctx.moveTo(light.x, light.y);
-        ctx.lineTo(endX, endY);
-        ctx.strokeStyle = gradient;
-        ctx.lineWidth = light.currentWidth;
-        ctx.lineCap = 'round';
-        ctx.stroke();
-
-        const glowSize = isAudioPlaying ? (5 + intensity * 5) : 5;
-        const glowAlpha = isAudioPlaying ? (0.5 + intensity * 0.5) : 0.3;
-
-        ctx.beginPath();
-        ctx.arc(light.x, light.y, glowSize * 2, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(${light.hue}, 100%, 50%, ${glowAlpha * 0.3})`;
-        ctx.fill();
-
-        ctx.beginPath();
-        ctx.arc(light.x, light.y, glowSize, 0, Math.PI * 2);
-        ctx.fillStyle = `hsla(${light.hue}, 100%, 50%, ${glowAlpha})`;
-        ctx.fill();
-
-        if (isAudioPlaying && intensity > 0.7 && Math.random() > 0.92) {
-            light.hue = (light.hue + Math.random() * 60) % 360;
-        }
-
-        const moveSpeed = isAudioPlaying ? (2 + intensity * 3) : 1;
-        light.x += Math.sin(animationTime * 0.5 + index) * moveSpeed;
-        if (light.x < 0) light.x = canvas.width;
-        if (light.x > canvas.width) light.x = 0;
-    });
-
-    return animationTime + (isAudioPlaying ? 0.015 : 0.01);
-}
+// Add resize handler for video content
+const resizeObserver = new ResizeObserver(() => {
+    if (isVisualizerActive) {
+        resizeCanvas();
+    }
+});
+resizeObserver.observe(audioElement.parentElement);

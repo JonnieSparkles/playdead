@@ -68,7 +68,7 @@ class Laser {
         
         // Blend between idle and active movement
         this.targetSpeedMultiplier = audioElement.paused ? 
-            0.15 + Math.sin(this.idlePhase) * 0.1 : // Gentle swaying when paused
+            0.3 : 
             Math.min(0.8 + (intensity * intensityMultiplier * 1.5) + progressVariation, 2.0);
         
         this.currentSpeedMultiplier += (this.targetSpeedMultiplier - this.currentSpeedMultiplier) * 0.1;
@@ -129,7 +129,7 @@ class Laser {
         // Update colors with smooth transitions
         const saturation = 100;
         const lightness = audioElement.paused ?
-            40 + Math.sin(this.idlePhase) * 10 : // Subtle brightness pulsing when paused
+            50 :
             50 + (intensity * 30);
         
         this.startColor = `hsla(${this.hue}, ${saturation}%, ${lightness}%, ${this.currentAlpha})`;
@@ -280,7 +280,7 @@ const laserModes = {
                 size: Math.random() * 150 + 50,
                 vx: (Math.random() - 0.5) * 0.2,
                 vy: (Math.random() - 0.5) * 0.1 - 0.1,
-                alpha: Math.random() * 0.15,
+                alpha: Math.random() * 0.3,
                 pulseOffset: Math.random() * Math.PI * 2
             })),
             spotlights: Array.from({ length: 6 }, (_, index) => ({
@@ -331,139 +331,163 @@ const laserModes = {
         animate: (state, ctx, canvas, getAudioIntensity, audioElement, animationTime) => {
             const intensity = getAudioIntensity();
             const isAudioPlaying = !audioElement.paused;
-            const transitionSpeed = 0.05;
+
+            // Color scheme management - trigger changes more frequently
+            if (isAudioPlaying && intensity > 0.7 && Math.random() > 0.992) {
+                state.schemeTransition = 1;
+            }
+
+            if (state.schemeTransition > 0) {
+                state.schemeTransition -= 0.008;
+                if (state.schemeTransition <= 0) {
+                    state.currentScheme = (state.currentScheme + 1) % state.colorSchemes.length;
+                    state.schemeTransition = 0;
+                }
+            }
+
+            const currentColors = state.colorSchemes[state.currentScheme];
+            const nextColors = state.colorSchemes[(state.currentScheme + 1) % state.colorSchemes.length];
 
             ctx.fillStyle = `rgba(0, 0, 0, ${isAudioPlaying ? 0.2 : 0.3})`;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            const updateLight = (light, isUplight = false) => {
-                // Common beam drawing function with safety checks
-                const drawBeam = (width, alpha, angle) => {
-                    const endX = light.x + Math.cos(angle) * light.beamLength;
-                    const endY = light.y + Math.sin(angle) * light.beamLength;
-                    
-                    const safeAlpha = Math.max(0, Math.min(1, Number(alpha) || 0));
-                    const gradient = ctx.createLinearGradient(light.x, light.y, endX, endY);
-                    const hue = Math.round(light.hue % 360);
-                    
-                    gradient.addColorStop(0, `hsla(${hue}, 70%, 50%, ${safeAlpha})`);
-                    gradient.addColorStop(0.5, `hsla(${hue}, 60%, 50%, ${safeAlpha * 0.5})`);
-                    gradient.addColorStop(1, `hsla(${hue}, 50%, 50%, 0)`);
+            // Update and draw fog particles
+            state.fogParticles.forEach(particle => {
+                // Update position
+                particle.x += particle.vx;
+                particle.y += particle.vy;
 
-                    ctx.beginPath();
-                    ctx.moveTo(light.x, light.y);
-                    ctx.lineTo(endX, endY);
-                    ctx.strokeStyle = gradient;
-                    ctx.lineWidth = width;
-                    ctx.lineCap = 'round';
-                    ctx.stroke();
-                };
-
-                // Ensure all properties are initialized
-                if (!light.initialized) {
-                    light.sweepSpeed = 0.01;
-                    light.sweepAngle = 0;
-                    light.circlePhase = 0;
-                    light.flashIntensity = 0;
-                    light.pattern = 'sweep';
-                    light.patternTime = 0;
-                    light.targetAngle = light.baseAngle;
-                    light.currentAngle = light.baseAngle;
-                    light.lastAngle = light.baseAngle;
-                    light.transitionProgress = 0;
-                    light.initialized = true;
+                // Reset particles that move off screen
+                if (particle.y < -particle.size) {
+                    particle.y = canvas.height + particle.size;
+                    particle.x = Math.random() * canvas.width;
                 }
+                if (particle.x < -particle.size) particle.x = canvas.width + particle.size;
+                if (particle.x > canvas.width + particle.size) particle.x = -particle.size;
 
-                // Smooth intensity value to reduce jitter
+                // Pulse the fog opacity with the music
+                const pulseAmount = isAudioPlaying ? 
+                    (0.2 + Math.sin(particle.pulseOffset + animationTime * 2) * 0.1) * (1 + intensity * 0.5) :
+                    0.2 + Math.sin(particle.pulseOffset + animationTime * 2) * 0.1;
+
+                // Draw the fog particle
+                const gradient = ctx.createRadialGradient(
+                    particle.x, particle.y, 0,
+                    particle.x, particle.y, particle.size
+                );
+                gradient.addColorStop(0, `rgba(255, 255, 255, ${particle.alpha * pulseAmount})`);
+                gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                
+                ctx.beginPath();
+                ctx.fillStyle = gradient;
+                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                ctx.fill();
+            });
+
+            const updateLight = (light, isUplight = false) => {
+                // Smoother color transitions
+                const targetHue = currentColors[light.colorIndex];
+                const nextHue = nextColors[light.colorIndex];
+                light.targetHue = state.schemeTransition > 0 
+                    ? targetHue + (nextHue - targetHue) * (1 - state.schemeTransition)
+                    : targetHue;
+
+                // Slower, smoother color transition
+                light.hue = light.hue || targetHue;
+                light.hue += (light.targetHue - light.hue) * 0.03;
+
+                // Smooth intensity transitions
                 light.smoothedIntensity = light.smoothedIntensity || 0;
                 light.smoothedIntensity += (intensity - light.smoothedIntensity) * 0.1;
 
-                // Update pattern with smoother transitions
-                light.patternTime += 0.02;
-                
-                // Pattern switching with transition handling
-                if (light.patternTime > 12 && Math.random() > 0.995) {
-                    const patterns = ['sweep', 'circle', 'flash'];
-                    const newPattern = patterns[Math.floor(Math.random() * patterns.length)];
-                    if (newPattern !== light.pattern) {
-                        light.lastPattern = light.pattern;
-                        light.pattern = newPattern;
-                        light.lastAngle = light.currentAngle;
-                        light.transitionProgress = 0;
-                        light.patternTime = 0;
-                    }
-                }
+                let targetAngle = light.baseAngle;
 
-                // Increment transition progress
-                light.transitionProgress = Math.min(1, light.transitionProgress + 0.05);
-
-                // Calculate target angle based on current pattern
-                let patternAngle = light.baseAngle;
-                
-                switch (light.pattern) {
+                switch (light.pattern || 'sweep') {
                     case 'sweep':
-                        // Smooth sweep speed changes
-                        const targetSweepSpeed = 0.002 + light.smoothedIntensity * 0.008;
-                        light.sweepSpeed += (targetSweepSpeed - light.sweepSpeed) * 0.08;
-                        light.sweepAngle += light.sweepSpeed * (1 + Math.sin(animationTime * 0.5) * 0.1);
-                        patternAngle = light.baseAngle + 
-                            Math.sin(light.sweepAngle) * light.sweepRange * 0.8;
+                        light.sweepSpeed = light.sweepSpeed || 0.002;
+                        
+                        const timeVariation = Math.sin(animationTime * 0.2) * 0.3 + 0.7;
+                        const baseSpeed = isAudioPlaying ? 0.0018 : 0.001;
+                        const targetSweepSpeed = (baseSpeed + light.smoothedIntensity * 0.003) * timeVariation;
+                        
+                        const maxSweepSpeed = isAudioPlaying ? 0.004 : 0.003;
+                        const minSweepSpeed = isAudioPlaying ? 0.001 : 0.0008;
+                        
+                        light.sweepSpeed += (targetSweepSpeed - light.sweepSpeed) * 0.015;
+                        light.sweepSpeed = Math.max(minSweepSpeed, Math.min(maxSweepSpeed, light.sweepSpeed));
+                        
+                        const fastVariation = Math.sin(animationTime * 1.5) * 0.05;
+                        const slowVariation = Math.sin(animationTime * 0.3) * 0.08;
+                        const variation = 1 + fastVariation + slowVariation;
+                        
+                        light.sweepAngle = (light.sweepAngle || 0) + light.sweepSpeed * variation;
+                        light.sweepAngle = light.sweepAngle % (Math.PI * 2);
+                        
+                        light.sweepCenterOffset = light.sweepCenterOffset || 0;
+                        light.sweepCenterOffset += (Math.sin(animationTime * 0.1) * 0.1 - light.sweepCenterOffset) * 0.01;
+                        
+                        targetAngle = light.baseAngle + 
+                            Math.sin(light.sweepAngle) * light.sweepRange * 0.6 + 
+                            light.sweepCenter + light.sweepCenterOffset;
                         break;
 
                     case 'circle':
-                        // Smooth circular motion
-                        const circleSpeed = (0.005 + light.smoothedIntensity * 0.01) * 
-                            (1 + Math.sin(animationTime * 0.2) * 0.2);
-                        light.circlePhase += circleSpeed;
-                        const circleSize = (0.1 + light.smoothedIntensity * 0.15) * 
-                            (1 + Math.sin(animationTime * 0.3) * 0.1);
-                        patternAngle = light.baseAngle + Math.cos(light.circlePhase) * circleSize;
-                        break;
-
-                    case 'flash':
-                        if (light.smoothedIntensity > 0.6 && Math.random() > 0.97) {
-                            light.flashIntensity = Math.min(1, light.flashIntensity + 0.08);
-                            light.flashTargetAngle = light.baseAngle + 
-                                (Math.random() - 0.5) * light.sweepRange * 0.6;
-                        } else {
-                            light.flashIntensity *= 0.97;
-                            light.flashTargetAngle = light.baseAngle + 
-                                Math.sin(light.sweepAngle * 0.3) * (light.sweepRange * 0.2);
-                        }
-                        patternAngle = light.flashTargetAngle || light.baseAngle;
+                        light.circlePhase = (light.circlePhase || 0) + 
+                            (0.003 + light.smoothedIntensity * 0.005);
+                        const circleSize = 0.1 + light.smoothedIntensity * 0.15;
+                        targetAngle = light.baseAngle + Math.cos(light.circlePhase) * circleSize;
                         break;
                 }
 
-                // Smooth interpolation between angles
-                const lerpFactor = isAudioPlaying ? 0.12 : 0.06;
-                light.targetAngle = patternAngle;
-                light.currentAngle += (light.targetAngle - light.currentAngle) * lerpFactor;
+                // Smooth angle transitions
+                light.currentAngle = light.currentAngle || targetAngle;
+                light.currentAngle += (targetAngle - light.currentAngle) * 0.08;
 
-                // Draw beams with interpolated angle
-                if (!isAudioPlaying) {
-                    const idleAngle = Math.sin(light.idlePhase) * (Math.PI * 0.08);
-                    const baseIdleAngle = isUplight ? -Math.PI * 0.4 : Math.PI * 0.4;
-                    const idleCurrentAngle = baseIdleAngle + idleAngle;
+                // Draw beams with safety checks
+                const drawBeam = (width, alpha, angle) => {
+                    // Ensure all coordinates are finite numbers
+                    const startX = Number.isFinite(light.x) ? light.x : 0;
+                    const startY = Number.isFinite(light.y) ? light.y : 0;
+                    const cosAngle = Math.cos(angle);
+                    const sinAngle = Math.sin(angle);
+                    const beamLength = Number.isFinite(light.beamLength) ? light.beamLength : 1000;
                     
-                    const idleAlpha = 0.15;
-                    drawBeam(light.beamWidth * 2, idleAlpha * 0.3, idleCurrentAngle);
-                    drawBeam(light.beamWidth * 1.5, idleAlpha * 0.5, idleCurrentAngle);
-                    drawBeam(light.beamWidth, idleAlpha, idleCurrentAngle);
-                } else {
-                    const baseActiveAlpha = 0.3 + light.smoothedIntensity * 0.3;
-                    const flashBonus = light.flashIntensity * 0.3;
-                    const activeAlpha = Math.min(1, baseActiveAlpha + flashBonus);
+                    const endX = startX + cosAngle * beamLength;
+                    const endY = startY + sinAngle * beamLength;
 
-                    drawBeam(light.beamWidth * 2, activeAlpha * 0.3, light.currentAngle);
-                    drawBeam(light.beamWidth * 1.5, activeAlpha * 0.5, light.currentAngle);
-                    drawBeam(light.beamWidth, activeAlpha, light.currentAngle);
-                }
+                    // Only draw if all coordinates are valid
+                    if (Number.isFinite(startX) && Number.isFinite(startY) && 
+                        Number.isFinite(endX) && Number.isFinite(endY)) {
+                        
+                        const safeAlpha = Math.max(0, Math.min(1, Number(alpha) || 0));
+                        const gradient = ctx.createLinearGradient(startX, startY, endX, endY);
+                        const hue = Math.round(light.hue % 360);
+                        
+                        gradient.addColorStop(0, `hsla(${hue}, 70%, 50%, ${safeAlpha})`);
+                        gradient.addColorStop(0.5, `hsla(${hue}, 60%, 50%, ${safeAlpha * 0.5})`);
+                        gradient.addColorStop(1, `hsla(${hue}, 50%, 50%, 0)`);
 
-                // Update idle phase for smooth transitions
-                light.idlePhase += light.idleSpeed;
+                        ctx.beginPath();
+                        ctx.moveTo(startX, startY);
+                        ctx.lineTo(endX, endY);
+                        ctx.strokeStyle = gradient;
+                        ctx.lineWidth = width;
+                        ctx.lineCap = 'round';
+                        ctx.stroke();
+                    }
+                };
+
+                // Draw the beams
+                const baseAlpha = isAudioPlaying ? 
+                    (0.3 + light.smoothedIntensity * 0.3) : 
+                    0.15;
+
+                drawBeam(light.beamWidth * 2, baseAlpha * 0.3, light.currentAngle);
+                drawBeam(light.beamWidth * 1.5, baseAlpha * 0.5, light.currentAngle);
+                drawBeam(light.beamWidth, baseAlpha, light.currentAngle);
             };
 
-            // Update and draw all lights
+            // Update lights
             state.spotlights.forEach(light => updateLight(light, false));
             state.uplights.forEach(light => updateLight(light, true));
 

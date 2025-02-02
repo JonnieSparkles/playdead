@@ -1,5 +1,5 @@
 v4.1.0
--made laser show dynamic based on audio play/pause
+-double check lasers are working
 -added new laser show mode: spotlights
 -fixed album cover animation when pausing tracks
 

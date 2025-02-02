@@ -59,14 +59,14 @@
 {
     "version": "1.1.0",
     "type": "audio",
-    "band": "Grateful Dead",
-    "title": "Live at Barton Hall",
-    "date": "May 8, 1977",
-    "source": "Audience recording",
+    "band": "Band Name",
+    "title": "Album Title",
+    "date": "YYYY-MM-DD",
+    "source": "Source information (e.g., Audience recording by...)",
     "info": "more_info.txt",
     "tracks": [
-        {"number": 1, "title": "New Minglewood Blues"},
-        {"number": 2, "title": "Loser"}
+        {"number": 1, "title": "Example Track 1"},
+        {"number": 2, "title": "Example Track 2"}
     ]
 }
         </pre>
@@ -77,13 +77,14 @@
 {
     "version": "1.1.0",
     "type": "video",
-    "band": "Grateful Dead",
-    "title": "Live at The Centrum",
-    "date": "April 9, 1988",
-    "source": "Audience recording",
+    "band": "Band Name",
+    "title": "Album Title",
+    "date": "YYYY-MM-DD",
+    "source": "Source information (e.g., Audience recording by...)",
     "info": "more_info.txt",
     "reels": [
-        {"number": 1, "title": "Complete Show", "duration": 8400}
+        {"number": 1, "title": "Complete Show Part 1"},
+        {"number": 2, "title": "Complete Show Part 2"}
     ]
 }
         </pre>
@@ -132,7 +133,7 @@
                 Use your preferred Arweave client (e.g., <a href="https://ardrive.io" target="_blank">ArDrive</a>) to upload the album folder.
             </li>
             <li><strong>Create the Album Manifest:</strong>
-                Generate a manifest for the album folder:
+                <p>ArDrive will automatically generate the manifest when uploading a folder. The structure will look like this:</p>
                 <pre>
 {
     "manifest": "arweave/paths",

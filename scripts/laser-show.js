@@ -3,14 +3,19 @@
  * Provides dynamic visual effects synchronized with audio playback.
  * Supports multiple visualization modes and responds to audio intensity.
  */
+const modes = ["wave", "classic", "spotlights"];
 const canvas = document.getElementById("laser-visualizer");
 const ctx = canvas.getContext("2d");
 const toggleButton = document.getElementById("toggle-visualizer");
-let mediaElement = document.getElementById('audio-player') || document.getElementById('video-player');
+let mediaElement = document.getElementById('audio-player') || document.getElementById('video-player') || {
+    // Provide default properties/methods if no media element exists
+    paused: true,
+    currentTime: 0,
+    duration: 0
+};
 
 let isVisualizerActive = false;
-let currentModeIndex = -1; // Start with off (-1)
-const modes = ["wave", "classic", "spotlights"];
+let currentModeIndex = -1; // Start with visualizer off
 let lasers = [];
 
 // Timing-based animation parameters
@@ -84,7 +89,8 @@ if (DEV_MODE) {
  * Returns true if either actual audio is playing or simulation is active
  */
 function isAudioPlaying() {
-    return DEV_MODE ? DEV_SIMULATING : !mediaElement.paused;
+    if (DEV_MODE && DEV_SIMULATING) return true;
+    return mediaElement && !mediaElement.paused;
 }
 
 // Classic Laser Class with improved dynamics
@@ -581,13 +587,20 @@ const laserModes = {
  * Manages the continuous update and rendering of the current visualization mode
  */
 function animate() {
+    // First check if we should be running at all
     if (!isVisualizerActive && !DEV_SIMULATING) return;
+    
+    // Add safety checks
+    if (!modes || !Array.isArray(modes)) return;
+    if (currentModeIndex < 0 || currentModeIndex >= modes.length) return;
     
     const currentMode = modes[currentModeIndex].toLowerCase();
     const mode = laserModes[currentMode];
     
-    if (mode) {
-        animationTime = mode.animate(lasers, ctx, canvas, getAudioIntensity, mediaElement, animationTime);
+    if (!mode || !lasers) return;
+
+    animationTime = mode.animate(lasers, ctx, canvas, getAudioIntensity, mediaElement, animationTime);
+    if (isVisualizerActive) {  // Only continue animation if still active
         requestAnimationFrame(animate);
     }
 }
@@ -598,15 +611,20 @@ function animate() {
  * Includes an "off" state when cycling past the last mode
  */
 function toggleMode() {
-    currentModeIndex = (currentModeIndex + 1) % (modes.length + 1);
+    // First, increment the index
+    currentModeIndex++;
     
-    if (currentModeIndex === modes.length) {
+    // If we've gone past the last mode, reset to -1 (off)
+    if (currentModeIndex >= modes.length) {
+        currentModeIndex = -1;
         isVisualizerActive = false;
         canvas.style.display = "none";
         ctx.clearRect(0, 0, canvas.width, canvas.height);
+        lasers = null;  // Clear the lasers state
         return;
     }
 
+    // If we get here, we're activating a mode
     isVisualizerActive = true;
     resizeCanvas();
     
@@ -679,18 +697,27 @@ function calculateSmoothedIntensity(rawIntensity) {
     return lastIntensity * (1 - smoothingFactor) + peakEnhanced * smoothingFactor;
 }
 
-// Add a function to update the media element reference
+// Update the updateMediaElement function to handle missing media element
 function updateMediaElement() {
     const newMediaElement = document.getElementById('audio-player') || document.getElementById('video-player');
-    if (newMediaElement !== mediaElement) {
-        // Remove listeners from old element if it exists
-        if (mediaElement) {
-            mediaElement.removeEventListener('loadstart', handleLoadStart);
+    if (newMediaElement) {
+        if (mediaElement !== newMediaElement) {
+            // Remove listeners from old element if it exists and has removeEventListener
+            if (mediaElement && mediaElement.removeEventListener) {
+                mediaElement.removeEventListener('loadstart', handleLoadStart);
+            }
+            
+            // Update reference and add listeners to new element
+            mediaElement = newMediaElement;
+            mediaElement.addEventListener('loadstart', handleLoadStart);
         }
-        
-        // Update reference and add listeners to new element
-        mediaElement = newMediaElement;
-        mediaElement.addEventListener('loadstart', handleLoadStart);
+    } else {
+        // Use dummy media element if none exists
+        mediaElement = {
+            paused: true,
+            currentTime: 0,
+            duration: 0
+        };
     }
 }
 

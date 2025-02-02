@@ -7,6 +7,7 @@ FUTURE WORK
 ===========
 
 Features/Improvements:
+-Add templates and tools to contribute.html
 -Better organize catalog by type and or artist.
 -Add randomness to laser show by hashing the album name and using the hash as the seed for the random number generator.
 -AO process for managing catalogs.

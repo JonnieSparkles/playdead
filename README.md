@@ -47,10 +47,10 @@ Want to add content to ar://playdead? Check out the [contribution guide](contrib
 
 ### Album Setup Tool
 A Python utility to help prepare albums for ar://playdead:
-- Creates and manages album.json files
+- Creates complete album structures from scratch
+- Manages album.json files and metadata
 - Automatically formats track/reel filenames
 - Supports all media formats (.mp3, .flac, .wav, .mp4, .webm)
-- Creates complete album directory structures
 - Shows preview before making changes
 - Located in `tools/album-setup-tool/`
 

@@ -17,29 +17,29 @@ Run: `python setup_album.py`
 
 Choose from four modes:
 
-1. Generate album.json from files
-   - Scans media files in Tracks/ or Reels/
-   - Prompts for album metadata
-   - Creates album.json with track/reel listings
-
-2. Rename files based on album.json
-   - Uses existing album.json to rename files
-   - Adds proper track numbers
-   - Removes invalid characters
-   - Shows preview before making changes
-
-3. Create blank album.json template
-   - Creates a new album.json with empty fields
-   - Includes placeholder track/reel entries
-   - Won't overwrite existing file without confirmation
-
-4. Create complete album folder structure
+1. Create complete album structure (start fresh)
    - Creates all necessary directories (Tracks/, Reels/)
    - Generates blank album.json template
    - Creates empty more_info.txt
    - Adds placeholder album_cover.png
    - Adds placeholder media files
    - Perfect for starting a new album from scratch
+
+2. Create blank album.json template
+   - Creates a new album.json with empty fields
+   - Includes placeholder track/reel entries
+   - Won't overwrite existing file without confirmation
+
+3. Generate album.json from files
+   - Scans media files in Tracks/ or Reels/
+   - Prompts for album metadata
+   - Creates album.json with track/reel listings
+
+4. Rename files based on album.json
+   - Uses existing album.json to rename files
+   - Adds proper track numbers
+   - Removes invalid characters
+   - Shows preview before making changes
 
 ## Notes
 - Always backup your files before renaming

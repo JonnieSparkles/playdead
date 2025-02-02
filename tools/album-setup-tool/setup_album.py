@@ -204,13 +204,13 @@ def main():
 
     # Ask user which mode to use
     print("Choose operation mode:")
-    print("1. Generate album.json from files")
-    print("2. Rename files based on album.json")
-    print("3. Create blank album.json template")
-    print("4. Create complete album folder structure")
+    print("1. Create complete album structure (start fresh)")
+    print("2. Create blank album.json template")
+    print("3. Generate album.json from files")
+    print("4. Rename files based on album.json")
     mode = input("Enter 1, 2, 3, or 4: ").strip()
 
-    if mode == "4":
+    if mode == "1":
         if os.path.exists('album.json') or os.path.exists('Tracks') or os.path.exists('Reels'):
             response = input("Some files/folders already exist. Override? (yes/no): ")
             if response.lower() != 'yes':
@@ -219,11 +219,7 @@ def main():
         create_album_structure()
         return
 
-    if mode == "1":
-        result = rename_from_files()
-    elif mode == "2":
-        result = rename_from_json()
-    elif mode == "3":
+    if mode == "2":
         if os.path.exists('album.json'):
             response = input("album.json already exists. Override? (yes/no): ")
             if response.lower() != 'yes':
@@ -244,6 +240,10 @@ def main():
             f.write(json_str)
         print("Created blank album.json template")
         return
+    elif mode == "3":
+        result = rename_from_files()
+    elif mode == "4":
+        result = rename_from_json()
     else:
         print("Invalid mode selected")
         return
@@ -267,14 +267,14 @@ def main():
     print(json.dumps(album_data, indent=4))
 
     # Ask for confirmation
-    if mode == "1":
+    if mode == "3":
         response = input("\nSave album.json? (yes/no): ")
     else:
         response = input("\nProceed with renaming files? (yes/no): ")
 
     if response.lower() == 'yes':
-        # Save album.json if in mode 1
-        if mode == "1":
+        # Save album.json if in mode 3
+        if mode == "3":
             # First create JSON string with standard formatting
             json_str = json.dumps(album_data, indent=4, ensure_ascii=False)
             
@@ -296,8 +296,8 @@ def main():
                     f.write(f"Album information for {album_data['title']} by {album_data['band']}\n")
                 print("Created more_info.txt template")
 
-        # Only rename files in mode 2
-        if mode == "2":
+        # Only rename files in mode 4
+        if mode == "4":
             for i, (old_name, media_entry) in enumerate(zip(current_files, media_list), 1):
                 try:
                     ext = Path(old_name).suffix

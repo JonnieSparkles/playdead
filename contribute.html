@@ -31,8 +31,24 @@
             communities.
         </p>
 
+        <h2>Preparing Your Album</h2>
+        <p>
+            We provide an Album Setup Tool to help you prepare your albums correctly:
+        </p>
+        <ol>
+            <li><strong>Download the Album Setup Tool</strong> from the <code>tools/album-setup-tool/</code> directory</li>
+            <li><strong>Run the tool</strong> (<code>python setup_album.py</code>) and choose from four modes:
+                <ul>
+                    <li>Create complete album structure (start fresh)</li>
+                    <li>Create blank album.json template</li>
+                    <li>Generate album.json from files</li>
+                    <li>Rename files based on album.json</li>
+                </ul>
+            </li>
+        </ol>
+
         <h2>Album Specification</h2>
-        <p>Each album should include the following files and structure:</p>
+        <p>Each album requires the following structure, which can be automatically created using our setup tool:</p>
 
         <h3>1. <code>album.json</code></h3>
         <p>The metadata file describing the album. Examples:</p>
@@ -78,10 +94,10 @@
             <li><strong>Audio:</strong> Place all track files in a <code>Tracks/</code> folder.</li>
             <li><strong>Video:</strong> Place all video files in a <code>Reels/</code> folder.</li>
         </ul>
-        <p><strong>Naming Format:</strong> Use numbers to indicate track/reel order followed by the name in any style:</p>
+        <p><strong>Naming Format:</strong> The Album Setup Tool will handle file naming automatically, but the format is:</p>
         <ul>
-            <li>Audio: <code>01 - Track Name.mp3</code> or <code>1_Track Name.flac</code></li>
-            <li>Video: <code>01 - Show Part 1.mp4</code> or <code>1_Complete Show.webm</code></li>
+            <li>Audio: <code>01 - Track Name.mp3</code></li>
+            <li>Video: <code>01 - Show Part 1.mp4</code></li>
         </ul>
         <p><strong>Supported Formats:</strong></p>
         <ul>
@@ -89,24 +105,33 @@
             <li>Video: .mp4, .webm</li>
         </ul>
 
-        <h2>Folder Structure Examples</h2>
+        <h2>Folder Structure</h2>
+        <p>The Album Setup Tool can create this structure automatically with Mode 4:</p>
         <pre>
-/Audio Album                      /Video Album
-├── album.json                    ├── album.json
-├── album_cover.png               ├── album_cover.png
-├── more_info.txt                 ├── more_info.txt
-├── Tracks/                       ├── Reels/
-│   ├── 01 Track Name.mp3         │   ├── 1 - Complete Show.mp4
-│   ├── 2 - Another Track.flac    │   └── 2 - Encore.mp4
-│   └── 3.Track Name.wav
+/Album Directory
+├── album.json
+├── album_cover.png
+├── more_info.txt
+├── Tracks/                      # For audio albums
+│   └── 01 - Track Name.mp3
+└── Reels/                       # For video albums
+    └── 01 - Complete Show.mp4
         </pre>
 
         <h2>How to Submit</h2>
         <ol>
-            <li><strong>Upload the Album Folder to Arweave:</strong>
-                Use your preferred Arweave client (e.g., <a href="https://ardrive.io" target="_blank">ArDrive</a>) to upload the album folder and its contents.
+            <li><strong>Prepare Your Album:</strong>
+                <ul>
+                    <li>Use the Album Setup Tool to create and validate your album structure</li>
+                    <li>Add your media files to the appropriate directory</li>
+                    <li>Add album artwork as album_cover.png</li>
+                    <li>Add additional information to more_info.txt</li>
+                </ul>
             </li>
-            <li><strong>Create the Album Manifest (<code>album_manifest</code>):</strong>
+            <li><strong>Upload to Arweave:</strong>
+                Use your preferred Arweave client (e.g., <a href="https://ardrive.io" target="_blank">ArDrive</a>) to upload the album folder.
+            </li>
+            <li><strong>Create the Album Manifest:</strong>
                 Generate a manifest for the album folder:
                 <pre>
 {
@@ -118,8 +143,7 @@
     "paths": {
         "album.json": { "id": "TXID_OF_ALBUM_JSON" },
         "album_cover.png": { "id": "TXID_OF_ALBUM_COVER" },
-        "Tracks/01 Track Name.mp3": { "id": "TXID_OF_TRACK" },
-        "Tracks/2 - Another Track Name.flac": { "id": "TXID_OF_TRACK" },
+        "Tracks/01 - Track Name.mp3": { "id": "TXID_OF_TRACK" },
         "more_info.txt": { "id": "TXID_OF_INFO_FILE" }
     }
 }

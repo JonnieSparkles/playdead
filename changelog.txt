@@ -1,3 +1,10 @@
+v4.1.0
+-laser show is now dynamic based on whether the audio or video is playing or paused
+-added new laser show modes: wave and spotlights
+-fixed album cover animation from disappearing when pausing tracks
+-added audio album template and file renaming tool to the repo to help create new albums more easily
+-added #dev mode to simulate laser show without audio (for testing purposes)
+
 v4.0.0
 -changed to semantic versioning
 -added video album support
@@ -28,18 +35,18 @@ v3.1
 -changed sharecard preview to "summary"
 
 v3
-- improved contribution guide.
-- broke out player.html into modular JS files for easier maintenance.
+- improved contribution guide
+- broke out player.html into modular JS files for easier maintenance
 - added laser show!
 
 v2
-- dynamic album loading.
-- robust gateway routing.
-- by popular demand, a favicon.
-- custom tapes with a contribution guide.
+- dynamic album loading
+- robust gateway routing
+- by popular demand, a favicon
+- custom tapes with a contribution guide
 
 v1
-- album loading based on album.json linked txids.
+- album loading based on album.json linked txids
 
 v0
-- basic functionality, no dynamic loading.
+- basic functionality, no dynamic loading

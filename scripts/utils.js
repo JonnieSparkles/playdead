@@ -19,3 +19,19 @@ function detectGatewayDomain() {
 
     return gateway;
 }
+
+// Device detection utility
+function isMobileDevice() {
+    // Check if device has touch AND small screen
+    const hasTouchAndSmallScreen = (
+        ('ontouchstart' in window || navigator.maxTouchPoints > 0) &&
+        window.innerWidth <= 768
+    );
+    
+    // Check for common mobile user agents
+    const isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent
+    );
+    
+    return hasTouchAndSmallScreen || isMobileUA;
+}

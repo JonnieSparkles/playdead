@@ -46,6 +46,7 @@ function loadTrack(index) {
             audioPlayer = videoPlayer;
         }
         audioPlayer.src = track.url;
+        document.dispatchEvent(new Event('mediaTypeChanged'));
     } else {
         // Show album cover for audio content
         const albumCover = document.getElementById('album-cover');
@@ -68,6 +69,7 @@ function loadTrack(index) {
         if (!audioSource.parentNode) {
             audioPlayer.appendChild(audioSource);
         }
+        document.dispatchEvent(new Event('mediaTypeChanged'));
     }
 
     audioPlayer.load();

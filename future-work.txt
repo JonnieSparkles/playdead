@@ -1,30 +1,28 @@
 IMMEDIATE TODO
 =============
--add buffering feedback to video player
+-check adaptive laser mode works on mobile
 
 
 FUTURE WORK
 ===========
 
-Features:
+Features/Improvements:
+-Add templates and tools to contribute.html
+-Better organize catalog by type and or artist.
+-Add randomness to laser show by hashing the album name and using the hash as the seed for the random number generator.
 -AO process for managing catalogs.
 -Implement "Load Catalog" feature to load an entirely custom catalog with different themes.
 -Custom themes
--Enhanced laser mode ideas: audio-reactive visuals, particle effects, dynamic backgrounds, interactive controls.
--Add "Check if pins work" to ensure pinning reliability for hosted files.
 -Finalize tagging schema.
 -Add support to load albums via **ArNS** (Arweave Name System) name.
 -catalog.json linked via ArNS.
 
 
 Maintenance:
+-Check if ArDrive pins work in albums.
 -Create a "test album" with different conditions.
 -Verify album loading robustness against various track naming conventions:
      - Single/double-digit numbering.
      - Different file extensions (e.g., `.mp3`, `.wav`).
 -Test app functionality with edge-case gateway URLs and **sandboxed subdomains**:
      - E.g., `65hkx5gp.arweave.net`, `frank.arweave.co.uk`.
-
-
-Bugs:
--

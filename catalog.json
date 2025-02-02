@@ -1,8 +1,14 @@
 [
-      {
+    {
+        "type": "audio",
+        "title": "UMBowl III at Park West on 2012-04-27",
+        "band": "Umphrey's McGee",
+        "txid": "TP_QkHbQEHErIpe81j8ydqyVG3GT8IqmM9BX9rHzS08"
+    },   
+    {
         "type": "video",
         "title": "Live at The Centrum on 1988-04-09",
-        "band": "*VIDEO* Grateful Dead",
+        "band": "Grateful Dead",
         "txid": "98Gn6POm8PeG-2Y44mpBxIYht9MFgRQMCmsUABgYaFQ"
     },   
     {

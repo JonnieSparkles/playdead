@@ -1,0 +1,15 @@
+Album: Album Title
+Band: Band Name
+Date: YYYY-MM-DD
+Source: Audience recording
+
+Recording Notes:
+- Example recording details
+- Equipment used
+- Taper section location
+- Any interesting show details
+
+Transfer Notes:
+- Example transfer/lineage information
+- Digital conversion details
+- Processing/editing notes

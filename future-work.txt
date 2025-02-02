@@ -1,6 +1,6 @@
 IMMEDIATE TODO
 =============
--check adaptive laser mode works on mobile
+
 
 
 FUTURE WORK

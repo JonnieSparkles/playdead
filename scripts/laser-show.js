@@ -1,15 +1,7 @@
 /**
  * Laser Show Visualizer
- * Provides three visualization modes:
- * - wave: Circular wave patterns that respond to audio intensity
- * - classic: Moving laser beams with color transitions
- * - spotlights: Dynamic spotlight effects with fog simulation
- * 
- * Integrates with audio/video player and responds to:
- * - Audio/Video playback status
- * - Playback state changes
- * - Window resizing
- * - Media type switching (audio/video)
+ * Provides dynamic visual effects synchronized with audio playback.
+ * Supports multiple visualization modes and responds to audio intensity.
  */
 const canvas = document.getElementById("laser-visualizer");
 const ctx = canvas.getContext("2d");
@@ -34,13 +26,24 @@ const smoothingFactor = 0.15;
 let lastAudioTime = 0;
 let intensityHistory = new Array(15).fill(0);
 
-// Add at the top after initial constants
+// Core configuration constants
 const DEV_MODE = window.location.hash === '#dev';
 let DEV_SIMULATING = false;
 
+// Magic numbers for the visualizer
+const INTENSITY_HISTORY_SIZE = 15;
+const SMOOTHING_FACTOR = 0.15;
+const ANIMATION_SPEED = 0.05;
+const BASE_INTENSITY_MULTIPLIER = 0.75;
+const TIME_GAP_THRESHOLD = 0.1;
+
 console.log('Initial state:', { DEV_MODE, DEV_SIMULATING });
 
-// Add after initial constants but before other functions
+/**
+ * Development mode controls
+ * Enables simulation of audio playback for testing visualizations
+ * without requiring actual audio input
+ */
 if (DEV_MODE) {
     // Clean up any existing buttons immediately
     document.querySelectorAll('.dev-simulate-button').forEach(btn => btn.remove());
@@ -76,7 +79,10 @@ if (DEV_MODE) {
     }, { once: true }); // Ensure the event listener only fires once
 }
 
-// Simple helper function
+/**
+ * Determines if audio should be considered playing
+ * Returns true if either actual audio is playing or simulation is active
+ */
 function isAudioPlaying() {
     return DEV_MODE ? DEV_SIMULATING : !mediaElement.paused;
 }
@@ -559,7 +565,10 @@ const laserModes = {
     }
 };
 
-// Simplify animation loop
+/**
+ * Animation loop handler
+ * Manages the continuous update and rendering of the current visualization mode
+ */
 function animate() {
     if (!isVisualizerActive && !DEV_SIMULATING) return;
     
@@ -572,7 +581,11 @@ function animate() {
     }
 }
 
-// Simplify toggle function
+/**
+ * Visualization mode manager
+ * Cycles through available visualization modes and handles mode initialization
+ * Includes an "off" state when cycling past the last mode
+ */
 function toggleMode() {
     currentModeIndex = (currentModeIndex + 1) % (modes.length + 1);
     
@@ -596,9 +609,11 @@ function toggleMode() {
     }
 }
 
-toggleButton.addEventListener("click", toggleMode);
-
-// Resize Canvas
+/**
+ * Canvas dimension manager
+ * Ensures visualization canvas matches window dimensions
+ * and maintains proper positioning
+ */
 function resizeCanvas() {
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
@@ -606,6 +621,9 @@ function resizeCanvas() {
     canvas.style.top = "0";
     canvas.style.left = "0";
 }
+
+// Event listeners for user interaction
+toggleButton.addEventListener("click", toggleMode);
 
 // Helper Function
 function random(min, max) {

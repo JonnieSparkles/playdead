@@ -45,12 +45,14 @@ Want to add content to ar://playdead? Check out the [contribution guide](contrib
 
 ## Tools
 
-### File Renaming Tool
-A Python utility to help prepare media files for ar://playdead:
+### Album Setup Tool
+A Python utility to help prepare albums for ar://playdead:
+- Creates complete album structures from scratch
+- Manages album.json files and metadata
 - Automatically formats track/reel filenames
 - Supports all media formats (.mp3, .flac, .wav, .mp4, .webm)
 - Shows preview before making changes
-- Located in `tools/file-renaming-tool/`
+- Located in `tools/album-setup-tool/`
 
 ### Album Templates
 Reference templates for creating new albums:

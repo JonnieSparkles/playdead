@@ -1,0 +1,14 @@
+{
+    "manifest": "arweave/paths",
+    "version": "0.1.0",
+    "index": {
+        "path": "album.json"
+    },
+    "paths": {
+        "album.json": { "id": "TXID_OF_ALBUM_JSON" },
+        "album_cover.png": { "id": "TXID_OF_ALBUM_COVER" },
+        "more_info.txt": { "id": "TXID_OF_INFO_FILE" },
+        "Reels/01 - Complete Show Part 1.mp4": { "id": "TXID_OF_TRACK1" },
+        "Reels/02 - Complete Show Part 2.mp4": { "id": "TXID_OF_TRACK2" }
+    }
+}

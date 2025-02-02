@@ -33,8 +33,6 @@ let lastIntensity = 0;
 const smoothingFactor = 0.15;
 let lastAudioTime = 0;
 let intensityHistory = new Array(15).fill(0);
-let lastDelta = 0;
-let peakThreshold = 0.1;
 
 // Classic Laser Class with improved dynamics
 class Laser {
@@ -64,19 +62,19 @@ class Laser {
 
     update(intensity, intensityDelta, currentColors, nextColors, schemeTransition) {
         const progressFactor = (mediaElement.currentTime / mediaElement.duration) || 0;
-        const progressVariation = Math.sin(progressFactor * Math.PI * 2) * 0.3;
+        const progressVariation = Math.sin(progressFactor * Math.PI * 2) * 0.2;
         
-        // Update idle phase
+        // Gentler idle motion
         this.idlePhase += this.idleSpeed;
+        const idleMotion = Math.sin(this.idlePhase) * 0.2;
         
-        // Blend between idle and active movement
+        // Smoother speed multiplier transitions
         this.targetSpeedMultiplier = mediaElement.paused ? 
-            0.3 : 
-            Math.min(0.8 + (intensity * intensityMultiplier * 1.5) + progressVariation, 2.0);
+            0.3 + idleMotion : 
+            Math.min(0.8 + (intensity * 1.5) + progressVariation, 2.0);
         
-        this.currentSpeedMultiplier += (this.targetSpeedMultiplier - this.currentSpeedMultiplier) * 0.1;
-        
-        const isPeak = Math.abs(intensityDelta) > peakThreshold;
+        // Gentler speed transition (from 0.4 to 0.2)
+        this.currentSpeedMultiplier += (this.targetSpeedMultiplier - this.currentSpeedMultiplier) * 0.2;
         
         // Color transitions based on schemes
         const targetHue = currentColors[this.colorIndex];
@@ -85,27 +83,37 @@ class Laser {
             ? targetHue + (nextHue - targetHue) * (1 - schemeTransition)
             : targetHue;
 
-        this.hue += (this.targetHue - this.hue) * this.colorTransitionSpeed;
+        // Smoother color transitions
+        this.hue += (this.targetHue - this.hue) * this.colorTransitionSpeed * 1.5;
         
-        if (isPeak && !mediaElement.paused) {
-            const burstMultiplier = 1.1;
+        // More gradual movement bursts
+        if (!mediaElement.paused && intensity > 0.6) {
+            const burstMultiplier = 1.0 + (intensity * 0.3);
             this.vx1 *= burstMultiplier;
             this.vy1 *= burstMultiplier;
             this.vx2 *= burstMultiplier;
             this.vy2 *= burstMultiplier;
         }
 
-        const maxVelocity = 6; // Reduced from 8
+        // More conservative velocity limits
+        const maxVelocity = mediaElement.paused ? 
+            3 :
+            5 + (intensity * 3);
+        
         this.vx1 = Math.max(Math.min(this.vx1, maxVelocity), -maxVelocity);
         this.vy1 = Math.max(Math.min(this.vy1, maxVelocity), -maxVelocity);
         this.vx2 = Math.max(Math.min(this.vx2, maxVelocity), -maxVelocity);
         this.vy2 = Math.max(Math.min(this.vy2, maxVelocity), -maxVelocity);
 
-        // Apply smoothed speed multiplier
-        this.x1 += this.vx1 * this.currentSpeedMultiplier;
-        this.y1 += this.vy1 * this.currentSpeedMultiplier;
-        this.x2 += this.vx2 * this.currentSpeedMultiplier;
-        this.y2 += this.vy2 * this.currentSpeedMultiplier;
+        // Smoother movement
+        const speedMultiplier = mediaElement.paused ? 
+            this.currentSpeedMultiplier : 
+            this.currentSpeedMultiplier * (1.1 + intensity * 0.2);
+        
+        this.x1 += this.vx1 * speedMultiplier;
+        this.y1 += this.vy1 * speedMultiplier;
+        this.x2 += this.vx2 * speedMultiplier;
+        this.y2 += this.vy2 * speedMultiplier;
 
         const margin = 50;
         
@@ -119,15 +127,22 @@ class Laser {
         if (this.y2 < -margin) { this.y2 = -margin; this.vy2 *= -0.8; }
         if (this.y2 > canvas.height + margin) { this.y2 = canvas.height + margin; this.vy2 *= -0.8; }
 
-        const dampening = 0.99;
+        // Gentler dampening
+        const dampening = mediaElement.paused ? 
+            0.99 : 
+            0.995 + (intensity * 0.001);
+        
         this.vx1 *= dampening;
         this.vy1 *= dampening;
         this.vx2 *= dampening;
         this.vy2 *= dampening;
 
-        // Smoothly transition alpha
-        this.targetAlpha = mediaElement.paused ? 0.6 : 1;
-        this.currentAlpha += (this.targetAlpha - this.currentAlpha) * 0.1;
+        // Smoother alpha transitions
+        this.targetAlpha = mediaElement.paused ? 
+            0.6 + (idleMotion * 0.1) : 
+            0.7 + (intensity * 0.2);
+        
+        this.currentAlpha += (this.targetAlpha - this.currentAlpha) * 0.2;
 
         // Update colors with smooth transitions
         const saturation = 100;
@@ -274,15 +289,17 @@ const laserModes = {
             ],
             currentScheme: 0,
             schemeTransition: 0,
-            fogParticles: Array.from({ length: 100 }, () => ({
-                x: Math.random() * window.innerWidth,
-                y: Math.random() * window.innerHeight,
-                size: Math.random() * 150 + 50,
-                vx: (Math.random() - 0.5) * 0.2,
-                vy: (Math.random() - 0.5) * 0.1 - 0.1,
-                alpha: Math.random() * 0.3,
-                pulseOffset: Math.random() * Math.PI * 2
-            })),
+            fogParticles: (() => {
+                return window.isMobileDevice() ? [] : Array.from({ length: 100 }, () => ({
+                    x: Math.random() * window.innerWidth,
+                    y: Math.random() * window.innerHeight,
+                    size: Math.random() * 150 + 50,
+                    vx: (Math.random() - 0.5) * 0.2,
+                    vy: (Math.random() - 0.5) * 0.1 - 0.1,
+                    alpha: Math.random() * 0.3,
+                    pulseOffset: Math.random() * Math.PI * 2
+                }));
+            })(),
             spotlights: Array.from({ length: 6 }, (_, index) => ({
                 x: window.innerWidth * ((index + 0.5) / 6),
                 y: -20,
@@ -351,38 +368,40 @@ const laserModes = {
             ctx.fillStyle = `rgba(0, 0, 0, ${isAudioPlaying ? 0.2 : 0.3})`;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Update and draw fog particles
-            state.fogParticles.forEach(particle => {
-                // Update position
-                particle.x += particle.vx;
-                particle.y += particle.vy;
+            // Update and draw fog particles (skip on mobile)
+            if (!window.isMobileDevice()) {
+                state.fogParticles.forEach(particle => {
+                    // Update position
+                    particle.x += particle.vx;
+                    particle.y += particle.vy;
 
-                // Reset particles that move off screen
-                if (particle.y < -particle.size) {
-                    particle.y = canvas.height + particle.size;
-                    particle.x = Math.random() * canvas.width;
-                }
-                if (particle.x < -particle.size) particle.x = canvas.width + particle.size;
-                if (particle.x > canvas.width + particle.size) particle.x = -particle.size;
+                    // Reset particles that move off screen
+                    if (particle.y < -particle.size) {
+                        particle.y = canvas.height + particle.size;
+                        particle.x = Math.random() * canvas.width;
+                    }
+                    if (particle.x < -particle.size) particle.x = canvas.width + particle.size;
+                    if (particle.x > canvas.width + particle.size) particle.x = -particle.size;
 
-                // Pulse the fog opacity with the music
-                const pulseAmount = isAudioPlaying ? 
-                    (0.2 + Math.sin(particle.pulseOffset + animationTime * 2) * 0.1) * (1 + intensity * 0.5) :
-                    0.2 + Math.sin(particle.pulseOffset + animationTime * 2) * 0.1;
+                    // Pulse the fog opacity with the music
+                    const pulseAmount = isAudioPlaying ? 
+                        (0.2 + Math.sin(particle.pulseOffset + animationTime * 2) * 0.1) * (1 + intensity * 0.5) :
+                        0.2 + Math.sin(particle.pulseOffset + animationTime * 2) * 0.1;
 
-                // Draw the fog particle
-                const gradient = ctx.createRadialGradient(
-                    particle.x, particle.y, 0,
-                    particle.x, particle.y, particle.size
-                );
-                gradient.addColorStop(0, `rgba(255, 255, 255, ${particle.alpha * pulseAmount})`);
-                gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
-                
-                ctx.beginPath();
-                ctx.fillStyle = gradient;
-                ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
-                ctx.fill();
-            });
+                    // Draw the fog particle
+                    const gradient = ctx.createRadialGradient(
+                        particle.x, particle.y, 0,
+                        particle.x, particle.y, particle.size
+                    );
+                    gradient.addColorStop(0, `rgba(255, 255, 255, ${particle.alpha * pulseAmount})`);
+                    gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                    
+                    ctx.beginPath();
+                    ctx.fillStyle = gradient;
+                    ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                    ctx.fill();
+                });
+            }
 
             const updateLight = (light, isUplight = false) => {
                 // Smoother color transitions

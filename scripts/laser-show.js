@@ -118,17 +118,18 @@ class Laser {
         const progressFactor = (mediaElement.currentTime / mediaElement.duration) || 0;
         const progressVariation = Math.sin(progressFactor * Math.PI * 2) * 0.2;
         
-        // Gentler idle motion
+        // Enhanced idle motion
         this.idlePhase += this.idleSpeed;
         const idleMotion = Math.sin(this.idlePhase) * 0.2;
+        const idlePulse = Math.sin(this.idlePhase * 0.5) * 0.3 + 0.7; // Slower, gentle pulse
         
         // Smoother speed multiplier transitions
         this.targetSpeedMultiplier = !isPlaying ? 
-            0.3 + idleMotion : 
+            0.2 + (idleMotion * 0.1) : // Gentler idle movement
             Math.min(0.8 + (intensity * 1.5) + progressVariation, 2.0);
         
-        // Gentler speed transition (from 0.4 to 0.2)
-        this.currentSpeedMultiplier += (this.targetSpeedMultiplier - this.currentSpeedMultiplier) * 0.2;
+        // Gentler speed transition
+        this.currentSpeedMultiplier += (this.targetSpeedMultiplier - this.currentSpeedMultiplier) * 0.1;
         
         // Color transitions based on schemes
         const targetHue = currentColors[this.colorIndex];
@@ -140,6 +141,14 @@ class Laser {
         // Smoother color transitions
         this.hue += (this.targetHue - this.hue) * this.colorTransitionSpeed * 1.5;
         
+        // Update velocities with idle influence
+        if (!isPlaying) {
+            this.vx1 += Math.sin(this.idlePhase * 0.7) * 0.01;
+            this.vy1 += Math.cos(this.idlePhase * 0.8) * 0.01;
+            this.vx2 += Math.sin(this.idlePhase * 0.9) * 0.01;
+            this.vy2 += Math.cos(this.idlePhase * 1.0) * 0.01;
+        }
+
         // More gradual movement bursts
         if (isPlaying && intensity > 0.6) {
             const burstMultiplier = 1.0 + (intensity * 0.3);
@@ -187,17 +196,19 @@ class Laser {
         this.vx2 *= dampening;
         this.vy2 *= dampening;
 
-        // Smoother alpha transitions
+        // Enhanced alpha transitions for idle state
         this.targetAlpha = !isPlaying ? 
-            0.6 + (idleMotion * 0.1) : 
+            0.4 + (idlePulse * 0.2) : // Pulsing opacity when idle
             0.7 + (intensity * 0.2);
         
-        this.currentAlpha += (this.targetAlpha - this.currentAlpha) * 0.2;
+        this.currentAlpha += (this.targetAlpha - this.currentAlpha) * 0.1;
 
         // Update colors with smooth transitions
-        const saturation = 100;
+        const saturation = !isPlaying ? 
+            70 + (idlePulse * 20) : // Pulsing saturation when idle
+            100;
         const lightness = !isPlaying ?
-            50 :
+            40 + (idlePulse * 10) : // Pulsing brightness when idle
             50 + (intensity * 30);
         
         this.startColor = `hsla(${this.hue}, ${saturation}%, ${lightness}%, ${this.currentAlpha})`;

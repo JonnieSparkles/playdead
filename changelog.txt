@@ -3,6 +3,7 @@ v4.1.0
 -added new laser show mode: spotlights
 -fixed album cover animation from disappearing when pausing tracks
 -added audio album template and file renaming tool to the repo to help create new albums more easily
+-added #dev mode to simulate laser show without audio (for testing purposes)
 
 v4.0.0
 -changed to semantic versioning

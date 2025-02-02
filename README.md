@@ -68,6 +68,11 @@ Built with vanilla web technologies:
 - Web Audio API (for visualizations)
 - Canvas API (for laser effects)
 
+### Developer Testing
+
+Add `#dev` to the URL to enable testing features:
+- On player.html, adds a simulation toggle button to the interface which allows testing laser show effects without audio playback
+
 ## Version History
 
 See [changelog.txt](changelog.txt) for detailed version history.

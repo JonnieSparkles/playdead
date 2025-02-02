@@ -3,6 +3,7 @@ v4.1.0
 -added new laser show modes: wave and spotlights
 -fixed album cover animation from disappearing when pausing tracks
 -added robust album setup tool with complete directory structure creation
+-added examples of album structure and metadata formats
 -added #dev mode to simulate laser show without audio (for testing purposes)
 
 v4.0.0

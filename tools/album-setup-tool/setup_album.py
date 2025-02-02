@@ -15,15 +15,26 @@ def clean_filename(filename: str, index: int) -> str:
 def get_media_files(directory: str) -> Tuple[List[str], str]:
     # Get all supported media files from Tracks/ or Reels/ directory
     extensions = ('.mp3', '.flac', '.wav', '.mp4', '.webm')
-    media_dir = 'Reels' if any(f.lower().endswith(('.mp4', '.webm')) for f in os.listdir(directory)) else 'Tracks'
+    
+    # Check both potential directories relative to the given directory
+    tracks_dir = os.path.join(directory, 'Tracks')
+    reels_dir = os.path.join(directory, 'Reels')
+    
+    # Determine which directory to use based on existing files
+    if os.path.exists(reels_dir) and any(f.lower().endswith(('.mp4', '.webm')) for f in os.listdir(reels_dir)):
+        media_dir = 'Reels'
+    else:
+        media_dir = 'Tracks'
+    
+    full_media_dir = os.path.join(directory, media_dir)
     
     # Create directory if it doesn't exist
-    if not os.path.exists(media_dir):
-        os.makedirs(media_dir)
+    if not os.path.exists(full_media_dir):
+        os.makedirs(full_media_dir)
         print(f"Created {media_dir}/ directory")
     
     # Get files from the appropriate directory
-    return sorted([f for f in os.listdir(media_dir) if f.lower().endswith(extensions)]), media_dir
+    return sorted([f for f in os.listdir(full_media_dir) if f.lower().endswith(extensions)]), media_dir
 
 def load_album_json():
     try:
@@ -62,21 +73,42 @@ def create_new_album_json():
     return album_data
 
 def create_blank_album_json():
+    # Check if album.json already exists
+    if os.path.exists('album.json'):
+        response = input("\nalbum.json already exists. Replace it? (yes/no): ")
+        if response.lower() != 'yes':
+            print("Operation cancelled")
+            return
+    
+    # Ask for album type
+    while True:
+        media_type = input("Album type (audio/video): ").lower()
+        if media_type in ['audio', 'video']:
+            break
+        print("Please enter either 'audio' or 'video'")
+    
     album_data = {
         "version": "1.1.0",
-        "type": "audio",
+        "type": media_type,
         "band": "",
         "title": "",
         "date": "",
         "source": "",
-        "info": "more_info.txt",
-        "tracks": [
-            {"number": 1, "title": "Track 1"}
-        ],
-        "reels": [
-            {"number": 1, "title": "Reel 1"}
-        ]
+        "info": "more_info.txt"
     }
+    
+    # Only add the appropriate media list
+    if media_type == "video":
+        album_data["reels"] = [{"number": 1, "title": "Reel 1"}]
+    else:
+        album_data["tracks"] = [{"number": 1, "title": "Track 1"}]
+    
+    # Write the file
+    json_str = json.dumps(album_data, indent=4, ensure_ascii=False)
+    with open('album.json', 'w', encoding='utf-8') as f:
+        f.write(json_str)
+    
+    print("\nCreated blank album.json template!")
     return album_data
 
 def rename_from_files():
@@ -154,26 +186,52 @@ def rename_from_json():
     return album_data, current_files, media_dir, media_list
 
 def create_album_structure():
+    # Ask for album type first
+    while True:
+        media_type = input("Album type (audio/video): ").lower()
+        if media_type in ['audio', 'video']:
+            break
+        print("Please enter either 'audio' or 'video'")
+
     print("\nWill create the following structure:")
     print("├── album.json")
     print("├── more_info.txt")
     print("├── album_cover.png")
-    print("├── Tracks/")
-    print("│   └── 01 - Track 1.mp3")
-    print("└── Reels/")
-    print("    └── 01 - Reel 1.mp4")
+    if media_type == "audio":
+        print("└── Tracks/")
+        print("    └── 01 - Track 1.mp3")
+    else:
+        print("└── Reels/")
+        print("    └── 01 - Reel 1.mp4")
     
     response = input("\nProceed with creation? (yes/no): ")
     if response.lower() != 'yes':
         print("Operation cancelled")
         return
     
-    # Create directories
-    os.makedirs('Tracks', exist_ok=True)
-    os.makedirs('Reels', exist_ok=True)
+    # Create only the necessary directory
+    if media_type == "audio":
+        os.makedirs('Tracks', exist_ok=True)
+    else:
+        os.makedirs('Reels', exist_ok=True)
     
-    # Create blank album.json
-    album_data = create_blank_album_json()
+    # Create blank album.json with the chosen type
+    album_data = {
+        "version": "1.1.0",
+        "type": media_type,
+        "band": "",
+        "title": "",
+        "date": "",
+        "source": "",
+        "info": "more_info.txt"
+    }
+    
+    # Add appropriate media list
+    if media_type == "video":
+        album_data["reels"] = [{"number": 1, "title": "Reel 1"}]
+    else:
+        album_data["tracks"] = [{"number": 1, "title": "Track 1"}]
+    
     json_str = json.dumps(album_data, indent=4, ensure_ascii=False)
     json_str = re.sub(
         r'(\s+){\s+"number":\s+(\d+),\s+"title":\s+"([^"]+)"\s+}',
@@ -189,129 +247,47 @@ def create_album_structure():
         f.write("Album information\n")
     
     # Create placeholder files
-    with open(os.path.join('Tracks', '01 - Track 1.mp3'), 'w') as f:
-        f.write('')
-    with open(os.path.join('Reels', '01 - Reel 1.mp4'), 'w') as f:
-        f.write('')
+    if media_type == "audio":
+        with open(os.path.join('Tracks', '01 - Track 1.mp3'), 'w') as f:
+            f.write('')
+    else:
+        with open(os.path.join('Reels', '01 - Reel 1.mp4'), 'w') as f:
+            f.write('')
+            
     with open('album_cover.png', 'w') as f:
         f.write('')
         
     print("\nCreated album directory structure!")
 
 def main():
-    print("ar://playdead Album Setup Tool")
-    print("================================\n")
-
-    # Ask user which mode to use
-    print("Choose operation mode:")
-    print("1. Create complete album structure (start fresh)")
-    print("2. Create blank album.json template")
-    print("3. Generate album.json from files")
-    print("4. Rename files based on album.json")
-    mode = input("Enter 1, 2, 3, or 4: ").strip()
-
-    if mode == "1":
-        if os.path.exists('album.json') or os.path.exists('Tracks') or os.path.exists('Reels'):
-            response = input("Some files/folders already exist. Override? (yes/no): ")
-            if response.lower() != 'yes':
-                print("Operation cancelled")
-                return
-        create_album_structure()
-        return
-
-    if mode == "2":
-        if os.path.exists('album.json'):
-            response = input("album.json already exists. Override? (yes/no): ")
-            if response.lower() != 'yes':
-                print("Operation cancelled")
-                return
+    while True:
+        print("\nar://playdead Album Setup Tool")
+        print("\nChoose mode:")
+        print("1. Create complete album structure (start fresh)")
+        print("2. Create blank album.json template")
+        print("3. Generate album.json from files")
+        print("4. Rename files based on album.json")
+        print("5. Exit")
         
-        # Create and save blank album.json
-        album_data = create_blank_album_json()
-        # Format JSON with compact track/reel entries
-        json_str = json.dumps(album_data, indent=4, ensure_ascii=False)
-        json_str = re.sub(
-            r'(\s+){\s+"number":\s+(\d+),\s+"title":\s+"([^"]+)"\s+}',
-            r'\1{"number": \2, "title": "\3"}',
-            json_str
-        )
+        choice = input("\nEnter choice (1-5): ")
         
-        with open('album.json', 'w', encoding='utf-8') as f:
-            f.write(json_str)
-        print("Created blank album.json template")
-        return
-    elif mode == "3":
-        result = rename_from_files()
-    elif mode == "4":
-        result = rename_from_json()
-    else:
-        print("Invalid mode selected")
-        return
-
-    if not result:
-        return
-
-    album_data, current_files, media_dir, media_list = result
-
-    # Preview changes
-    print("\nProposed changes:")
-    print("----------------")
-    for i, old in enumerate(current_files, 1):
-        ext = Path(old).suffix
-        new_name = media_list[i-1]["title"]
-        new_filename = clean_filename(new_name, i) + ext
-        print(f"{old} -> {new_filename}")
-
-    # Show album.json preview
-    print("\nalbum.json preview:")
-    print(json.dumps(album_data, indent=4))
-
-    # Ask for confirmation
-    if mode == "3":
-        response = input("\nSave album.json? (yes/no): ")
-    else:
-        response = input("\nProceed with renaming files? (yes/no): ")
-
-    if response.lower() == 'yes':
-        # Save album.json if in mode 3
-        if mode == "3":
-            # First create JSON string with standard formatting
-            json_str = json.dumps(album_data, indent=4, ensure_ascii=False)
-            
-            # Then modify the tracks/reels format
-            json_str = re.sub(
-                r'(\s+){\s+"number":\s+(\d+),\s+"title":\s+"([^"]+)"\s+}',
-                r'\1{"number": \2, "title": "\3"}',
-                json_str
-            )
-            
-            # Write the modified string
-            with open('album.json', 'w', encoding='utf-8') as f:
-                f.write(json_str)
-            print("Saved album.json")
-
-            # Create more_info.txt if it doesn't exist
-            if not os.path.exists('more_info.txt'):
-                with open('more_info.txt', 'w', encoding='utf-8') as f:
-                    f.write(f"Album information for {album_data['title']} by {album_data['band']}\n")
-                print("Created more_info.txt template")
-
-        # Only rename files in mode 4
-        if mode == "4":
-            for i, (old_name, media_entry) in enumerate(zip(current_files, media_list), 1):
-                try:
-                    ext = Path(old_name).suffix
-                    new_filename = clean_filename(media_entry["title"], i) + ext
-                    os.rename(
-                        os.path.join(media_dir, old_name),
-                        os.path.join(media_dir, new_filename)
-                    )
-                    print(f"Renamed: {old_name} -> {new_filename}")
-                except Exception as e:
-                    print(f"Error renaming {old_name}: {e}")
-
-    else:
-        print("Operation cancelled")
+        if choice == '5':
+            print("Goodbye!")
+            break
+        elif choice == '1':
+            create_album_structure()
+            break
+        elif choice == '2':
+            create_blank_album_json()
+            break
+        elif choice == '3':
+            rename_from_files()
+            break
+        elif choice == '4':
+            rename_from_json()
+            break
+        else:
+            print("Invalid choice. Please enter a number between 1-5.")
 
 if __name__ == "__main__":
     main() 

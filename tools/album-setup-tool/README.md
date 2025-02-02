@@ -18,7 +18,7 @@ Run: `python setup_album.py`
 Choose from four modes:
 
 1. Create complete album structure (start fresh)
-   - Creates all necessary directories (Tracks/, Reels/)
+   - Creates all necessary directories (Tracks/, Reels/) based on the type of album
    - Generates blank album.json template
    - Creates empty more_info.txt
    - Adds placeholder album_cover.png

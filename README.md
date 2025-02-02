@@ -54,12 +54,10 @@ A Python utility to help prepare albums for ar://playdead:
 - Shows preview before making changes
 - Located in `tools/album-setup-tool/`
 
-### Album Templates
-Reference templates for creating new albums:
-- Audio album structure and metadata
-- Video album structure and metadata
-- Example `album.json` configurations
-- Located in `templates/`
+### Examples
+Reference materials and examples:
+- Complete album structure examples
+- Located in `examples/`
 
 ## Technical Details
 

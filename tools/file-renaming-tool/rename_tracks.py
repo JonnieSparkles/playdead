@@ -38,14 +38,17 @@ def create_new_album_json():
     media_files, media_dir = get_media_files('.')
     media_type = "video" if media_dir == "Reels" else "audio"
     
-    # Create base album data
+    # Try to load existing album.json for defaults
+    existing_data = load_album_json() or {}
+    
+    # Create base album data with defaults from existing file
     album_data = {
         "version": "1.1.0",
         "type": media_type,
-        "band": input("Band name: "),
-        "title": input("Album title: "),
-        "date": input("Date (e.g., May 8, 1977): "),
-        "source": input("Source (e.g., Audience recording): "),
+        "band": input(f"Band name ({existing_data.get('band', '')}): ") or existing_data.get('band', ''),
+        "title": input(f"Album title ({existing_data.get('title', '')}): ") or existing_data.get('title', ''),
+        "date": input(f"Date ({existing_data.get('date', '')}): ") or existing_data.get('date', ''),
+        "source": input(f"Source ({existing_data.get('source', '')}): ") or existing_data.get('source', ''),
         "info": "more_info.txt"
     }
     
@@ -57,6 +60,24 @@ def create_new_album_json():
     
     return album_data
 
+def create_blank_album_json():
+    album_data = {
+        "version": "1.1.0",
+        "type": "audio",
+        "band": "",
+        "title": "",
+        "date": "",
+        "source": "",
+        "info": "more_info.txt",
+        "tracks": [
+            {"number": 1, "title": "Track 1"}
+        ],
+        "reels": [
+            {"number": 1, "title": "Reel 1"}
+        ]
+    }
+    return album_data
+
 def rename_from_files():
     # Get current media files and directory
     current_files, media_dir = get_media_files('.')
@@ -66,8 +87,16 @@ def rename_from_files():
         print("Supported formats: .mp3, .flac, .wav, .mp4, .webm")
         return
 
-    # Load or create album.json
-    album_data = load_album_json() or create_new_album_json()
+    # Create new album.json first
+    album_data = create_new_album_json()
+    
+    # Then load it back if it exists, to preserve any existing data
+    existing_data = load_album_json()
+    if existing_data:
+        # Update with existing values if user just pressed enter
+        for key in ['band', 'title', 'date', 'source']:
+            if not album_data[key]:
+                album_data[key] = existing_data.get(key, '')
     
     # Detect media type based on directory
     media_type = "video" if media_dir == "Reels" else "audio"
@@ -131,12 +160,34 @@ def main():
     print("Choose operation mode:")
     print("1. Generate album.json from files")
     print("2. Rename files based on album.json")
-    mode = input("Enter 1 or 2: ").strip()
+    print("3. Create blank album.json template")
+    mode = input("Enter 1, 2, or 3: ").strip()
 
     if mode == "1":
         result = rename_from_files()
     elif mode == "2":
         result = rename_from_json()
+    elif mode == "3":
+        if os.path.exists('album.json'):
+            response = input("album.json already exists. Override? (yes/no): ")
+            if response.lower() != 'yes':
+                print("Operation cancelled")
+                return
+        
+        # Create and save blank album.json
+        album_data = create_blank_album_json()
+        # Format JSON with compact track/reel entries
+        json_str = json.dumps(album_data, indent=4, ensure_ascii=False)
+        json_str = re.sub(
+            r'(\s+){\s+"number":\s+(\d+),\s+"title":\s+"([^"]+)"\s+}',
+            r'\1{"number": \2, "title": "\3"}',
+            json_str
+        )
+        
+        with open('album.json', 'w', encoding='utf-8') as f:
+            f.write(json_str)
+        print("Created blank album.json template")
+        return
     else:
         print("Invalid mode selected")
         return

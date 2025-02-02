@@ -1,0 +1,13 @@
+{
+    "manifest": "arweave/paths",
+    "version": "0.1.0",
+    "index": {
+        "path": "album.json"
+    },
+    "paths": {
+        "album.json": { "id": "TXID_OF_ALBUM_JSON" },
+        "album_cover.png": { "id": "TXID_OF_ALBUM_COVER" },
+        "more_info.txt": { "id": "TXID_OF_INFO_FILE" },
+        "Tracks/01 - Track Name.mp3": { "id": "TXID_OF_TRACK1" }
+    }
+} 

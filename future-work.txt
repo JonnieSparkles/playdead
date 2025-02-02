@@ -1,10 +1,6 @@
 IMMEDIATE TODO
 =============
--make sure spotlight mode lights are not jittery
--make adaptive laser mode work with video
 -check adaptive laser mode works on mobile
--add new album
--update app version to 4.1.0
 
 
 FUTURE WORK

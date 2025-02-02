@@ -32,9 +32,9 @@ A permanent media player and catalog built for Arweave, focused on preserving au
 
 ### Laser Show
 Click the "Laser Show" button to cycle through visualization modes:
-- Wave mode
-- Classic mode
-- Spotlight mode
+- Wave mode: Circular wave patterns that respond to audio/video intensity
+- Classic mode: Moving laser beams with dynamic color transitions
+- Spotlight mode: Simulated stage lighting with fog effects
 
 ## Contributing
 

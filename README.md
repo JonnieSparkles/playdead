@@ -32,9 +32,9 @@ A permanent media player and catalog built for Arweave, focused on preserving au
 
 ### Laser Show
 Click the "Laser Show" button to cycle through visualization modes:
+- Wave mode
 - Classic mode
-- Hyper Speed mode
-- Fractal mode
+- Spotlight mode
 
 ## Contributing
 

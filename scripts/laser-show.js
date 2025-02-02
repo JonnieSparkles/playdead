@@ -108,6 +108,7 @@ class Laser {
     }
 
     update(intensity, intensityDelta, currentColors, nextColors, schemeTransition) {
+        const isPlaying = isAudioPlaying();
         const progressFactor = (mediaElement.currentTime / mediaElement.duration) || 0;
         const progressVariation = Math.sin(progressFactor * Math.PI * 2) * 0.2;
         
@@ -116,7 +117,7 @@ class Laser {
         const idleMotion = Math.sin(this.idlePhase) * 0.2;
         
         // Smoother speed multiplier transitions
-        this.targetSpeedMultiplier = mediaElement.paused ? 
+        this.targetSpeedMultiplier = !isPlaying ? 
             0.3 + idleMotion : 
             Math.min(0.8 + (intensity * 1.5) + progressVariation, 2.0);
         
@@ -134,7 +135,7 @@ class Laser {
         this.hue += (this.targetHue - this.hue) * this.colorTransitionSpeed * 1.5;
         
         // More gradual movement bursts
-        if (!mediaElement.paused && intensity > 0.6) {
+        if (isPlaying && intensity > 0.6) {
             const burstMultiplier = 1.0 + (intensity * 0.3);
             this.vx1 *= burstMultiplier;
             this.vy1 *= burstMultiplier;
@@ -143,9 +144,7 @@ class Laser {
         }
 
         // More conservative velocity limits
-        const maxVelocity = mediaElement.paused ? 
-            3 :
-            5 + (intensity * 3);
+        const maxVelocity = !isPlaying ? 3 : 5 + (intensity * 3);
         
         this.vx1 = Math.max(Math.min(this.vx1, maxVelocity), -maxVelocity);
         this.vy1 = Math.max(Math.min(this.vy1, maxVelocity), -maxVelocity);
@@ -153,7 +152,7 @@ class Laser {
         this.vy2 = Math.max(Math.min(this.vy2, maxVelocity), -maxVelocity);
 
         // Smoother movement
-        const speedMultiplier = mediaElement.paused ? 
+        const speedMultiplier = !isPlaying ? 
             this.currentSpeedMultiplier : 
             this.currentSpeedMultiplier * (1.1 + intensity * 0.2);
         
@@ -175,9 +174,7 @@ class Laser {
         if (this.y2 > canvas.height + margin) { this.y2 = canvas.height + margin; this.vy2 *= -0.8; }
 
         // Gentler dampening
-        const dampening = mediaElement.paused ? 
-            0.99 : 
-            0.995 + (intensity * 0.001);
+        const dampening = !isPlaying ? 0.99 : 0.995 + (intensity * 0.001);
         
         this.vx1 *= dampening;
         this.vy1 *= dampening;
@@ -185,7 +182,7 @@ class Laser {
         this.vy2 *= dampening;
 
         // Smoother alpha transitions
-        this.targetAlpha = mediaElement.paused ? 
+        this.targetAlpha = !isPlaying ? 
             0.6 + (idleMotion * 0.1) : 
             0.7 + (intensity * 0.2);
         
@@ -193,7 +190,7 @@ class Laser {
 
         // Update colors with smooth transitions
         const saturation = 100;
-        const lightness = mediaElement.paused ?
+        const lightness = !isPlaying ?
             50 :
             50 + (intensity * 30);
         
@@ -564,13 +561,7 @@ const laserModes = {
 
 // Simplify animation loop
 function animate() {
-    console.log('Animation frame:', { isVisualizerActive, DEV_SIMULATING });
-    
-    // Continue animation if visualizer is active or we're simulating
-    if (!isVisualizerActive && !DEV_SIMULATING) {
-        console.log('⏹️ Animation stopped');
-        return;
-    }
+    if (!isVisualizerActive && !DEV_SIMULATING) return;
     
     const currentMode = modes[currentModeIndex].toLowerCase();
     const mode = laserModes[currentMode];

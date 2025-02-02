@@ -14,7 +14,7 @@
 const canvas = document.getElementById("laser-visualizer");
 const ctx = canvas.getContext("2d");
 const toggleButton = document.getElementById("toggle-visualizer");
-const audioElement = document.getElementById('audio-player');
+let mediaElement = document.getElementById('audio-player') || document.getElementById('video-player');
 
 let isVisualizerActive = false;
 let currentModeIndex = -1; // Start with off (-1)
@@ -63,14 +63,14 @@ class Laser {
     }
 
     update(intensity, intensityDelta, currentColors, nextColors, schemeTransition) {
-        const progressFactor = (audioElement.currentTime / audioElement.duration) || 0;
+        const progressFactor = (mediaElement.currentTime / mediaElement.duration) || 0;
         const progressVariation = Math.sin(progressFactor * Math.PI * 2) * 0.3;
         
         // Update idle phase
         this.idlePhase += this.idleSpeed;
         
         // Blend between idle and active movement
-        this.targetSpeedMultiplier = audioElement.paused ? 
+        this.targetSpeedMultiplier = mediaElement.paused ? 
             0.3 : 
             Math.min(0.8 + (intensity * intensityMultiplier * 1.5) + progressVariation, 2.0);
         
@@ -87,7 +87,7 @@ class Laser {
 
         this.hue += (this.targetHue - this.hue) * this.colorTransitionSpeed;
         
-        if (isPeak && !audioElement.paused) {
+        if (isPeak && !mediaElement.paused) {
             const burstMultiplier = 1.1;
             this.vx1 *= burstMultiplier;
             this.vy1 *= burstMultiplier;
@@ -126,12 +126,12 @@ class Laser {
         this.vy2 *= dampening;
 
         // Smoothly transition alpha
-        this.targetAlpha = audioElement.paused ? 0.6 : 1;
+        this.targetAlpha = mediaElement.paused ? 0.6 : 1;
         this.currentAlpha += (this.targetAlpha - this.currentAlpha) * 0.1;
 
         // Update colors with smooth transitions
         const saturation = 100;
-        const lightness = audioElement.paused ?
+        const lightness = mediaElement.paused ?
             50 :
             50 + (intensity * 30);
         
@@ -175,9 +175,9 @@ const laserModes = {
                 hue: (i * 60) % 360
             }))
         }),
-        animate: (state, ctx, canvas, getAudioIntensity, audioElement, animationTime) => {
+        animate: (state, ctx, canvas, getAudioIntensity, mediaElement, animationTime) => {
             const intensity = getAudioIntensity();
-            const isAudioPlaying = !audioElement.paused;
+            const isAudioPlaying = !mediaElement.paused;
             
             ctx.fillStyle = "rgba(0, 0, 0, 0.15)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -225,10 +225,10 @@ const laserModes = {
             currentScheme: 0,
             schemeTransition: 0
         }),
-        animate: (state, ctx, canvas, getAudioIntensity, audioElement, animationTime) => {
+        animate: (state, ctx, canvas, getAudioIntensity, mediaElement, animationTime) => {
             const intensity = getAudioIntensity();
             const intensityDelta = intensity - lastIntensity;
-            const isAudioPlaying = !audioElement.paused;
+            const isAudioPlaying = !mediaElement.paused;
 
             ctx.fillStyle = `rgba(0, 0, 0, ${isAudioPlaying ? 0.15 : 0.05})`;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -328,9 +328,9 @@ const laserModes = {
                 idleSpeed: random(0.003, 0.006)
             }))
         }),
-        animate: (state, ctx, canvas, getAudioIntensity, audioElement, animationTime) => {
+        animate: (state, ctx, canvas, getAudioIntensity, mediaElement, animationTime) => {
             const intensity = getAudioIntensity();
-            const isAudioPlaying = !audioElement.paused;
+            const isAudioPlaying = !mediaElement.paused;
 
             // Color scheme management - trigger changes more frequently
             if (isAudioPlaying && intensity > 0.7 && Math.random() > 0.992) {
@@ -504,7 +504,7 @@ function animate() {
     const mode = laserModes[currentMode];
     
     if (mode) {
-        animationTime = mode.animate(lasers, ctx, canvas, getAudioIntensity, audioElement, animationTime);
+        animationTime = mode.animate(lasers, ctx, canvas, getAudioIntensity, mediaElement, animationTime);
         requestAnimationFrame(animate);
     }
 }
@@ -551,14 +551,14 @@ function random(min, max) {
 
 // Clean up getAudioIntensity function
 function getAudioIntensity() {
-    if (!audioElement.paused) {
-        const timeGap = Math.abs(audioElement.currentTime - lastAudioTime) > 0.1;
-        lastAudioTime = audioElement.currentTime;
+    if (!mediaElement.paused) {
+        const timeGap = Math.abs(mediaElement.currentTime - lastAudioTime) > 0.1;
+        lastAudioTime = mediaElement.currentTime;
         
         if (timeGap) return lastIntensity;
         
-        const bassTime = (audioElement.currentTime % 0.2) * Math.PI * 10;
-        const midTime = (audioElement.currentTime % 0.1) * Math.PI * 20;
+        const bassTime = (mediaElement.currentTime % 0.2) * Math.PI * 10;
+        const midTime = (mediaElement.currentTime % 0.1) * Math.PI * 20;
         
         const bassComponent = Math.abs(Math.sin(bassTime)) * 0.6;
         const midComponent = Math.abs(Math.sin(midTime)) * 0.4;
@@ -588,21 +588,41 @@ function calculateSmoothedIntensity(rawIntensity) {
     return lastIntensity * (1 - smoothingFactor) + peakEnhanced * smoothingFactor;
 }
 
-// Initial resize
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
+// Add a function to update the media element reference
+function updateMediaElement() {
+    const newMediaElement = document.getElementById('audio-player') || document.getElementById('video-player');
+    if (newMediaElement !== mediaElement) {
+        // Remove listeners from old element if it exists
+        if (mediaElement) {
+            mediaElement.removeEventListener('loadstart', handleLoadStart);
+        }
+        
+        // Update reference and add listeners to new element
+        mediaElement = newMediaElement;
+        mediaElement.addEventListener('loadstart', handleLoadStart);
+    }
+}
 
-// Add cleanup for canvas when switching tracks
-audioElement.addEventListener('loadstart', () => {
+// Handle media element changes
+function handleLoadStart() {
     if (isVisualizerActive) {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
     }
-});
+}
 
-// Add resize handler for video content
+// Update the resize observer
 const resizeObserver = new ResizeObserver(() => {
     if (isVisualizerActive) {
         resizeCanvas();
     }
 });
-resizeObserver.observe(audioElement.parentElement);
+
+// Initialize and handle media element changes
+function initializeMediaElement() {
+    updateMediaElement();
+    resizeObserver.observe(mediaElement.parentElement);
+}
+
+// Call initialize on load and when media type changes
+initializeMediaElement();
+document.addEventListener('mediaTypeChanged', initializeMediaElement);

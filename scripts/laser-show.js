@@ -164,18 +164,18 @@ class Laser {
             this.vy2 *= burstMultiplier;
         }
 
-        // More conservative velocity limits
-        const maxVelocity = !isPlaying ? 3 : 5 + (intensity * 3);
+        // More conservative velocity limits - reduce the max velocity when playing
+        const maxVelocity = !isPlaying ? 3 : 4 + (intensity * 2); // Reduced from 5 + (intensity * 3)
         
         this.vx1 = Math.max(Math.min(this.vx1, maxVelocity), -maxVelocity);
         this.vy1 = Math.max(Math.min(this.vy1, maxVelocity), -maxVelocity);
         this.vx2 = Math.max(Math.min(this.vx2, maxVelocity), -maxVelocity);
         this.vy2 = Math.max(Math.min(this.vy2, maxVelocity), -maxVelocity);
 
-        // Smoother movement
+        // Smoother movement - reduce the speed multiplier
         const speedMultiplier = !isPlaying ? 
             this.currentSpeedMultiplier : 
-            this.currentSpeedMultiplier * (1.1 + intensity * 0.2);
+            this.currentSpeedMultiplier * (0.8 + intensity * 0.2); // Reduced from 1.1 + intensity * 0.2
         
         this.x1 += this.vx1 * speedMultiplier;
         this.y1 += this.vy1 * speedMultiplier;
@@ -194,8 +194,8 @@ class Laser {
         if (this.y2 < -margin) { this.y2 = -margin; this.vy2 *= -0.8; }
         if (this.y2 > canvas.height + margin) { this.y2 = canvas.height + margin; this.vy2 *= -0.8; }
 
-        // Gentler dampening
-        const dampening = !isPlaying ? 0.99 : 0.995 + (intensity * 0.001);
+        // Stronger dampening when playing
+        const dampening = !isPlaying ? 0.99 : 0.992 + (intensity * 0.001); // Increased from 0.995
         
         this.vx1 *= dampening;
         this.vy1 *= dampening;

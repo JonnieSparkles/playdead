@@ -34,6 +34,53 @@ const smoothingFactor = 0.15;
 let lastAudioTime = 0;
 let intensityHistory = new Array(15).fill(0);
 
+// Add at the top after initial constants
+const DEV_MODE = window.location.hash === '#dev';
+let DEV_SIMULATING = false;
+
+console.log('Initial state:', { DEV_MODE, DEV_SIMULATING });
+
+// Add after initial constants but before other functions
+if (DEV_MODE) {
+    // Clean up any existing buttons immediately
+    document.querySelectorAll('.dev-simulate-button').forEach(btn => btn.remove());
+    
+    // Only add the button once the DOM is ready
+    window.addEventListener('DOMContentLoaded', () => {
+        // Double check for any existing buttons
+        document.querySelectorAll('.dev-simulate-button').forEach(btn => btn.remove());
+
+        const simulateButton = document.createElement('button');
+        simulateButton.className = 'dev-simulate-button';
+        simulateButton.textContent = '▶️ Simulate';
+        simulateButton.style.cssText = `
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 9999;
+            background: #444;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            display: block;
+        `;
+        
+        simulateButton.onclick = () => {
+            DEV_SIMULATING = !DEV_SIMULATING;
+            simulateButton.textContent = DEV_SIMULATING ? '⏸️ Pause' : '▶️ Simulate';
+        };
+        
+        document.body.appendChild(simulateButton);
+    }, { once: true }); // Ensure the event listener only fires once
+}
+
+// Simple helper function
+function isAudioPlaying() {
+    return DEV_MODE ? DEV_SIMULATING : !mediaElement.paused;
+}
+
 // Classic Laser Class with improved dynamics
 class Laser {
     constructor(minSpeed, maxSpeed, colorIndex = 0) {
@@ -192,7 +239,7 @@ const laserModes = {
         }),
         animate: (state, ctx, canvas, getAudioIntensity, mediaElement, animationTime) => {
             const intensity = getAudioIntensity();
-            const isAudioPlaying = !mediaElement.paused;
+            const isPlaying = isAudioPlaying();
             
             ctx.fillStyle = "rgba(0, 0, 0, 0.15)";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -203,7 +250,7 @@ const laserModes = {
             
             state.waves.forEach(wave => {
                 // Update radius
-                wave.radius += wave.speed * (isAudioPlaying ? (1 + intensity) : 0.5);
+                wave.radius += wave.speed * (isPlaying ? (1 + intensity) : 0.5);
                 
                 // Reset wave when it gets too large
                 if (wave.radius > maxRadius) {
@@ -215,16 +262,16 @@ const laserModes = {
                 ctx.beginPath();
                 ctx.arc(centerX, centerY, wave.radius, 0, Math.PI * 2);
                 
-                const alpha = wave.opacity * (isAudioPlaying ? (0.5 + intensity * 0.5) : 0.3);
-                const brightness = isAudioPlaying ? (50 + intensity * 30) : 50;
+                const alpha = wave.opacity * (isPlaying ? (0.5 + intensity * 0.5) : 0.3);
+                const brightness = isPlaying ? (50 + intensity * 30) : 50;
                 
                 ctx.strokeStyle = `hsla(${wave.hue}, 100%, ${brightness}%, ${alpha})`;
-                ctx.lineWidth = isAudioPlaying ? (2 + intensity * 3) : 2;
+                ctx.lineWidth = isPlaying ? (2 + intensity * 3) : 2;
                 ctx.stroke();
             });
             
-            animationTime += animationSpeed * (isAudioPlaying ? (1 + intensity) : 0.3);
-            return animationTime + (isAudioPlaying ? 0.015 : 0.008);
+            animationTime += animationSpeed * (isPlaying ? (1 + intensity) : 0.3);
+            return animationTime + (isPlaying ? 0.015 : 0.008);
         }
     },
     classic: {
@@ -242,14 +289,14 @@ const laserModes = {
         }),
         animate: (state, ctx, canvas, getAudioIntensity, mediaElement, animationTime) => {
             const intensity = getAudioIntensity();
+            const isPlaying = isAudioPlaying();
             const intensityDelta = intensity - lastIntensity;
-            const isAudioPlaying = !mediaElement.paused;
 
-            ctx.fillStyle = `rgba(0, 0, 0, ${isAudioPlaying ? 0.15 : 0.05})`;
+            ctx.fillStyle = `rgba(0, 0, 0, ${isPlaying ? 0.15 : 0.05})`;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             // Color scheme management
-            if (isAudioPlaying && intensity > 0.7 && Math.random() > 0.995) {
+            if (isPlaying && intensity > 0.7 && Math.random() > 0.995) {
                 state.schemeTransition = 1;
             }
 
@@ -275,7 +322,7 @@ const laserModes = {
             });
 
             lastIntensity = intensity;
-            return animationTime + (isAudioPlaying ? 0.015 : 0.008);
+            return animationTime + (isPlaying ? 0.015 : 0.008);
         }
     },
     spotlights: {
@@ -347,10 +394,10 @@ const laserModes = {
         }),
         animate: (state, ctx, canvas, getAudioIntensity, mediaElement, animationTime) => {
             const intensity = getAudioIntensity();
-            const isAudioPlaying = !mediaElement.paused;
+            const isPlaying = isAudioPlaying();
 
             // Color scheme management - trigger changes more frequently
-            if (isAudioPlaying && intensity > 0.7 && Math.random() > 0.992) {
+            if (isPlaying && intensity > 0.7 && Math.random() > 0.992) {
                 state.schemeTransition = 1;
             }
 
@@ -365,7 +412,7 @@ const laserModes = {
             const currentColors = state.colorSchemes[state.currentScheme];
             const nextColors = state.colorSchemes[(state.currentScheme + 1) % state.colorSchemes.length];
 
-            ctx.fillStyle = `rgba(0, 0, 0, ${isAudioPlaying ? 0.2 : 0.3})`;
+            ctx.fillStyle = `rgba(0, 0, 0, ${isPlaying ? 0.2 : 0.3})`;
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             // Update and draw fog particles (skip on mobile)
@@ -384,7 +431,7 @@ const laserModes = {
                     if (particle.x > canvas.width + particle.size) particle.x = -particle.size;
 
                     // Pulse the fog opacity with the music
-                    const pulseAmount = isAudioPlaying ? 
+                    const pulseAmount = isPlaying ? 
                         (0.2 + Math.sin(particle.pulseOffset + animationTime * 2) * 0.1) * (1 + intensity * 0.5) :
                         0.2 + Math.sin(particle.pulseOffset + animationTime * 2) * 0.1;
 
@@ -426,11 +473,11 @@ const laserModes = {
                         light.sweepSpeed = light.sweepSpeed || 0.002;
                         
                         const timeVariation = Math.sin(animationTime * 0.2) * 0.3 + 0.7;
-                        const baseSpeed = isAudioPlaying ? 0.0018 : 0.001;
+                        const baseSpeed = isPlaying ? 0.0018 : 0.001;
                         const targetSweepSpeed = (baseSpeed + light.smoothedIntensity * 0.003) * timeVariation;
                         
-                        const maxSweepSpeed = isAudioPlaying ? 0.004 : 0.003;
-                        const minSweepSpeed = isAudioPlaying ? 0.001 : 0.0008;
+                        const maxSweepSpeed = isPlaying ? 0.004 : 0.003;
+                        const minSweepSpeed = isPlaying ? 0.001 : 0.0008;
                         
                         light.sweepSpeed += (targetSweepSpeed - light.sweepSpeed) * 0.015;
                         light.sweepSpeed = Math.max(minSweepSpeed, Math.min(maxSweepSpeed, light.sweepSpeed));
@@ -497,7 +544,7 @@ const laserModes = {
                 };
 
                 // Draw the beams
-                const baseAlpha = isAudioPlaying ? 
+                const baseAlpha = isPlaying ? 
                     (0.3 + light.smoothedIntensity * 0.3) : 
                     0.15;
 
@@ -510,14 +557,20 @@ const laserModes = {
             state.spotlights.forEach(light => updateLight(light, false));
             state.uplights.forEach(light => updateLight(light, true));
 
-            return animationTime + (isAudioPlaying ? 0.015 : 0.008);
+            return animationTime + (isPlaying ? 0.015 : 0.008);
         }
     }
 };
 
 // Simplify animation loop
 function animate() {
-    if (!isVisualizerActive) return;
+    console.log('Animation frame:', { isVisualizerActive, DEV_SIMULATING });
+    
+    // Continue animation if visualizer is active or we're simulating
+    if (!isVisualizerActive && !DEV_SIMULATING) {
+        console.log('⏹️ Animation stopped');
+        return;
+    }
     
     const currentMode = modes[currentModeIndex].toLowerCase();
     const mode = laserModes[currentMode];
@@ -568,23 +621,22 @@ function random(min, max) {
     return Math.random() * (max - min) + min;
 }
 
-// Clean up getAudioIntensity function
+// Update getAudioIntensity to use the helper
 function getAudioIntensity() {
-    if (!mediaElement.paused) {
+    if (isAudioPlaying()) {
         const timeGap = Math.abs(mediaElement.currentTime - lastAudioTime) > 0.1;
         lastAudioTime = mediaElement.currentTime;
         
         if (timeGap) return lastIntensity;
         
-        const bassTime = (mediaElement.currentTime % 0.2) * Math.PI * 10;
-        const midTime = (mediaElement.currentTime % 0.1) * Math.PI * 20;
+        const bassTime = (animationTime % 0.2) * Math.PI * 10;
+        const midTime = (animationTime % 0.1) * Math.PI * 20;
         
         const bassComponent = Math.abs(Math.sin(bassTime)) * 0.6;
         const midComponent = Math.abs(Math.sin(midTime)) * 0.4;
         
         const rawIntensity = (bassComponent + midComponent) * intensityMultiplier;
         
-        // Update intensity history
         intensityHistory.shift();
         intensityHistory.push(rawIntensity);
         

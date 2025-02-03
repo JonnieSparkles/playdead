@@ -3,7 +3,7 @@
  * Provides dynamic visual effects synchronized with audio playback.
  * Supports multiple visualization modes and responds to audio intensity.
  */
-const modes = ["wave", "classic", "spotlights"];
+const modes = ["ripple", "classic", "spotlights"];
 const canvas = document.getElementById("laser-visualizer");
 const ctx = canvas.getContext("2d");
 const toggleButton = document.getElementById("toggle-visualizer");
@@ -248,9 +248,9 @@ class Laser {
 
 // Consolidate mode initialization and animation into a cleaner structure
 const laserModes = {
-    wave: {
+    ripple: {
         init: () => ({
-            waves: Array.from({ length: 5 }, (_, i) => ({
+            ripples: Array.from({ length: 5 }, (_, i) => ({
                 radius: i * 50,
                 opacity: 1 - (i * 0.2),
                 speed: 3 + (i * 0.5),
@@ -268,24 +268,24 @@ const laserModes = {
             const centerY = canvas.height / 2;
             const maxRadius = Math.max(canvas.width, canvas.height) * 0.8;
             
-            state.waves.forEach(wave => {
+            state.ripples.forEach(ripple => {
                 // Update radius
-                wave.radius += wave.speed * (isPlaying ? (1 + intensity) : 0.5);
+                ripple.radius += ripple.speed * (isPlaying ? (1 + intensity) : 0.5);
                 
-                // Reset wave when it gets too large
-                if (wave.radius > maxRadius) {
-                    wave.radius = 0;
-                    wave.hue = (wave.hue + 60) % 360;
+                // Reset ripple when it gets too large
+                if (ripple.radius > maxRadius) {
+                    ripple.radius = 0;
+                    ripple.hue = (ripple.hue + 60) % 360;
                 }
                 
-                // Draw wave
+                // Draw ripple
                 ctx.beginPath();
-                ctx.arc(centerX, centerY, wave.radius, 0, Math.PI * 2);
+                ctx.arc(centerX, centerY, ripple.radius, 0, Math.PI * 2);
                 
-                const alpha = wave.opacity * (isPlaying ? (0.5 + intensity * 0.5) : 0.3);
+                const alpha = ripple.opacity * (isPlaying ? (0.5 + intensity * 0.5) : 0.3);
                 const brightness = isPlaying ? (50 + intensity * 30) : 50;
                 
-                ctx.strokeStyle = `hsla(${wave.hue}, 100%, ${brightness}%, ${alpha})`;
+                ctx.strokeStyle = `hsla(${ripple.hue}, 100%, ${brightness}%, ${alpha})`;
                 ctx.lineWidth = isPlaying ? (2 + intensity * 3) : 2;
                 ctx.stroke();
             });

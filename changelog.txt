@@ -1,3 +1,6 @@
+vX.X.X
+-renamed wave laser show mode to ripple mode
+
 v4.1.0
 -laser show is now dynamic based on whether the audio or video is playing or paused
 -added new laser show modes: wave and spotlights

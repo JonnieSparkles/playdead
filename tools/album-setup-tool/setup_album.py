@@ -287,7 +287,7 @@ def main():
         print("1. Create complete album structure (start fresh)")
         print("2. Create blank album.json template")
         print("3. Generate album.json from files")
-        print("4. Rename files based on album.json")
+        print("4. Rename track file names based on album.json")
         print("5. Exit")
         
         choice = input("\nEnter choice (1-5): ")
@@ -308,7 +308,23 @@ def main():
                 print(f"Successfully processed {len(current_files)} files!")
             break
         elif choice == '4':
-            rename_from_json()
+            result = rename_from_json()
+            if result:
+                album_data, current_files, media_dir, media_list = result
+                
+                # Show confirmation prompt
+                response = input(f"\nConfirm renaming of {len(current_files)} track files? (yes/no): ")
+                if response.lower() != 'yes':
+                    print("Operation cancelled")
+                    break
+                
+                # Actually rename the files
+                for i, (old_name, track) in enumerate(zip(current_files, media_list)):
+                    old_path = os.path.join(media_dir, old_name)
+                    new_name = clean_filename(track['title'], track['number'])
+                    new_path = os.path.join(media_dir, new_name + os.path.splitext(old_name)[1])
+                    os.rename(old_path, new_path)
+                print(f"Successfully renamed {len(current_files)} files!")
             break
         else:
             print("Invalid choice. Please enter a number between 1-5.")

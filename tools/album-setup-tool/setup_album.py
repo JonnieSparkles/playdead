@@ -168,6 +168,14 @@ def rename_from_files():
 
     # Write the updated album.json
     json_str = json.dumps(album_data, indent=4, ensure_ascii=False)
+    
+    # Fix the formatting for tracks/reels to be on one line
+    json_str = re.sub(
+        r'(\s+){\s+"number":\s+(\d+),\s+"title":\s+"([^"]+)"\s+}',
+        r'\1{"number": \2, "title": "\3"}',
+        json_str
+    )
+    
     with open('album.json', 'w', encoding='utf-8') as f:
         f.write(json_str)
     

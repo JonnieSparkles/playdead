@@ -287,7 +287,7 @@ def main():
         print("1. Create complete album structure (start fresh)")
         print("2. Create blank album.json template")
         print("3. Generate album.json from files")
-        print("4. Rename track file names based on album.json")
+        print("4. Rename track files based on album.json")
         print("5. Exit")
         
         choice = input("\nEnter choice (1-5): ")

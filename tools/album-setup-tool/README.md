@@ -35,8 +35,8 @@ Choose from four modes:
    - Prompts for album metadata
    - Creates album.json with track/reel listings
 
-4. Rename files based on album.json
-   - Uses existing album.json to rename files
+4. Rename track files based on album.json
+   - Uses existing album.json to rename trackfiles
    - Adds proper track numbers
    - Removes invalid characters
    - Shows preview before making changes

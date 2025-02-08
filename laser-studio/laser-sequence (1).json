@@ -1,0 +1,673 @@
+{
+  "duration": 28614,
+  "keyframes": [
+    {
+      "timestamp": 1,
+      "mode": "classic",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 1,
+      "params": {
+        "laserCount": 15
+      }
+    },
+    {
+      "timestamp": 3781,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 1,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 5670,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 1,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 7388,
+      "mode": "classic",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 1,
+      "params": {
+        "laserCount": 15
+      }
+    },
+    {
+      "timestamp": 9301,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 1,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 11561,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 1,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 14231,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 1.1,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 14236,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 1.2,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 14255,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 1.3,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 14276,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 1.4,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 14319,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 1.5,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 14414,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 1.6,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 14461,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 1.7,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 14578,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 1.7,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 15336,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 1.6,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 15353,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 1.5,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 15370,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 1.4,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 15387,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 1.3,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 15412,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 1.2,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 15453,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 1.1,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 15543,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 1,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 15563,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 0.9,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 15583,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 0.8,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 15610,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 0.7,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 15637,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 0.6,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 15658,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 0.5,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 15678,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 0.4,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 15700,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 0.3,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 15748,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 0.2,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 15881,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 0.2,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 16652,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.1,
+      "speed": 0.2,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 16774,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.1,
+      "speed": 0.2,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 17236,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.2,
+      "speed": 0.2,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 17264,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.3,
+      "speed": 0.2,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 17291,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.4,
+      "speed": 0.2,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 17314,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.5,
+      "speed": 0.2,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 17340,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.6,
+      "speed": 0.2,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 17353,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.7,
+      "speed": 0.2,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 17367,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 0.2,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 17388,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 0.9,
+      "speed": 0.2,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 17400,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 1,
+      "speed": 0.2,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 17588,
+      "mode": "spotlights",
+      "colorScheme": 0,
+      "intensity": 1,
+      "speed": 0.2,
+      "params": {
+        "spotlightCount": 6,
+        "showFog": true
+      }
+    },
+    {
+      "timestamp": 19661,
+      "mode": "classic",
+      "colorScheme": 0,
+      "intensity": 1,
+      "speed": 0.2,
+      "params": {
+        "laserCount": 15
+      }
+    },
+    {
+      "timestamp": 21200,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 1,
+      "speed": 0.2,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 22490,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 1,
+      "speed": 0.3,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 22498,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 1,
+      "speed": 0.5,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 22504,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 1,
+      "speed": 0.6,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 22510,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 1,
+      "speed": 0.7,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 22516,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 1,
+      "speed": 0.8,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 22525,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 1,
+      "speed": 0.9,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 22531,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 1,
+      "speed": 1,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 22537,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 1,
+      "speed": 1.1,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 22543,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 1,
+      "speed": 1.2,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 22558,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 1,
+      "speed": 1.3,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 22579,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 1,
+      "speed": 1.4,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 22632,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 1,
+      "speed": 1.5,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 22751,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 1,
+      "speed": 1.5,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 25271,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 1,
+      "speed": 1.6,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 25297,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 1,
+      "speed": 1.7,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 25601,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 1,
+      "speed": 1.8,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 25691,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 1,
+      "speed": 1.8,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 26902,
+      "mode": "ripple",
+      "colorScheme": 3,
+      "intensity": 1,
+      "speed": 1.8,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 28614,
+      "mode": "ripple",
+      "colorScheme": 4,
+      "intensity": 1,
+      "speed": 1.8,
+      "params": {
+        "rippleCount": 5
+      }
+    }
+  ]
+}

@@ -202,7 +202,7 @@
 <body>
     <div class="container">
         <div class="controls">
-            <h2>Laser Studio v2</h2>
+            <h2>Laser Studio v3</h2>
             
             <div class="form-group">
                 <label>Mode:</label>
@@ -267,6 +267,8 @@
                 <button id="recordButton">Start Recording</button>
                 <button id="playButton" disabled>Play Recording</button>
                 <button id="saveButton" disabled>Save Recording</button>
+                <button id="loadButton">Load Sequence (Beta)</button>
+                <input type="file" id="loadSequence" accept=".json" style="display: none;">
                 <div class="timeline">
                     <div class="timeline-progress"></div>
                 </div>
@@ -770,6 +772,49 @@
             document.body.removeChild(a);
             URL.revokeObjectURL(url);
         });
+
+        // Add load sequence functionality
+        const loadButton = document.getElementById('loadButton');
+        const fileInput = document.getElementById('loadSequence');
+
+        loadButton.addEventListener('click', () => {
+            fileInput.click();
+        });
+
+        fileInput.addEventListener('change', (e) => {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                try {
+                    const sequence = JSON.parse(e.target.result);
+                    if (sequence && sequence.keyframes) {
+                        keyframes = sequence.keyframes;
+                        playButton.disabled = false;
+                        saveButton.disabled = false;
+                        
+                        // Reset timeline
+                        document.querySelectorAll('.keyframe-marker').forEach(marker => marker.remove());
+                        keyframes.forEach(kf => addKeyframeMarker(kf.timestamp));
+                    }
+                } catch (error) {
+                    console.error('Failed to load sequence:', error);
+                    alert('Invalid sequence file');
+                }
+            };
+            reader.readAsText(file);
+        });
+
+        // Update addKeyframeMarker to accept timestamp
+        function addKeyframeMarker(timestamp) {
+            const timeline = document.querySelector('.timeline');
+            const progress = timestamp / 30000 * 100; // 30 seconds max
+            const marker = document.createElement('div');
+            marker.className = 'keyframe-marker';
+            marker.style.left = `${progress}%`;
+            timeline.appendChild(marker);
+        }
     </script>
 </body>
 </html> 

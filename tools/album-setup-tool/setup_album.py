@@ -112,13 +112,20 @@ def create_blank_album_json():
     return album_data
 
 def rename_from_files():
+    # Check if album.json exists first
+    if os.path.exists('album.json'):
+        response = input("\nalbum.json already exists. Would you like to update it? (yes/no): ")
+        if response.lower() != 'yes':
+            print("Operation cancelled")
+            return None
+
     # Get current media files and directory
     current_files, media_dir = get_media_files('.')
     
     if not current_files:
         print(f"No media files found in {media_dir}/!")
         print("Supported formats: .mp3, .flac, .wav, .mp4, .webm")
-        return
+        return None
 
     # Create new album.json first
     album_data = create_new_album_json()
@@ -159,6 +166,12 @@ def rename_from_files():
     else:
         album_data["tracks"] = media_list
 
+    # Write the updated album.json
+    json_str = json.dumps(album_data, indent=4, ensure_ascii=False)
+    with open('album.json', 'w', encoding='utf-8') as f:
+        f.write(json_str)
+    
+    print("\nUpdated album.json successfully!")
     return album_data, current_files, media_dir, media_list
 
 def rename_from_json():
@@ -281,7 +294,10 @@ def main():
             create_blank_album_json()
             break
         elif choice == '3':
-            rename_from_files()
+            result = rename_from_files()
+            if result:
+                album_data, current_files, media_dir, media_list = result
+                print(f"Successfully processed {len(current_files)} files!")
             break
         elif choice == '4':
             rename_from_json()

@@ -1,6 +1,12 @@
 [
     {
         "type": "audio",
+        "title": "Live at Domefest on 2017-05-20",
+        "band": "Pigeons Playing Ping Pong",
+        "txid": "2QLdZkMaCmymILFnq48EDOgZuy3135ujZXlqogkyszw"
+    },   
+    {
+        "type": "audio",
         "title": "UMBowl III at Park West on 2012-04-27",
         "band": "Umphrey's McGee",
         "txid": "TP_QkHbQEHErIpe81j8ydqyVG3GT8IqmM9BX9rHzS08"

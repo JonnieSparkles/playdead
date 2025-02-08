@@ -1,0 +1,265 @@
+{
+  "duration": 22737,
+  "keyframes": [
+    {
+      "timestamp": 0,
+      "mode": "classic",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 1,
+      "params": {
+        "laserCount": 15
+      }
+    },
+    {
+      "timestamp": 1714,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 1,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 2943,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 0.9,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 2975,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 0.8,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 3010,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 0.7,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 3092,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 0.6,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 3125,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 0.6,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 3675,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 0.5,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 3709,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 0.4,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 3784,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 0.3,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 3785,
+      "mode": "ripple",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 0.3,
+      "params": {
+        "rippleCount": 5
+      }
+    },
+    {
+      "timestamp": 5452,
+      "mode": "classic",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 0.3,
+      "params": {
+        "laserCount": 15
+      }
+    },
+    {
+      "timestamp": 6289,
+      "mode": "classic",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 1.3,
+      "params": {
+        "laserCount": 15
+      }
+    },
+    {
+      "timestamp": 6377,
+      "mode": "classic",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 1.3,
+      "params": {
+        "laserCount": 15
+      }
+    },
+    {
+      "timestamp": 7930,
+      "mode": "classic",
+      "colorScheme": 2,
+      "intensity": 0.8,
+      "speed": 1.3,
+      "params": {
+        "laserCount": 15
+      }
+    },
+    {
+      "timestamp": 13673,
+      "mode": "classic",
+      "colorScheme": 3,
+      "intensity": 0.8,
+      "speed": 1.3,
+      "params": {
+        "laserCount": 15
+      }
+    },
+    {
+      "timestamp": 17407,
+      "mode": "classic",
+      "colorScheme": 0,
+      "intensity": 0.8,
+      "speed": 1.3,
+      "params": {
+        "laserCount": 15
+      }
+    },
+    {
+      "timestamp": 20530,
+      "mode": "classic",
+      "colorScheme": 1,
+      "intensity": 0.8,
+      "speed": 1.3,
+      "params": {
+        "laserCount": 15
+      }
+    },
+    {
+      "timestamp": 21466,
+      "mode": "classic",
+      "colorScheme": 1,
+      "intensity": 0.8,
+      "speed": 1.4,
+      "params": {
+        "laserCount": 15
+      }
+    },
+    {
+      "timestamp": 21768,
+      "mode": "classic",
+      "colorScheme": 1,
+      "intensity": 0.8,
+      "speed": 1.5,
+      "params": {
+        "laserCount": 15
+      }
+    },
+    {
+      "timestamp": 21900,
+      "mode": "classic",
+      "colorScheme": 1,
+      "intensity": 0.8,
+      "speed": 1.6,
+      "params": {
+        "laserCount": 15
+      }
+    },
+    {
+      "timestamp": 22016,
+      "mode": "classic",
+      "colorScheme": 1,
+      "intensity": 0.8,
+      "speed": 1.7,
+      "params": {
+        "laserCount": 15
+      }
+    },
+    {
+      "timestamp": 22117,
+      "mode": "classic",
+      "colorScheme": 1,
+      "intensity": 0.8,
+      "speed": 1.8,
+      "params": {
+        "laserCount": 15
+      }
+    },
+    {
+      "timestamp": 22383,
+      "mode": "classic",
+      "colorScheme": 1,
+      "intensity": 0.8,
+      "speed": 1.9,
+      "params": {
+        "laserCount": 15
+      }
+    },
+    {
+      "timestamp": 22600,
+      "mode": "classic",
+      "colorScheme": 1,
+      "intensity": 0.8,
+      "speed": 2,
+      "params": {
+        "laserCount": 15
+      }
+    },
+    {
+      "timestamp": 22737,
+      "mode": "classic",
+      "colorScheme": 1,
+      "intensity": 0.8,
+      "speed": 2,
+      "params": {
+        "laserCount": 15
+      }
+    }
+  ]
+}

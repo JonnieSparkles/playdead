@@ -99,6 +99,104 @@
         .mode-specific.active {
             display: block;
         }
+
+        /* Add these new styles for the mint button and modal */
+        .mint-button {
+            background: #666;
+            color: white;
+            padding: 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 20px;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .mint-button:hover {
+            background: #777;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background-color: #222;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #444;
+            border-radius: 8px;
+            width: 300px;
+            text-align: center;
+            color: white;
+        }
+
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: white;
+        }
+
+        /* Add recording controls styles */
+        .recording-controls {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #444;
+        }
+
+        .recording-controls button {
+            background: #444;
+            margin-bottom: 10px;
+        }
+
+        .recording-controls button.recording {
+            background: #ff4444;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.7; }
+            100% { opacity: 1; }
+        }
+
+        .timeline {
+            height: 30px;
+            background: #222;
+            border-radius: 4px;
+            margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .timeline-progress {
+            height: 100%;
+            background: #333;
+            width: 0%;
+            transition: width 0.1s linear;
+        }
+
+        .keyframe-marker {
+            position: absolute;
+            width: 2px;
+            height: 100%;
+            background: #666;
+            top: 0;
+        }
     </style>
 </head>
 <body>
@@ -165,10 +263,29 @@
                 <input type="range" id="intensity" min="0" max="1" step="0.1" value="0.75">
             </div>
 
+            <div class="recording-controls">
+                <button id="recordButton">Start Recording</button>
+                <button id="playButton" disabled>Play Recording</button>
+                <button id="saveButton" disabled>Save Recording</button>
+                <div class="timeline">
+                    <div class="timeline-progress"></div>
+                </div>
+            </div>
+
             <button id="reset">Reset Effects</button>
+            <button class="mint-button" id="mintButton">Mint Laser!!!</button>
         </div>
         <div class="preview">
             <canvas id="canvas"></canvas>
+        </div>
+    </div>
+
+    <!-- Add the modal -->
+    <div id="mintModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Coming Soon!</h2>
+            <p>NFT minting functionality will be available soon.</p>
         </div>
     </div>
 
@@ -455,6 +572,204 @@
         resizeCanvas();
         state = modes.classic.init();
         animate();
+
+        // Add this at the end of the script section
+        const modal = document.getElementById('mintModal');
+        const mintButton = document.getElementById('mintButton');
+        const closeButton = document.getElementsByClassName('close')[0];
+
+        mintButton.onclick = function() {
+            modal.style.display = 'block';
+        }
+
+        closeButton.onclick = function() {
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = 'none';
+            }
+        }
+
+        // Recording system
+        let recording = false;
+        let sequence = null;
+        let recordingStartTime = 0;
+        let keyframes = [];
+
+        function captureState() {
+            return {
+                timestamp: Date.now() - recordingStartTime,
+                mode: currentMode,
+                colorScheme: parseInt(document.getElementById('colorScheme').value),
+                intensity: parseFloat(document.getElementById('intensity').value),
+                speed: parseFloat(document.getElementById('speed').value),
+                params: getCurrentModeParams()
+            };
+        }
+
+        function getCurrentModeParams() {
+            switch(currentMode) {
+                case 'classic':
+                    return {
+                        laserCount: parseInt(document.getElementById('laserCount').value)
+                    };
+                case 'ripple':
+                    return {
+                        rippleCount: parseInt(document.getElementById('rippleCount').value)
+                    };
+                case 'spotlights':
+                    return {
+                        spotlightCount: parseInt(document.getElementById('spotlightCount').value),
+                        showFog: document.getElementById('showFog').checked
+                    };
+                default:
+                    return {};
+            }
+        }
+
+        // Add event listeners for all controls to capture changes
+        document.querySelectorAll('input, select').forEach(element => {
+            element.addEventListener('change', () => {
+                if (recording) {
+                    keyframes.push(captureState());
+                    addKeyframeMarker();
+                }
+            });
+
+            if (element.type === 'range') {
+                element.addEventListener('input', () => {
+                    if (recording) {
+                        keyframes.push(captureState());
+                        addKeyframeMarker();
+                    }
+                });
+            }
+        });
+
+        function addKeyframeMarker() {
+            const timeline = document.querySelector('.timeline');
+            const progress = (Date.now() - recordingStartTime) / 30000 * 100; // 30 seconds max
+            const marker = document.createElement('div');
+            marker.className = 'keyframe-marker';
+            marker.style.left = `${progress}%`;
+            timeline.appendChild(marker);
+        }
+
+        // Recording controls
+        const recordButton = document.getElementById('recordButton');
+        const playButton = document.getElementById('playButton');
+        const saveButton = document.getElementById('saveButton');
+        const timelineProgress = document.querySelector('.timeline-progress');
+
+        recordButton.addEventListener('click', () => {
+            if (!recording) {
+                // Start recording
+                recording = true;
+                recordingStartTime = Date.now();
+                keyframes = [captureState()]; // Capture initial state
+                recordButton.textContent = 'Stop Recording';
+                recordButton.classList.add('recording');
+                playButton.disabled = true;
+                saveButton.disabled = true;
+                
+                // Clear existing markers
+                document.querySelectorAll('.keyframe-marker').forEach(marker => marker.remove());
+                addKeyframeMarker();
+
+                // Start timeline progress
+                let progressInterval = setInterval(() => {
+                    const progress = (Date.now() - recordingStartTime) / 30000 * 100;
+                    timelineProgress.style.width = `${Math.min(progress, 100)}%`;
+                    
+                    if (progress >= 100) {
+                        stopRecording();
+                        clearInterval(progressInterval);
+                    }
+                }, 100);
+            } else {
+                stopRecording();
+            }
+        });
+
+        function stopRecording() {
+            recording = false;
+            recordButton.textContent = 'Start Recording';
+            recordButton.classList.remove('recording');
+            playButton.disabled = false;
+            saveButton.disabled = false;
+            timelineProgress.style.width = '0%';
+        }
+
+        playButton.addEventListener('click', () => {
+            let currentFrame = 0;
+            
+            function applyKeyframe(frame) {
+                const kf = keyframes[frame];
+                
+                // Apply all parameters
+                document.getElementById('mode').value = kf.mode;
+                document.getElementById('colorScheme').value = kf.colorScheme;
+                document.getElementById('intensity').value = kf.intensity;
+                document.getElementById('speed').value = kf.speed;
+                
+                // Apply mode-specific parameters
+                if (kf.params) {
+                    Object.entries(kf.params).forEach(([key, value]) => {
+                        const element = document.getElementById(key);
+                        if (element) {
+                            if (element.type === 'checkbox') {
+                                element.checked = value;
+                            } else {
+                                element.value = value;
+                            }
+                        }
+                    });
+                }
+                
+                // Update mode
+                if (frame === 0 || kf.mode !== keyframes[frame - 1].mode) {
+                    document.getElementById('mode').dispatchEvent(new Event('change'));
+                }
+            }
+
+            function playSequence() {
+                if (currentFrame < keyframes.length) {
+                    applyKeyframe(currentFrame);
+                    
+                    const progress = keyframes[currentFrame].timestamp / 30000 * 100;
+                    timelineProgress.style.width = `${progress}%`;
+                    
+                    currentFrame++;
+                    setTimeout(playSequence, 
+                        currentFrame < keyframes.length ? 
+                        keyframes[currentFrame].timestamp - keyframes[currentFrame - 1].timestamp : 
+                        0);
+                } else {
+                    timelineProgress.style.width = '0%';
+                }
+            }
+
+            playSequence();
+        });
+
+        saveButton.addEventListener('click', () => {
+            const sequence = {
+                duration: keyframes[keyframes.length - 1].timestamp,
+                keyframes: keyframes
+            };
+            
+            const blob = new Blob([JSON.stringify(sequence, null, 2)], {type: 'application/json'});
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'laser-sequence.json';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        });
     </script>
 </body>
 </html> 

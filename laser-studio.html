@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Laser Studio</title>
+    <style>
+        body { 
+            margin: 0; 
+            padding: 20px; 
+            font-family: sans-serif;
+            background: #000;
+            color: #fff;
+        }
+        .container { 
+            display: flex; 
+            gap: 20px;
+            height: 100vh;
+        }
+        .controls { 
+            width: 300px;
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 8px;
+        }
+        .preview { 
+            flex-grow: 1;
+            position: relative;
+        }
+        canvas { 
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+        .form-group { 
+            margin-bottom: 15px;
+        }
+        label { 
+            display: block; 
+            margin-bottom: 5px;
+            color: #fff;
+        }
+        input { 
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #444;
+            background: #222;
+            color: #fff;
+            border-radius: 4px;
+        }
+        select {
+            width: 100%;
+            padding: 8px;
+            background: #222;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 4px;
+        }
+        button {
+            width: 100%;
+            padding: 10px;
+            background: #ff4500;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background: #ff6347;
+        }
+        .mode-specific {
+            display: none;
+        }
+        .mode-specific.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="controls">
+            <h2>Laser Studio</h2>
+            
+            <div class="form-group">
+                <label>Mode:</label>
+                <select id="mode">
+                    <option value="classic">Classic Lasers</option>
+                    <option value="ripple">Ripple Effect</option>
+                    <option value="spotlights">Spotlights</option>
+                </select>
+            </div>
+
+            <!-- Classic Mode Controls -->
+            <div id="classic-controls" class="mode-specific active">
+                <div class="form-group">
+                    <label>Number of Lasers:</label>
+                    <input type="number" id="laserCount" value="15" min="1" max="50">
+                </div>
+            </div>
+
+            <!-- Ripple Mode Controls -->
+            <div id="ripple-controls" class="mode-specific">
+                <div class="form-group">
+                    <label>Number of Ripples:</label>
+                    <input type="number" id="rippleCount" value="5" min="1" max="10">
+                </div>
+            </div>
+
+            <!-- Spotlight Mode Controls -->
+            <div id="spotlight-controls" class="mode-specific">
+                <div class="form-group">
+                    <label>Number of Spotlights:</label>
+                    <input type="number" id="spotlightCount" value="6" min="1" max="12">
+                </div>
+                <div class="form-group">
+                    <label>Show Fog Effect:</label>
+                    <input type="checkbox" id="showFog" checked>
+                </div>
+            </div>
+
+            <!-- Common Controls -->
+            <div class="form-group">
+                <label>Speed:</label>
+                <input type="range" id="speed" min="0.1" max="2" step="0.1" value="1">
+            </div>
+
+            <div class="form-group">
+                <label>Color Scheme:</label>
+                <select id="colorScheme">
+                    <option value="0">Red/Orange/Yellow</option>
+                    <option value="1">Aqua/Cyan/Blue</option>
+                    <option value="2">Purple/Magenta/Red</option>
+                    <option value="3">Orange/Yellow/Green</option>
+                    <option value="4">Blue/Azure/Purple</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Intensity:</label>
+                <input type="range" id="intensity" min="0" max="1" step="0.1" value="0.75">
+            </div>
+
+            <button id="reset">Reset Effects</button>
+        </div>
+        <div class="preview">
+            <canvas id="canvas"></canvas>
+        </div>
+    </div>
+
+    <script>
+        // Core classes and state
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        let currentMode = 'classic';
+        let animationFrame;
+        let state = {};
+
+        // Color schemes
+        const colorSchemes = [
+            [350, 45, 85],      // Red, Orange, Yellow
+            [180, 210, 240],    // Aqua, Cyan, Blue
+            [280, 315, 350],    // Purple, Magenta, Red
+            [45, 85, 125],      // Orange, Yellow, Green
+            [200, 240, 280]     // Blue, Azure, Purple
+        ];
+
+        // Classic Laser Mode
+        class Laser {
+            constructor(minSpeed, maxSpeed, colorIndex = 0) {
+                this.reset(minSpeed, maxSpeed, colorIndex);
+            }
+
+            reset(minSpeed, maxSpeed, colorIndex) {
+                this.x1 = Math.random() * canvas.width;
+                this.y1 = Math.random() * canvas.height;
+                this.x2 = Math.random() * canvas.width;
+                this.y2 = Math.random() * canvas.height;
+                this.vx1 = Math.random() * (maxSpeed - minSpeed) + minSpeed;
+                this.vy1 = Math.random() * (maxSpeed - minSpeed) + minSpeed;
+                this.vx2 = Math.random() * (maxSpeed - minSpeed) + minSpeed;
+                this.vy2 = Math.random() * (maxSpeed - minSpeed) + minSpeed;
+                this.colorIndex = colorIndex;
+                this.hue = 0;
+                this.targetHue = 0;
+                this.colorTransitionSpeed = Math.random() * 0.02 + 0.01;
+                this.baseWidth = Math.random() + 1;
+                this.currentAlpha = 1;
+            }
+
+            update(intensity, currentColors, speedMultiplier) {
+                this.x1 += this.vx1 * speedMultiplier;
+                this.y1 += this.vy1 * speedMultiplier;
+                this.x2 += this.vx2 * speedMultiplier;
+                this.y2 += this.vy2 * speedMultiplier;
+
+                if (this.x1 < 0 || this.x1 > canvas.width) this.vx1 *= -1;
+                if (this.y1 < 0 || this.y1 > canvas.height) this.vy1 *= -1;
+                if (this.x2 < 0 || this.x2 > canvas.width) this.vx2 *= -1;
+                if (this.y2 < 0 || this.y2 > canvas.height) this.vy2 *= -1;
+
+                this.targetHue = currentColors[this.colorIndex];
+                this.hue += (this.targetHue - this.hue) * this.colorTransitionSpeed;
+            }
+
+            draw(ctx) {
+                ctx.beginPath();
+                const glowGradient = ctx.createLinearGradient(this.x1, this.y1, this.x2, this.y2);
+                glowGradient.addColorStop(0, `hsla(${this.hue}, 100%, 50%, 0.1)`);
+                glowGradient.addColorStop(1, `hsla(${this.hue + 30}, 100%, 50%, 0.05)`);
+                ctx.strokeStyle = glowGradient;
+                ctx.lineWidth = this.baseWidth * 3;
+                ctx.moveTo(this.x1, this.y1);
+                ctx.lineTo(this.x2, this.y2);
+                ctx.stroke();
+
+                ctx.beginPath();
+                const mainGradient = ctx.createLinearGradient(this.x1, this.y1, this.x2, this.y2);
+                mainGradient.addColorStop(0, `hsla(${this.hue}, 100%, 50%, ${this.currentAlpha})`);
+                mainGradient.addColorStop(1, `hsla(${this.hue + 30}, 100%, 50%, ${this.currentAlpha * 0.5})`);
+                ctx.strokeStyle = mainGradient;
+                ctx.lineWidth = this.baseWidth;
+                ctx.moveTo(this.x1, this.y1);
+                ctx.lineTo(this.x2, this.y2);
+                ctx.stroke();
+            }
+        }
+
+        // Ripple Mode
+        class Ripple {
+            constructor(index, total) {
+                this.radius = index * 50;
+                this.opacity = 1 - (index * 0.2);
+                this.speed = 3 + (index * 0.5);
+                this.hue = (index * 60) % 360;
+            }
+
+            update(maxRadius, intensity, speedMultiplier) {
+                this.radius += this.speed * speedMultiplier * (1 + intensity);
+                if (this.radius > maxRadius) {
+                    this.radius = 0;
+                    this.hue = (this.hue + 60) % 360;
+                }
+            }
+
+            draw(ctx, centerX, centerY, intensity) {
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, this.radius, 0, Math.PI * 2);
+                const alpha = this.opacity * (0.5 + intensity * 0.5);
+                const brightness = 50 + intensity * 30;
+                ctx.strokeStyle = `hsla(${this.hue}, 100%, ${brightness}%, ${alpha})`;
+                ctx.lineWidth = 2 + intensity * 3;
+                ctx.stroke();
+            }
+        }
+
+        // Spotlight Mode
+        class Spotlight {
+            constructor(index, total, isUplight = false) {
+                this.x = canvas.width * ((index + 0.5) / total);
+                this.y = isUplight ? canvas.height + 20 : -20;
+                this.baseAngle = isUplight ? -Math.PI * 0.4 : Math.PI * 0.4;
+                this.angle = this.baseAngle;
+                this.sweepSpeed = Math.random() * 0.01 + 0.005;
+                this.sweepAngle = Math.random() * Math.PI * 2;
+                this.sweepRange = Math.PI * 0.25;
+                this.colorIndex = index % 3;
+                this.hue = 0;
+                this.beamLength = Math.max(canvas.width, canvas.height) * 1.2;
+                this.beamWidth = Math.random() * 20 + 15;
+            }
+
+            update(intensity, currentColors, speedMultiplier) {
+                this.sweepAngle += this.sweepSpeed * speedMultiplier;
+                this.angle = this.baseAngle + Math.sin(this.sweepAngle) * this.sweepRange;
+                this.hue = currentColors[this.colorIndex];
+            }
+
+            draw(ctx, intensity) {
+                const endX = this.x + Math.cos(this.angle) * this.beamLength;
+                const endY = this.y + Math.sin(this.angle) * this.beamLength;
+                
+                const gradient = ctx.createLinearGradient(this.x, this.y, endX, endY);
+                gradient.addColorStop(0, `hsla(${this.hue}, 70%, 50%, ${0.3 + intensity * 0.3})`);
+                gradient.addColorStop(1, `hsla(${this.hue}, 50%, 50%, 0)`);
+
+                ctx.beginPath();
+                ctx.moveTo(this.x, this.y);
+                ctx.lineTo(endX, endY);
+                ctx.strokeStyle = gradient;
+                ctx.lineWidth = this.beamWidth;
+                ctx.stroke();
+            }
+        }
+
+        // Mode Initialization Functions
+        const modes = {
+            classic: {
+                init: () => {
+                    const count = parseInt(document.getElementById('laserCount').value);
+                    return {
+                        lasers: Array.from({ length: count }, (_, i) => new Laser(2, 4, i % 3))
+                    };
+                },
+                animate: (state, intensity, currentColors, speedMultiplier) => {
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.1)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    
+                    state.lasers.forEach(laser => {
+                        laser.update(intensity, currentColors, speedMultiplier);
+                        laser.draw(ctx);
+                    });
+                }
+            },
+            ripple: {
+                init: () => {
+                    const count = parseInt(document.getElementById('rippleCount').value);
+                    return {
+                        ripples: Array.from({ length: count }, (_, i) => new Ripple(i, count))
+                    };
+                },
+                animate: (state, intensity, currentColors, speedMultiplier) => {
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    
+                    const centerX = canvas.width / 2;
+                    const centerY = canvas.height / 2;
+                    const maxRadius = Math.max(canvas.width, canvas.height) * 0.8;
+                    
+                    state.ripples.forEach(ripple => {
+                        ripple.update(maxRadius, intensity, speedMultiplier);
+                        ripple.draw(ctx, centerX, centerY, intensity);
+                    });
+                }
+            },
+            spotlights: {
+                init: () => {
+                    const count = parseInt(document.getElementById('spotlightCount').value);
+                    const showFog = document.getElementById('showFog').checked;
+                    
+                    return {
+                        spotlights: Array.from({ length: count }, (_, i) => new Spotlight(i, count, false)),
+                        uplights: Array.from({ length: Math.floor(count/2) }, (_, i) => new Spotlight(i, Math.floor(count/2), true)),
+                        fogParticles: showFog ? Array.from({ length: 100 }, () => ({
+                            x: Math.random() * canvas.width,
+                            y: Math.random() * canvas.height,
+                            size: Math.random() * 150 + 50,
+                            vx: (Math.random() - 0.5) * 0.2,
+                            vy: (Math.random() - 0.5) * 0.1 - 0.1,
+                            alpha: Math.random() * 0.3
+                        })) : []
+                    };
+                },
+                animate: (state, intensity, currentColors, speedMultiplier) => {
+                    ctx.fillStyle = 'rgba(0, 0, 0, 0.2)';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    
+                    // Update fog
+                    if (state.fogParticles) {
+                        state.fogParticles.forEach(particle => {
+                            particle.x += particle.vx * speedMultiplier;
+                            particle.y += particle.vy * speedMultiplier;
+                            
+                            if (particle.y < -particle.size) {
+                                particle.y = canvas.height + particle.size;
+                                particle.x = Math.random() * canvas.width;
+                            }
+                            if (particle.x < -particle.size) particle.x = canvas.width + particle.size;
+                            if (particle.x > canvas.width + particle.size) particle.x = -particle.size;
+                            
+                            const gradient = ctx.createRadialGradient(
+                                particle.x, particle.y, 0,
+                                particle.x, particle.y, particle.size
+                            );
+                            gradient.addColorStop(0, `rgba(255, 255, 255, ${particle.alpha})`);
+                            gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
+                            
+                            ctx.beginPath();
+                            ctx.fillStyle = gradient;
+                            ctx.arc(particle.x, particle.y, particle.size, 0, Math.PI * 2);
+                            ctx.fill();
+                        });
+                    }
+                    
+                    // Update and draw lights
+                    const allLights = [...(state.spotlights || []), ...(state.uplights || [])];
+                    allLights.forEach(light => {
+                        light.update(intensity, currentColors, speedMultiplier);
+                        light.draw(ctx, intensity);
+                    });
+                }
+            }
+        };
+
+        function resizeCanvas() {
+            canvas.width = canvas.parentElement.clientWidth;
+            canvas.height = canvas.parentElement.clientHeight;
+        }
+
+        function animate() {
+            const intensity = parseFloat(document.getElementById('intensity').value);
+            const speedMultiplier = parseFloat(document.getElementById('speed').value);
+            const currentScheme = parseInt(document.getElementById('colorScheme').value);
+            
+            modes[currentMode].animate(state, intensity, colorSchemes[currentScheme], speedMultiplier);
+            animationFrame = requestAnimationFrame(animate);
+        }
+
+        // Event Listeners
+        window.addEventListener('resize', resizeCanvas);
+        
+        document.getElementById('mode').addEventListener('change', (e) => {
+            currentMode = e.target.value;
+            // Show/hide mode-specific controls
+            document.querySelectorAll('.mode-specific').forEach(el => {
+                el.classList.remove('active');
+            });
+            const modeControls = document.getElementById(`${currentMode}-controls`);
+            if (modeControls) {
+                modeControls.classList.add('active');
+            }
+            // Reset state with new mode
+            state = modes[currentMode].init();
+        });
+
+        document.getElementById('reset').addEventListener('click', () => {
+            state = modes[currentMode].init();
+        });
+
+        // Initialize
+        resizeCanvas();
+        state = modes.classic.init();
+        animate();
+    </script>
+</body>
+</html> 

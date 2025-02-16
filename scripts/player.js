@@ -3,11 +3,17 @@
 let currentTrackIndex = 0;
 let tracks = [];
 let audioPlayer, audioSource, currentTrackTitle;
+let originalTitle = document.title;
 
 // Load and set the current media
 function loadTrack(index) {
     currentTrackIndex = index;
     const track = tracks[currentTrackIndex];
+    
+    // Update browser tab title
+    const albumBand = document.getElementById("album-band").textContent;
+    const trackTitle = track.title;
+    document.title = `${albumBand} - ${trackTitle}`;
     
     // Show loading state
     const albumCover = document.getElementById('album-cover');
@@ -195,6 +201,7 @@ async function loadAlbum() {
         });
 
         setupPlayer();
+        setupAlbumCoverModal();
     } catch (error) {
         console.error("Error loading album:", error.message);
     }
@@ -297,6 +304,25 @@ function setupPlayer() {
                 break;
         }
     });
+
+    // Add event listener to restore title when playback ends
+    audioPlayer.addEventListener('ended', () => {
+        if (currentTrackIndex === tracks.length - 1) {
+            // Restore original title at end of playlist
+            document.title = originalTitle;
+        }
+    });
+
+    // Add event listener to update title on pause
+    audioPlayer.addEventListener('pause', () => {
+        document.title = originalTitle;
+    });
+
+    audioPlayer.addEventListener('play', () => {
+        const track = tracks[currentTrackIndex];
+        const albumBand = document.getElementById("album-band").textContent;
+        document.title = `${albumBand} - ${track.title}`;
+    });
 }
 
 // Initialize the album on page load
@@ -309,4 +335,38 @@ function updatePlayButton() {
 
 function updatePauseButton() {
     document.getElementById("play-button").textContent = ">";
+}
+
+// Add near the top with other initialization code
+function setupAlbumCoverModal() {
+    const albumCover = document.getElementById('album-cover');
+    
+    // Create modal elements if they don't exist
+    if (!document.getElementById('cover-modal')) {
+        const modal = document.createElement('div');
+        modal.id = 'cover-modal';
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <img id="modal-cover-image" src="" alt="Full size album cover">
+            </div>
+        `;
+        
+        // Add click handlers
+        modal.querySelector('.close-modal').onclick = () => modal.style.display = 'none';
+        modal.onclick = (e) => {
+            if (e.target === modal) modal.style.display = 'none';
+        };
+        
+        document.body.appendChild(modal);
+    }
+    
+    // Add click handler to album cover
+    albumCover.onclick = () => {
+        const modal = document.getElementById('cover-modal');
+        const modalImg = document.getElementById('modal-cover-image');
+        modalImg.src = albumCover.src;
+        modal.style.display = 'block';
+    };
 }

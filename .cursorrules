@@ -1,0 +1,91 @@
+# ar://playdead Cursor Rules
+
+# File Organization
+root_dirs:
+  - assets/      # Static assets, styles, images
+  - scripts/     # JavaScript modules
+  - tools/       # Utilities and setup tools
+  - examples/    # Reference examples
+
+# Naming Conventions
+naming:
+  files:
+    js: kebab-case
+    css: kebab-case
+    html: kebab-case
+  variables:
+    js: camelCase
+    css: kebab-case
+  functions:
+    js: camelCase
+  classes:
+    css: kebab-case
+
+# JavaScript Patterns
+javascript:
+  - Use vanilla JS without frameworks
+  - Declare variables at top of file scope
+  - Use 'let' for mutable variables, 'const' for immutable
+  - Add event listeners after DOM elements are guaranteed to exist
+  - Include descriptive comments for function purposes
+  - Use async/await for asynchronous operations
+  - Handle errors with try/catch blocks
+  - Add 'defer' attribute to script tags
+
+# HTML Patterns
+html:
+  - Include meta viewport tag for responsive design
+  - Use semantic HTML elements
+  - Include descriptive alt text for images
+  - Add title attributes to interactive elements
+  - Use BEM-style class naming
+  - Place scripts at end of body with defer
+
+# CSS Patterns
+css:
+  - Use CSS3 features
+  - Include transitions for interactive elements
+  - Define animations using @keyframes
+  - Use relative units (em, rem) for typography
+  - Include hover states for interactive elements
+  - Use CSS variables for theme colors
+  - Add box-shadow for depth
+  - Include responsive breakpoints
+
+# Media Support
+media:
+  audio:
+    - .mp3
+    - .flac
+    - .wav
+  video:
+    - .mp4
+    - .webm
+
+# Documentation
+documentation:
+  - Add descriptive comments for complex logic
+  - Include function purpose in comments
+  - Document event listeners and their purposes
+  - Maintain changelog.txt for version history
+  - Include setup instructions in README.md
+
+# Testing
+testing:
+  - Support #dev mode for feature testing
+  - Include error handling for media loading
+  - Handle missing assets gracefully
+  - Test across different gateway URLs
+
+# Arweave Integration
+arweave:
+  - Use gateway-aware content loading for all media
+  - Follow arweave/paths manifest structure
+  - Include fallback gateways
+  - Handle TXID validation
+  - Support both audio and video content types
+  - Structure album manifests with Tracks/ and Reels/ directories
+  - Include album metadata in album.json
+  - Support optional more_info.txt files
+  - Handle permanent storage considerations
+  - Include content type validation 

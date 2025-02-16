@@ -6,7 +6,7 @@ A permanent media player and catalog built for Arweave, focused on preserving au
 
 - 🎵 Music streaming from the permaweb
 - 📹 Video playback support
-- 🎨 Retro-cyberpunk themed interface
+- 🎨 Retro-psychedelic themed interface
 - 🌈 Interactive laser light show with multiple visualization modes
 - 📱 Responsive design that works on desktop and mobile
 - ⌨️ Keyboard controls for playback

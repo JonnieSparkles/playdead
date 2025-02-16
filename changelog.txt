@@ -1,5 +1,8 @@
-vX.X.X
+v4.2.0
+-added browser tab title to track title
+-album covers are now clickable to see full size
 -renamed wave laser show mode to ripple mode
+
 
 v4.1.0
 -laser show is now dynamic based on whether the audio or video is playing or paused

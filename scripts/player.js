@@ -201,6 +201,7 @@ async function loadAlbum() {
         });
 
         setupPlayer();
+        setupAlbumCoverModal();
     } catch (error) {
         console.error("Error loading album:", error.message);
     }
@@ -334,4 +335,38 @@ function updatePlayButton() {
 
 function updatePauseButton() {
     document.getElementById("play-button").textContent = ">";
+}
+
+// Add near the top with other initialization code
+function setupAlbumCoverModal() {
+    const albumCover = document.getElementById('album-cover');
+    
+    // Create modal elements if they don't exist
+    if (!document.getElementById('cover-modal')) {
+        const modal = document.createElement('div');
+        modal.id = 'cover-modal';
+        modal.className = 'modal';
+        modal.innerHTML = `
+            <div class="modal-content">
+                <span class="close-modal">&times;</span>
+                <img id="modal-cover-image" src="" alt="Full size album cover">
+            </div>
+        `;
+        
+        // Add click handlers
+        modal.querySelector('.close-modal').onclick = () => modal.style.display = 'none';
+        modal.onclick = (e) => {
+            if (e.target === modal) modal.style.display = 'none';
+        };
+        
+        document.body.appendChild(modal);
+    }
+    
+    // Add click handler to album cover
+    albumCover.onclick = () => {
+        const modal = document.getElementById('cover-modal');
+        const modalImg = document.getElementById('modal-cover-image');
+        modalImg.src = albumCover.src;
+        modal.style.display = 'block';
+    };
 }

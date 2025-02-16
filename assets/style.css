@@ -196,6 +196,7 @@ pre {
     display: block;
     opacity: 0;  /* Start invisible */
     animation: fadeIn 1s ease-in forwards;  /* Initial fade in */
+    cursor: pointer;
 }
 
 /* Only add gradient effects during playback, don't touch opacity */
@@ -521,4 +522,82 @@ pre {
 
 .contribute-page #app-logo.loading {
     animation: fadeIn 1s ease-in forwards;
+}
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    margin: auto;
+    display: block;
+    position: relative;
+    top: 50%;
+    transform: translateY(-50%);
+    max-width: 90%;
+    max-height: 90vh;
+}
+
+#modal-cover-image {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: 90vh;
+    display: block;
+    margin: auto;
+    border: 2px solid #444;
+    box-shadow: 0 0 20px rgba(255, 69, 0, 0.4);
+}
+
+.close-modal {
+    position: absolute;
+    right: 15px;
+    top: 15px;
+    color: #f1f1f1;
+    font-size: 40px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Update modal styles for mobile */
+@media (max-width: 768px) {
+    .modal-content {
+        max-width: 100%;
+        margin: 0;
+        padding: 10px;
+    }
+
+    #modal-cover-image {
+        max-height: 80vh; /* Slightly smaller on mobile to ensure close button visibility */
+        width: 100%;
+        object-fit: contain;
+    }
+
+    .close-modal {
+        right: 10px;
+        top: 10px;
+        font-size: 36px; /* Slightly smaller but still tappable */
+        padding: 10px; /* Larger tap target */
+    }
+}
+
+/* Add touch feedback */
+@media (hover: none) {
+    .close-modal:active {
+        color: #ff4500;
+        transform: scale(0.95);
+    }
+
+    #album-cover:active {
+        transform: scale(0.98); /* Subtle feedback on touch */
+    }
 }

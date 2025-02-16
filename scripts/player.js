@@ -3,11 +3,17 @@
 let currentTrackIndex = 0;
 let tracks = [];
 let audioPlayer, audioSource, currentTrackTitle;
+let originalTitle = document.title;
 
 // Load and set the current media
 function loadTrack(index) {
     currentTrackIndex = index;
     const track = tracks[currentTrackIndex];
+    
+    // Update browser tab title
+    const albumBand = document.getElementById("album-band").textContent;
+    const trackTitle = track.title;
+    document.title = `${albumBand} - ${trackTitle}`;
     
     // Show loading state
     const albumCover = document.getElementById('album-cover');
@@ -296,6 +302,25 @@ function setupPlayer() {
                 }
                 break;
         }
+    });
+
+    // Add event listener to restore title when playback ends
+    audioPlayer.addEventListener('ended', () => {
+        if (currentTrackIndex === tracks.length - 1) {
+            // Restore original title at end of playlist
+            document.title = originalTitle;
+        }
+    });
+
+    // Add event listener to update title on pause
+    audioPlayer.addEventListener('pause', () => {
+        document.title = originalTitle;
+    });
+
+    audioPlayer.addEventListener('play', () => {
+        const track = tracks[currentTrackIndex];
+        const albumBand = document.getElementById("album-band").textContent;
+        document.title = `${albumBand} - ${track.title}`;
     });
 }
 

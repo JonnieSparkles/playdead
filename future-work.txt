@@ -1,8 +1,6 @@
 IMMEDIATE TODO
 =============
--make browser tab title dynamic to show current track
--make the app fullscreen on mobile
--click album image to see full size
+-test mobile if the app works in fullscreen mode
 
 
 FUTURE WORK

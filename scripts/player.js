@@ -4,6 +4,7 @@ let currentTrackIndex = 0;
 let tracks = [];
 let audioPlayer, audioSource, currentTrackTitle;
 let originalTitle = document.title;
+let isFullscreen = false;
 
 // Load and set the current media
 function loadTrack(index) {
@@ -370,3 +371,78 @@ function setupAlbumCoverModal() {
         modal.style.display = 'block';
     };
 }
+
+// Add new function for fullscreen handling
+function setupFullscreenButton() {
+    // Only show fullscreen button on mobile
+    if (!window.matchMedia('(max-width: 768px)').matches) return;
+    
+    const controlsDiv = document.querySelector('.controls');
+    const fullscreenBtn = document.createElement('button');
+    fullscreenBtn.id = 'fullscreen-button';
+    fullscreenBtn.className = 'control-button';
+    fullscreenBtn.innerHTML = '⛶'; // Unicode fullscreen icon
+    
+    fullscreenBtn.onclick = toggleFullscreen;
+    controlsDiv.appendChild(fullscreenBtn);
+}
+
+async function toggleFullscreen() {
+    const root = document.documentElement;
+    
+    try {
+        if (!isFullscreen) {
+            // Different APIs for different browsers
+            if (root.requestFullscreen) {
+                await root.requestFullscreen();
+            } else if (root.webkitRequestFullscreen) {
+                await root.webkitRequestFullscreen();
+            } else if (root.mozRequestFullScreen) {
+                await root.mozRequestFullScreen();
+            }
+            
+            // Lock to portrait orientation if supported
+            if (screen.orientation?.lock) {
+                try {
+                    await screen.orientation.lock('portrait');
+                } catch (e) {
+                    console.log('Orientation lock not supported');
+                }
+            }
+            
+            document.getElementById('fullscreen-button').innerHTML = '⛶';
+        } else {
+            if (document.exitFullscreen) {
+                await document.exitFullscreen();
+            } else if (document.webkitExitFullscreen) {
+                await document.webkitExitFullscreen();
+            } else if (document.mozCancelFullScreen) {
+                await document.mozCancelFullScreen();
+            }
+            
+            document.getElementById('fullscreen-button').innerHTML = '⛶';
+        }
+        
+        isFullscreen = !isFullscreen;
+    } catch (err) {
+        console.error('Fullscreen error:', err);
+    }
+}
+
+// Add fullscreen change event listener
+document.addEventListener('fullscreenchange', handleFullscreenChange);
+document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+document.addEventListener('mozfullscreenchange', handleFullscreenChange);
+
+function handleFullscreenChange() {
+    isFullscreen = Boolean(
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.mozFullScreenElement
+    );
+    
+    document.body.classList.toggle('is-fullscreen', isFullscreen);
+}
+
+// Add to window.onload or your initialization code
+setupFullscreenButton();

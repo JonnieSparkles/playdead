@@ -601,3 +601,71 @@ pre {
         transform: scale(0.98); /* Subtle feedback on touch */
     }
 }
+
+/* Fullscreen styles */
+.is-fullscreen {
+    background: #000;
+    max-height: 100vh;
+    overflow: hidden;
+}
+
+.is-fullscreen #album-cover {
+    max-width: 85vw;
+    max-height: 40vh;
+    margin: 20px auto;
+}
+
+.is-fullscreen .controls {
+    position: fixed;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(10px);
+    z-index: 100;
+}
+
+#fullscreen-button {
+    font-size: 24px;
+    padding: 5px 10px;
+    background: transparent;
+    border: 2px solid #ff4500;
+    color: #ff4500;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+#fullscreen-button:hover {
+    background: #ff4500;
+    color: #000;
+}
+
+/* Mobile-specific fullscreen adjustments */
+@media (max-width: 768px) {
+    .is-fullscreen .album-info {
+        padding: 10px;
+    }
+    
+    .is-fullscreen #laser-visualizer {
+        height: 100vh;
+    }
+    
+    .is-fullscreen .controls {
+        padding: 20px;
+    }
+    
+    .is-fullscreen .modal {
+        height: 100vh;
+    }
+}
+
+/* Touch device optimizations */
+@media (hover: none) {
+    #fullscreen-button:active {
+        transform: scale(0.95);
+        background: #ff4500;
+        color: #000;
+    }
+}

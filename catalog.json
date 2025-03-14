@@ -1,6 +1,12 @@
 [
     {
         "type": "audio",
+        "title": "Live at Gathering of The Vibes on 2014-08-02",
+        "band": "Disco Biscuits",
+        "txid": "4z5biKkCOIB1Aej8AVfR_5F2CbtViL87yxfWEKAkJkc"
+    },   
+    {
+        "type": "audio",
         "title": "One Nature Benefit on 1999-04-27",
         "band": "Phil Lesh and Friends",
         "txid": "1X2ZHyXkSGk8WGDpUqZLsiRfQD9kFmpmEpTeKCfJGns"

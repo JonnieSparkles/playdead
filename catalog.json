@@ -1,6 +1,12 @@
 [
     {
         "type": "audio",
+        "title": "Live at Broad Brook Opera House on 2023-03-24",
+        "band": "Grateful Dub",
+        "txid": "U9ke_6p9klJ164o8zm73GOmH6DdBI6TPAYO52iUYUOA"
+    },      
+    {
+        "type": "audio",
         "title": "Live at Gathering of The Vibes on 2014-08-02",
         "band": "Disco Biscuits",
         "txid": "4z5biKkCOIB1Aej8AVfR_5F2CbtViL87yxfWEKAkJkc"

@@ -1,39 +1,12 @@
 IMMEDIATE TODO (this branch)
 =============
-## Phase 0: Audio Implementation
-- **Update These Albums**
-  - Live at Broad Brook on 2023-03-24
-  - Live at Gathering of The Vibes on 2014-08-02
-  - One Nature Benefit on 1999-04-27
-  - Live at Domefest on 2017-05-20
-  - UMBowl III at Park West on 2012-04-27
-  o Live at The Centrum on 1988-04-09
-  - Dear Jerry: Celebrating the Music of Jerry Garcia
-  - Goosemas XI, Night 2 - North Charleston Coliseum
-  - Nassau Coliseum on 1990-03-29, Set 2
-  - Oracle Park on 2023-07-16
-  o Oakland Auditorium on 1981-12-27
-  o Barton Hall on 1977-05-08
-
-  -update catalog.json
-  
-- **Update Setup Tools**
-  - Modify the album setup tool for the v2 format.
-  - Update validation scripts and add format conversion tools.
-  - Enhance preview functionality.
 
 ## Phase 4: Final Steps
 - **Version Update**
   - Update version numbers and changelog.
   - Tag the new release.
 
-- **Final Testing**
-  - Conduct end-to-end testing.
-  - Perform cross-browser testing.
-  - Test on mobile devices.
-  - Conduct performance testing.
 
--Change license type???
 
 
 ALBUM QUEUE

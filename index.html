@@ -30,7 +30,7 @@
 
     <!-- Load Tape Section -->
     <div id="load-tape" class="manual-album-entry">
-        <input id="manual-txid" type="text" placeholder="Load Tape TXID" />
+        <input id="manual-txid" type="text" placeholder="Load Tape ID" />
         <button id="load-album-button">
             <img src="./assets/icon-insert.png" alt="Load Tape">
         </button>
@@ -63,7 +63,7 @@
                 
                 albums.forEach((album, index) => {
                     const albumItem = document.createElement("a");
-                    albumItem.href = `player.html?album=${album.txid}`;
+                    albumItem.href = `player.html?album=${album.id}`;
                     albumItem.className = "album-item";
                     albumItem.style.setProperty('--animation-order', index);
                     albumItem.innerHTML = `
@@ -82,7 +82,7 @@
             if (txid) {
                 window.location.href = `player.html?album=${txid}`;
             } else {
-                alert("Please enter a valid TXID.");
+                alert("Please enter a valid ID.");
             }
         };
 

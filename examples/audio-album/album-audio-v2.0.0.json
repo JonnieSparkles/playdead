@@ -1,0 +1,20 @@
+{
+    "version": "2.0.0",
+    "type": "audio",
+    "band": "Example Band",
+    "title": "Example Title",
+    "date": "Example Date",
+    "source": "Example Source",
+    "cover": "Example Cover ID",
+    "info": "Example Info ID",
+    "tracks": [
+        {"number": 1, "title": "Example Track 1", "id": "Example TXID 1"},
+        {"number": 2, "title": "Example Track 2", "id": "Example TXID 2"},
+        {"number": 3, "title": "Example Track 3", "id": "Example TXID 3"},
+        {"number": 4, "title": "Example Track 4", "id": "Example TXID 4"},
+        {"number": 5, "title": "Example Track 5", "id": "Example TXID 5"},
+        {"number": 6, "title": "Example Track 6", "id": "Example TXID 6"},
+        {"number": 7, "title": "Example Track 7", "id": "Example TXID 7"},
+        {"number": 8, "title": "Example Track 8", "id": "Example TXID 8"}
+    ]
+}

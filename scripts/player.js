@@ -133,12 +133,13 @@ async function loadAlbum() {
             infoButton.onclick = () => window.open(`${gateway}/${albumData.info}`, "_blank");
         }
 
-        // Set up tracks
-        tracks = albumData.tracks.map(track => ({
-            title: track.title,
-            url: `${gateway}/${track.id}`,
-            number: track.number,
-            type: 'audio' // Default to audio for now, will be updated for video support later
+        // Set up tracks/reels based on album type
+        const mediaList = albumData.type === 'video' ? albumData.reels : albumData.tracks;
+        tracks = mediaList.map(item => ({
+            title: item.title,
+            url: `${gateway}/${item.id}`,
+            number: item.number,
+            type: albumData.type || 'audio' // Use album type or default to audio
         }));
 
         // Populate tracklist

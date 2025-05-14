@@ -13,6 +13,7 @@ naming:
     js: kebab-case
     css: kebab-case
     html: kebab-case
+    txt: kebab-case
   variables:
     js: camelCase
     css: kebab-case

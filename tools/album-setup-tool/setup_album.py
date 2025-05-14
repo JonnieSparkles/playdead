@@ -55,13 +55,14 @@ def create_new_album_json():
     
     # Create base album data with defaults from existing file
     album_data = {
-        "version": "1.1.0",
+        "version": "2.0.0",
         "type": media_type,
         "band": input(f"Band name ({existing_data.get('band', '')}): ") or existing_data.get('band', ''),
         "title": input(f"Album title ({existing_data.get('title', '')}): ") or existing_data.get('title', ''),
         "date": input(f"Date ({existing_data.get('date', '')}): ") or existing_data.get('date', ''),
         "source": input(f"Source ({existing_data.get('source', '')}): ") or existing_data.get('source', ''),
-        "info": "more_info.txt"
+        "cover": input(f"Cover TXID ({existing_data.get('cover', '')}): ") or existing_data.get('cover', ''),
+        "info": input(f"Info TXID ({existing_data.get('info', '')}): ") or existing_data.get('info', '')
     }
     
     # Only add the appropriate media list key
@@ -88,23 +89,39 @@ def create_blank_album_json():
         print("Please enter either 'audio' or 'video'")
     
     album_data = {
-        "version": "1.1.0",
+        "version": "2.0.0",
         "type": media_type,
         "band": "",
         "title": "",
         "date": "",
         "source": "",
-        "info": "more_info.txt"
+        "cover": "",
+        "info": ""
     }
     
     # Only add the appropriate media list
     if media_type == "video":
-        album_data["reels"] = [{"number": 1, "title": "Reel 1"}]
+        album_data["reels"] = [{"number": 1, "title": "Reel 1", "id": ""}]
     else:
-        album_data["tracks"] = [{"number": 1, "title": "Track 1"}]
+        album_data["tracks"] = [{"number": 1, "title": "Track 1", "id": ""}]
     
-    # Write the file
+    # Write the file with custom formatting
     json_str = json.dumps(album_data, indent=4, ensure_ascii=False)
+    
+    # Format tracks/reels to be on separate lines with proper indentation
+    if media_type == "video":
+        json_str = re.sub(
+            r'(\s+)"reels":\s+\[\s+{\s+"number":\s+(\d+),\s+"title":\s+"([^"]+)",\s+"id":\s+"([^"]*)"\s+}\s+\]',
+            r'\1"reels": [\n\1    {"number": \2, "title": "\3", "id": "\4"}\n\1]',
+            json_str
+        )
+    else:
+        json_str = re.sub(
+            r'(\s+)"tracks":\s+\[\s+{\s+"number":\s+(\d+),\s+"title":\s+"([^"]+)",\s+"id":\s+"([^"]*)"\s+}\s+\]',
+            r'\1"tracks": [\n\1    {"number": \2, "title": "\3", "id": "\4"}\n\1]',
+            json_str
+        )
+    
     with open('album.json', 'w', encoding='utf-8') as f:
         f.write(json_str)
     
@@ -134,7 +151,7 @@ def rename_from_files():
     existing_data = load_album_json()
     if existing_data:
         # Update with existing values if user just pressed enter
-        for key in ['band', 'title', 'date', 'source']:
+        for key in ['band', 'title', 'date', 'source', 'cover', 'info']:
             if not album_data[key]:
                 album_data[key] = existing_data.get(key, '')
     
@@ -142,8 +159,8 @@ def rename_from_files():
     media_type = "video" if media_dir == "Reels" else "audio"
     album_data["type"] = media_type
     
-    # Get track/reel names
-    print(f"\nEnter names for each file in {media_dir}/ (press Enter to keep current name):")
+    # Get track/reel names and TXIDs
+    print(f"\nEnter names and TXIDs for each file in {media_dir}/ (press Enter to keep current name):")
     media_list = []
     for i, filename in enumerate(current_files, 1):
         current_name = Path(filename).stem
@@ -154,10 +171,14 @@ def rename_from_files():
         if not new_name:
             new_name = clean_current
             
+        # Get TXID if available
+        txid = input(f"Enter TXID for {new_name} (press Enter to skip): ").strip()
+            
         # Add to appropriate list in album.json
         media_entry = {
             "number": i,
-            "title": new_name
+            "title": new_name,
+            "id": txid
         }
         media_list.append(media_entry)
 
@@ -166,15 +187,32 @@ def rename_from_files():
     else:
         album_data["tracks"] = media_list
 
-    # Write the updated album.json
+    # Write the updated album.json with custom formatting
     json_str = json.dumps(album_data, indent=4, ensure_ascii=False)
     
-    # Fix the formatting for tracks/reels to be on one line
-    json_str = re.sub(
-        r'(\s+){\s+"number":\s+(\d+),\s+"title":\s+"([^"]+)"\s+}',
-        r'\1{"number": \2, "title": "\3"}',
-        json_str
-    )
+    # Format tracks/reels to be on separate lines with proper indentation
+    if media_type == "video":
+        json_str = re.sub(
+            r'(\s+)"reels":\s+\[\s+(.*?)\s+\]',
+            lambda m: m.group(1) + '"reels": [\n' + m.group(1) + '    ' + re.sub(
+                r'{\s+"number":\s+(\d+),\s+"title":\s+"([^"]+)",\s+"id":\s+"([^"]*)"\s+}',
+                r'{"number": \1, "title": "\2", "id": "\3"}',
+                m.group(2)
+            ).replace('}, {', '},\n' + m.group(1) + '    {') + '\n' + m.group(1) + ']',
+            json_str,
+            flags=re.DOTALL
+        )
+    else:
+        json_str = re.sub(
+            r'(\s+)"tracks":\s+\[\s+(.*?)\s+\]',
+            lambda m: m.group(1) + '"tracks": [\n' + m.group(1) + '    ' + re.sub(
+                r'{\s+"number":\s+(\d+),\s+"title":\s+"([^"]+)",\s+"id":\s+"([^"]*)"\s+}',
+                r'{"number": \1, "title": "\2", "id": "\3"}',
+                m.group(2)
+            ).replace('}, {', '},\n' + m.group(1) + '    {') + '\n' + m.group(1) + ']',
+            json_str,
+            flags=re.DOTALL
+        )
     
     with open('album.json', 'w', encoding='utf-8') as f:
         f.write(json_str)
@@ -238,27 +276,38 @@ def create_album_structure():
     
     # Create blank album.json with the chosen type
     album_data = {
-        "version": "1.1.0",
+        "version": "2.0.0",
         "type": media_type,
         "band": "",
         "title": "",
         "date": "",
         "source": "",
-        "info": "more_info.txt"
+        "cover": "",
+        "info": ""
     }
     
     # Add appropriate media list
     if media_type == "video":
-        album_data["reels"] = [{"number": 1, "title": "Reel 1"}]
+        album_data["reels"] = [{"number": 1, "title": "Reel 1", "id": ""}]
     else:
-        album_data["tracks"] = [{"number": 1, "title": "Track 1"}]
+        album_data["tracks"] = [{"number": 1, "title": "Track 1", "id": ""}]
     
+    # Write the file with custom formatting
     json_str = json.dumps(album_data, indent=4, ensure_ascii=False)
-    json_str = re.sub(
-        r'(\s+){\s+"number":\s+(\d+),\s+"title":\s+"([^"]+)"\s+}',
-        r'\1{"number": \2, "title": "\3"}',
-        json_str
-    )
+    
+    # Format tracks/reels to be on separate lines with proper indentation
+    if media_type == "video":
+        json_str = re.sub(
+            r'(\s+)"reels":\s+\[\s+{\s+"number":\s+(\d+),\s+"title":\s+"([^"]+)",\s+"id":\s+"([^"]*)"\s+}\s+\]',
+            r'\1"reels": [\n\1    {"number": \2, "title": "\3", "id": "\4"}\n\1]',
+            json_str
+        )
+    else:
+        json_str = re.sub(
+            r'(\s+)"tracks":\s+\[\s+{\s+"number":\s+(\d+),\s+"title":\s+"([^"]+)",\s+"id":\s+"([^"]*)"\s+}\s+\]',
+            r'\1"tracks": [\n\1    {"number": \2, "title": "\3", "id": "\4"}\n\1]',
+            json_str
+        )
     
     with open('album.json', 'w', encoding='utf-8') as f:
         f.write(json_str)

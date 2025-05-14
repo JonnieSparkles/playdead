@@ -1,0 +1,30 @@
+{
+    "version": "2.0.0",
+    "type": "audio",
+    "band": "Grateful Dead",
+    "title": "Barton Hall, Cornell University",
+    "date": "May 8, 1977",
+    "source": "Audience recording by Jerry Moore, provided via Archive.org",
+    "cover": "tiWU7OboIBZjjVgS-mVS8UJXjVp_V-Jcdej4abBkigE",
+    "info": "eMddZZxKH0a3pGOpXdGqi8Dj9tSA2apcDwGdAtfxTRE",
+    "tracks": [
+        {"number": 1, "title": "New Minglewood Blues", "id": "Woxnwo73PGW3wmULWZrwelo_vbDzaT0E1Q8JVq44Jqk"},
+        {"number": 2, "title": "Loser", "id": "s-kAe5Ec_gPRd-x7pccXRo4eFeavFDabb61EaTySmJQ"},
+        {"number": 3, "title": "El Paso", "id": "FCxgT5mzq8I2gMcliXNqNrRSxjDJD37ZzW6UHL3JttM"},
+        {"number": 4, "title": "They Love Each Other", "id": "aCQN0OaJUksD2mvtQx4-VWN4gTNnsl1bS3pKk1u8pMA"},
+        {"number": 5, "title": "Jack Straw", "id": "JCtHrHLT0LrqAciFdEPUYQWzdOyfwA5L5dfRKQCtGvs"},
+        {"number": 6, "title": "Deal", "id": "kjvx8clFcrCGQxGHt8wmCasCFzltyz6iTPFj8TrwaUg"},
+        {"number": 7, "title": "Lazy Lightnin' > Supplication", "id": "YyIOmuLVyzLOBjUM76DbxdCupSib-zT2dUCQsHMgUBs"},
+        {"number": 8, "title": "Brown Eyed Women", "id": "SR5CnxFt3Sd8-symZ4jTC0Yfd4MlJ6eJC-A3Oha2-Zc"},
+        {"number": 9, "title": "Mama Tried", "id": "wNQ32sGOiuyy8Y1mBYgWw3lGsit3Qj-BNGx_gb8A_ac"},
+        {"number": 10, "title": "Row Jimmy", "id": "PTkZJN1u0lIaRuQSwTPepcQOSSSIn3u9-YyRRIy6iPM"},
+        {"number": 11, "title": "Dancing In The Street", "id": "0y-BKHTSRuG8qVjZTXGCE2w-MDao1xliAuA3cayzqSk"},
+        {"number": 12, "title": "Scarlet Begonias > Fire on the Mountain", "id": "OlWxNTtgnkP1wvbF-gHAJKRoW1lCMNYSZebCoAVSxoI"},
+        {"number": 13, "title": "Estimated Prophet", "id": "NZ7ov7NbWEuc7V87KfJYjgRU2r-N8EeA5ErWaW-abXw"},
+        {"number": 14, "title": "Saint Stephen >", "id": "dH0myLwoFHBXGzNc7pYh0l05wGdv-Hfnn4W2BkyxD64"},
+        {"number": 15, "title": "Not Fade Away >", "id": "b683onaFNy2CUpvBmqLKybsGSvme10KdmFNSXK2qcWI"},
+        {"number": 16, "title": "Saint Stephen >", "id": "ITUyObT9NhaO8ThR_nmADcd0jHdio1JwjN1DlHE7J0U"},
+        {"number": 17, "title": "Morning Dew", "id": "E6y8Xkgo-71TFdT-R6xwKduEDnx1dHcHZg4bjKLbdcw"},
+        {"number": 18, "title": "One More Saturday Night", "id": "6Dr_W2qA-3pevESo3LEVwgwt-Nfmi5XBhuTLTcF3PFM"}
+    ]
+}

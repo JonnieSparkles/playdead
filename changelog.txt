@@ -1,3 +1,8 @@
+v5.0.0
+-
+
+
+
 v4.2.0
 -browser tab title now shows current band and track
 -album covers are now clickable to see full size image

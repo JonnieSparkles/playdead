@@ -1,4 +1,99 @@
-IMMEDIATE TODO
+IMMEDIATE TODO (this branch)
+=============
+## Phase 1: Audio Implementation
+- **Update These Albums**
+  - Live at Broad Brook on 2023-03-24
+  - Live at Gathering of The Vibes on 2014-08-02
+  - One Nature Benefit on 1999-04-27
+  - Live at Domefest on 2017-05-20
+  - UMBowl III at Park West on 2012-04-27
+  - Live at The Centrum on 1988-04-09
+  - Dear Jerry: Celebrating the Music of Jerry Garcia
+  - Goosemas XI, Night 2 - North Charleston Coliseum
+  - Nassau Coliseum on 1990-03-29, Set 2
+  - Oracle Park on 2023-07-16
+  - Oakland Auditorium on 1981-12-27
+  - Barton Hall on 1977-05-08
+
+- **Update Player.js**
+  - Modify the `loadAlbum()` function to accommodate the new format.
+  - Eliminate any manifest-related code.
+  - Conduct tests using the test album to ensure:
+    - Album metadata loads correctly.
+    - Track list populates as expected.
+    - Audio playback functions properly.
+    - Cover image is displayed.
+    - Info button operates correctly.
+
+- **Testing & Validation**
+  - Test with albums of varying sizes.
+  - Verify error handling mechanisms.
+  - Check gateway fallback behavior.
+  - Test keyboard controls.
+  - Ensure mobile responsiveness.
+
+## Phase 2: Video Implementation
+- **Update Album Format**
+  - Integrate video track support into the v2 format.
+  - Create a test video album and upload it to Arweave.
+
+- **Extend Player.js**
+  - Implement video track detection.
+  - Update track loading logic to support videos.
+  - Modify player switching logic.
+  - Test video playback to ensure:
+    - Video/audio switching functions correctly.
+    - Video controls are operational.
+    - Cover image behavior is appropriate with videos.
+    - Video sizing is responsive.
+
+- **Testing & Validation**
+  - Test albums containing both audio and video.
+  - Verify video quality settings.
+  - Test various video formats.
+  - Check mobile video playback.
+
+## Phase 3: Documentation & Tools
+- **Update README.md**
+  - Document the new album format.
+  - Update the features list and add version information.
+  - Revise usage instructions.
+
+- **Update Contribution Guide**
+  - Document the new album structure.
+  - Add format specifications and update upload instructions.
+  - Include validation requirements.
+
+- **Update Examples**
+  - Create new example albums using the v2 format.
+  - Include both audio and video examples.
+  - Add example `album.json` files and update example documentation.
+
+- **Update Setup Tools**
+  - Modify the album setup tool for the v2 format.
+  - Update validation scripts and add format conversion tools.
+  - Enhance preview functionality.
+
+## Phase 4: Final Steps
+- **Version Update**
+  - Update version numbers and changelog.
+  - Tag the new release.
+
+- **Migration Guide**
+  - Create a guide for converting from v1 to v2.
+  - Document any breaking changes.
+  - Add a troubleshooting section.
+
+- **Final Testing**
+  - Conduct end-to-end testing.
+  - Perform cross-browser testing.
+  - Test on mobile devices.
+  - Conduct performance testing.
+
+
+
+
+ALBUM QUEUE
 =============
 -add catalog requests: 
      https://archive.org/details/pppp2015-10-30/pppp2015-10-30_10-shakedownLottaLoveLiquid.flac

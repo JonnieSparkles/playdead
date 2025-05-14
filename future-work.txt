@@ -18,25 +18,7 @@ IMMEDIATE TODO (this branch)
 ## Phase 1: Done
 
 ## Phase 2: Video Implementation
-- **Update Album Format**
-  - Integrate video track support into the v2 format.
-  - Create a test video album and upload it to Arweave.
 
-- **Extend Player.js**
-  - Implement video track detection.
-  - Update track loading logic to support videos.
-  - Modify player switching logic.
-  - Test video playback to ensure:
-    - Video/audio switching functions correctly.
-    - Video controls are operational.
-    - Cover image behavior is appropriate with videos.
-    - Video sizing is responsive.
-
-- **Testing & Validation**
-  - Test albums containing both audio and video.
-  - Verify video quality settings.
-  - Test various video formats.
-  - Check mobile video playback.
 
 ## Phase 3: Documentation & Tools
 - **Update README.md**
@@ -49,11 +31,6 @@ IMMEDIATE TODO (this branch)
   - Add format specifications and update upload instructions.
   - Include validation requirements.
 
-- **Update Examples**
-  - Create new example albums using the v2 format.
-  - Include both audio and video examples.
-  - Add example `album.json` files and update example documentation.
-
 - **Update Setup Tools**
   - Modify the album setup tool for the v2 format.
   - Update validation scripts and add format conversion tools.
@@ -64,18 +41,13 @@ IMMEDIATE TODO (this branch)
   - Update version numbers and changelog.
   - Tag the new release.
 
-- **Migration Guide**
-  - Create a guide for converting from v1 to v2.
-  - Document any breaking changes.
-  - Add a troubleshooting section.
-
 - **Final Testing**
   - Conduct end-to-end testing.
   - Perform cross-browser testing.
   - Test on mobile devices.
   - Conduct performance testing.
 
-
+-Change license type???
 
 
 ALBUM QUEUE

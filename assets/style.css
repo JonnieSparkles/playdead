@@ -714,7 +714,7 @@ pre {
 .video-cassette {
     background: linear-gradient(135deg, #1a1a2a, #2a2a3a); /* Gradient background for video */
     border: 2px solid #ff4500; /* Orange border for video */
-    box-shadow: 0 0 15px rgba(255, 69, 0, 0.2); /* Subtle orange glow */
+    box-shadow: 0 4px 16px rgba(255, 69, 0, 0.25), 0 4px 8px rgba(0,0,0,0.3); /* Add strong shadow for video */
 }
 
 .video-cassette .cassette-window {
@@ -793,4 +793,36 @@ pre {
 .audio-cassette .cassette-label {
     background: #1a1a1a;
     border: 1px solid #444;
+}
+
+@media (max-width: 600px) {
+    .cassette-grid {
+        gap: 0.75rem;
+        padding: 0.5rem;
+    }
+    .cassette-body {
+        padding: 8px;
+    }
+    .cassette-window {
+        padding: 4px;
+        margin-bottom: 7px;
+    }
+    .cassette-label {
+        padding: 6px;
+        margin-bottom: 5px;
+    }
+    .cassette-band {
+        font-size: 1em;
+    }
+    .cassette-title {
+        font-size: 0.85em;
+    }
+    .cassette-date {
+        font-size: 0.7em;
+    }
+    .media-icon {
+        width: 36px;
+        height: 36px;
+        font-size: 1.5em;
+    }
 }

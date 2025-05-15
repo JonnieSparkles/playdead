@@ -1,74 +1,74 @@
 [
     {
         "type": "audio",
-        "title": "Live at Broad Brook on 2023-03-24",
         "band": "Grateful Dub",
+        "title": "Live at Broad Brook on 2023-03-24",
         "id": "4U7TOtaiLachWXH23OMCn_GyB53h_-wz_DTZVHQO0zc"
     },      
     {
         "type": "audio",
-        "title": "Live at Gathering of The Vibes on 2014-08-02",
         "band": "Disco Biscuits",
+        "title": "Live at Gathering of The Vibes on 2014-08-02",
         "id": "Qnqzl_WI5K8pGwODHapQ3tNTOKOFFgWdyJwriIgp5Tw"
     },   
     {
         "type": "audio",
-        "title": "One Nature Benefit on 1999-04-27",
         "band": "Phil Lesh and Friends",
+        "title": "One Nature Benefit on 1999-04-27",
         "id": "_7PF_sg54n1eMl5ijDO1fexpCdjODN1jpYziqakIVqY"
     },   
     {
         "type": "audio",
-        "title": "Live at Domefest on 2017-05-20",
         "band": "Pigeons Playing Ping Pong",
+        "title": "Live at Domefest on 2017-05-20",
         "id": "4qQ9baEi5CEDMHb-BUAKJWTBgVZe7BP2mmFBZvjFZgs"
     },   
     {
         "type": "audio",
-        "title": "UMBowl III at Park West on 2012-04-27",
         "band": "Umphrey's McGee",
+        "title": "UMBowl III at Park West on 2012-04-27",
         "id": "K1K5WmzUwsFwEw4t8adZYQmBz21mVUVZXzOIOMARNsk"
     },   
     {
         "type": "video",
-        "title": "Live at The Centrum on 1988-04-09",
         "band": "Grateful Dead",
+        "title": "Live at The Centrum on 1988-04-09",
         "id": "lZPkxzP9j0F1c4EyoF0pSAMVfQSv5C4FOyxS-Mr5veM"
     },   
     {
         "type": "audio",
-        "title": "Dear Jerry: Celebrating the Music of Jerry Garcia",
         "band": "Various",
+        "title": "Dear Jerry: Celebrating the Music of Jerry Garcia",
         "id": "tKvdRfIbf6oi4JAFTddqUSwwMOMXLpLd4DvBxyGEFHo"
     },      
     {
         "type": "audio",
-        "title": "Goosemas XI, Night 2 - North Charleston Coliseum",
         "band": "Goose",
-        "id": "HzOQdtO0M0qUpvTJx4uBP86JZQIvDiWnmwEdxUuX6UY"
+        "title": "Goosemas XI, Night 2 - North Charleston Coliseum",
+        "id": "HzOQdtO0M0qUpvTJx4uBP86JZQIvDiWnmwEdxUuX6Y"
     },   
     {
         "type": "audio",
-        "title": "Nassau Coliseum on 1990-03-29, Set 2",
         "band": "Grateful Dead",
+        "title": "Nassau Coliseum on 1990-03-29, Set 2",
         "id": "acAsQtQVNtltT_of3KZODoxjgQNNSvA1PQT1Can8Adg"
     },    
     {
         "type": "audio",
-        "title": "Oracle Park on 2023-07-16",
         "band": "Dead & Company",
+        "title": "Oracle Park on 2023-07-16",
         "id": "pcliTpcI9XGrgBjEz77y_tk1caKq9XVHrqDoTogOzLs"
     },
     {
         "type": "audio",
-        "title": "Oakland Auditorium on 1981-12-27",
         "band": "Grateful Dead",
+        "title": "Oakland Auditorium on 1981-12-27",
         "id": "AqvDy8QXCo0ijYjear6XTy-LJgjKJC33d79DheDiLnY"
     },   
     {
         "type": "audio",
-        "title": "Barton Hall on 1977-05-08",
         "band": "Grateful Dead",
+        "title": "Barton Hall on 1977-05-08",
         "id": "rY5Qx1pAsMdlnQiGBWf2HdNK-RDL3LGyICud7dT1W1A"
     }
 ]

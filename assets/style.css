@@ -826,3 +826,40 @@ pre {
         font-size: 1.5em;
     }
 }
+
+@keyframes cassette-bounce {
+    0% { transform: scale(1) translateY(0); }
+    20% { transform: scale(0.96, 1.04) translateY(-2px); }
+    40% { transform: scale(1.04, 0.96) translateY(2px); }
+    60% { transform: scale(0.98, 1.02) translateY(-1px); }
+    80% { transform: scale(1.02, 0.98) translateY(1px); }
+    100% { transform: scale(1) translateY(0); }
+}
+
+.cassette.bounce {
+    animation: cassette-bounce 0.4s cubic-bezier(.68,-0.55,.27,1.55);
+}
+
+@keyframes cassette-expand-fill {
+    0% {
+        transform: scale(1) translateY(0);
+        z-index: 1;
+        opacity: 1;
+    }
+    80% {
+        transform: scale(2.5) translateY(-10vh);
+        z-index: 1000;
+        opacity: 1;
+        box-shadow: 0 0 80px 40px rgba(255,69,0,0.25);
+    }
+    100% {
+        transform: scale(8) translateY(-20vh);
+        z-index: 1000;
+        opacity: 0.2;
+        box-shadow: 0 0 120px 80px rgba(255,69,0,0.25);
+    }
+}
+
+.cassette.expand-fill {
+    animation: cassette-expand-fill 0.6s cubic-bezier(.68,-0.55,.27,1.55) forwards;
+}

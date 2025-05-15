@@ -46,7 +46,7 @@
 
     <footer>
         <p><strong>ar://playdead</strong> by @JonnieSparkles</p>
-        <a href="./changelog.txt" target="_blank">v5.0.0</a>
+        <a href="./changelog.txt" target="_blank">v5.X.X</a>
     </footer>
 
     <script>
@@ -92,6 +92,24 @@
                         `;
                         
                         albumList.appendChild(cassette);
+
+                        // Add expand-fill animation on click, centered on album cover (pixel-based transform-origin)
+                        cassette.addEventListener('click', function(e) {
+                            e.preventDefault(); // Prevent immediate navigation
+                            const cassetteWindow = cassette.querySelector('.cassette-window');
+                            const cassetteRect = cassette.getBoundingClientRect();
+                            const windowRect = cassetteWindow.getBoundingClientRect();
+                            // Calculate the center of the cover image relative to the cassette card (in pixels)
+                            const originX = (windowRect.left - cassetteRect.left) + windowRect.width / 2;
+                            const originY = (windowRect.top - cassetteRect.top) + windowRect.height / 2;
+                            cassette.style.transformOrigin = `${originX}px ${originY}px`;
+                            cassette.classList.remove('expand-fill'); // Reset if already animating
+                            void cassette.offsetWidth; // Force reflow
+                            cassette.classList.add('expand-fill');
+                            setTimeout(() => {
+                                window.location.href = cassette.href;
+                            }, 600); // Match animation duration
+                        });
                     } catch (error) {
                         console.error(`Error loading album ${album.id}:`, error);
                     }

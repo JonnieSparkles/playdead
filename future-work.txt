@@ -1,22 +1,9 @@
-IMMEDIATE TODO (this branch)
-=============
-
-## Phase 4: Final Steps
-- **Version Update**
-  - Update version numbers and changelog.
-  - Tag the new release.
-
-
-
-
 ALBUM QUEUE
 =============
--add catalog requests: 
-     https://archive.org/details/pppp2015-10-30/pppp2015-10-30_10-shakedownLottaLoveLiquid.flac
-     
-     Video Set 1: https://archive.org/details/1980-03-01Early-JerryGarciaBand-CapitolTheatrePassaicNJ
-     Video Set 2: https://archive.org/details/1980-03-01-JerryGarciaBand-CapitolTheatrePassaicNJ
 
+https://archive.org/details/pppp2015-10-30/pppp2015-10-30_10-shakedownLottaLoveLiquid.flac
+Video Set 1: https://archive.org/details/1980-03-01Early-JerryGarciaBand-CapitolTheatrePassaicNJ
+Video Set 2: https://archive.org/details/1980-03-01-JerryGarciaBand-CapitolTheatrePassaicNJ
 
 
 FUTURE WORK

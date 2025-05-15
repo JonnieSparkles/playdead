@@ -36,6 +36,52 @@ Click the "Laser Show" button to cycle through visualization modes:
 - Classic mode: Moving laser beams with dynamic color transitions
 - Spotlight mode: Simulated stage lighting with fog effects
 
+## Album Format (v2)
+
+The new v2 album format simplifies the structure by combining all metadata and file references into a single `album.json` file:
+
+### Audio Album Example
+```json
+{
+    "version": "2.0.0",
+    "type": "audio",
+    "band": "Band Name",
+    "title": "Album Title",
+    "date": "YYYY-MM-DD",
+    "source": "Source information",
+    "cover": "TXID_OF_COVER_IMAGE",
+    "info": "TXID_OF_INFO_FILE",
+    "tracks": [
+        {
+            "number": 1,
+            "title": "Track Title",
+            "id": "TXID_OF_TRACK"
+        }
+    ]
+}
+```
+
+### Video Album Example
+```json
+{
+    "version": "2.0.0",
+    "type": "video",
+    "band": "Band Name",
+    "title": "Album Title",
+    "date": "YYYY-MM-DD",
+    "source": "Source information",
+    "cover": "TXID_OF_COVER_IMAGE",
+    "info": "TXID_OF_INFO_FILE",
+    "reels": [
+        {
+            "number": 1,
+            "title": "Video Title",
+            "id": "TXID_OF_VIDEO"
+        }
+    ]
+}
+```
+
 ## Contributing
 
 Want to add content to ar://playdead? Check out the [contribution guide](contribute.html) for:

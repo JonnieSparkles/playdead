@@ -1,0 +1,13 @@
+{
+    "version": "2.0.0",
+    "type": "video",
+    "band": "Example Band",
+    "title": "Example Title",
+    "date": "Example Date",
+    "source": "Example Source",
+    "cover": "Example Cover ID",
+    "info": "Example Info ID",
+    "reels": [
+        {"number": 1, "title": "Example Reel 1", "id": "Example TXID 1"}
+    ]
+}

@@ -1,8 +1,9 @@
-IMMEDIATE TODO
+ALBUM QUEUE
 =============
--make browser tab title dynamic to show current track
--make the app fullscreen on mobile
--click album image to see full size
+
+https://archive.org/details/pppp2015-10-30/pppp2015-10-30_10-shakedownLottaLoveLiquid.flac
+Video Set 1: https://archive.org/details/1980-03-01Early-JerryGarciaBand-CapitolTheatrePassaicNJ
+Video Set 2: https://archive.org/details/1980-03-01-JerryGarciaBand-CapitolTheatrePassaicNJ
 
 
 FUTURE WORK

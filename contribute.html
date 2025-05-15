@@ -57,16 +57,17 @@
         <p><strong>Audio Album:</strong></p>
         <pre>
 {
-    "version": "1.1.0",
+    "version": "2.0.0",
     "type": "audio",
     "band": "Band Name",
     "title": "Album Title",
     "date": "YYYY-MM-DD",
     "source": "Source information (e.g., Audience recording by...)",
-    "info": "more_info.txt",
+    "cover": "TXID_OF_COVER_IMAGE",
+    "info": "TXID_OF_INFO_FILE",
     "tracks": [
-        {"number": 1, "title": "Example Track 1"},
-        {"number": 2, "title": "Example Track 2"}
+        {"number": 1, "title": "Example Track 1", "id": "TXID_OF_TRACK_1"},
+        {"number": 2, "title": "Example Track 2", "id": "TXID_OF_TRACK_2"}
     ]
 }
         </pre>
@@ -75,16 +76,17 @@
         <p><strong>Video Album:</strong></p>
         <pre>
 {
-    "version": "1.1.0",
+    "version": "2.0.0",
     "type": "video",
     "band": "Band Name",
     "title": "Album Title",
     "date": "YYYY-MM-DD",
     "source": "Source information (e.g., Audience recording by...)",
-    "info": "more_info.txt",
+    "cover": "TXID_OF_COVER_IMAGE",
+    "info": "TXID_OF_INFO_FILE",
     "reels": [
-        {"number": 1, "title": "Complete Show Part 1"},
-        {"number": 2, "title": "Complete Show Part 2"}
+        {"number": 1, "title": "Complete Show Part 1", "id": "TXID_OF_VIDEO_1"},
+        {"number": 2, "title": "Complete Show Part 2", "id": "TXID_OF_VIDEO_2"}
     ]
 }
         </pre>
@@ -130,28 +132,29 @@
                 </ul>
             </li>
             <li><strong>Upload to Arweave:</strong>
-                Use your preferred Arweave client (e.g., <a href="https://ardrive.io" target="_blank">ArDrive</a>) to upload the album folder.
+                <ul>
+                    <li>Upload each file individually to Arweave using your preferred client (e.g., <a href="https://ardrive.io" target="_blank">ArDrive</a>)</li>
+                    <li>Make note of the TXID for each uploaded file:
+                        <ul>
+                            <li>Consider using ArDrive's export feature to manage your uploads efficiently</li>
+                            <li>Or create a manifest file to keep track of all TXIDs</li>
+                        </ul>
+                    </li>
+                    <li>Update your album.json with the TXIDs for:
+                        <ul>
+                            <li>Album cover image</li>
+                            <li>Info file</li>
+                            <li>Each track/reel file</li>
+                            <li>Leverage AI tools to automate the process of recording TXIDs</li>
+                        </ul>
+                    </li>
+                </ul>
             </li>
-            <li><strong>Create the Album Manifest:</strong>
-                <p>ArDrive will automatically generate the manifest when uploading a folder. The structure will look like this:</p>
-                <pre>
-{
-    "manifest": "arweave/paths",
-    "version": "0.1.0",
-    "index": {
-        "path": "album.json"
-    },
-    "paths": {
-        "album.json": { "id": "TXID_OF_ALBUM_JSON" },
-        "album_cover.png": { "id": "TXID_OF_ALBUM_COVER" },
-        "Tracks/01 - Track Name.mp3": { "id": "TXID_OF_TRACK" },
-        "more_info.txt": { "id": "TXID_OF_INFO_FILE" }
-    }
-}
-                </pre>
-            </li>
-            <li><strong>Share the Manifest TXID:</strong>
-                Provide the <code>album_manifest</code> TXID for inclusion in the catalog.
+            <li><strong>Share Your Album:</strong>
+                <ul>
+                    <li>Upload your final album.json to Arweave</li>
+                    <li>Share the TXID of your album.json for inclusion in the catalog</li>
+                </ul>
             </li>
         </ol>
     </div>

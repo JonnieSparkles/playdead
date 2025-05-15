@@ -107,86 +107,42 @@ async function loadAlbum() {
 
     try {
         const gateway = detectGatewayDomain();
-        const manifestUrl = `${gateway}/raw/${albumTxid}/`;
-        const manifestResponse = await fetch(manifestUrl);
-        const manifest = await manifestResponse.json();
-
-        const albumJsonUrl = `${gateway}/${albumTxid}/album.json`;
+        const albumJsonUrl = `${gateway}/${albumTxid}`;
         const albumResponse = await fetch(albumJsonUrl);
         const albumData = await albumResponse.json();
 
-        const albumCoverId = manifest.paths["album_cover.png"]?.id;
+        // Set album cover
         const albumCover = document.getElementById("album-cover");
         albumCover.style.animation = 'none';  // Reset animation
         albumCover.offsetHeight;  // Trigger reflow
         albumCover.style.animation = null;  // Re-enable animation
-        albumCover.src = albumCoverId
-            ? `${gateway}/${albumCoverId}`
+        albumCover.src = albumData.cover
+            ? `${gateway}/${albumData.cover}`
             : "./assets/default-cover.png";
+
+        // Set album metadata
         document.getElementById("album-band").textContent = albumData.band || "Unknown Band";
         document.getElementById("album-title").textContent = albumData.title || "Untitled Album";
         document.getElementById("date-value").textContent = albumData.date || "Unknown Date";
         document.getElementById("source-value").textContent = albumData.source || "Unknown Source";
 
+        // Handle info button
         if (albumData.info) {
             const infoButton = document.getElementById("info-button");
-            if (albumData.info.endsWith(".txt")) {
-                const infoId = manifest.paths[albumData.info]?.id;
-                infoButton.style.display = infoId ? "inline-block" : "none";
-                infoButton.onclick = () => window.open(`${gateway}/${infoId}`, "_blank");
-            } else {
-                infoButton.style.display = "inline-block";
-                infoButton.onclick = () => alert(albumData.info);
-            }
+            infoButton.style.display = "inline-block";
+            infoButton.onclick = () => window.open(`${gateway}/${albumData.info}`, "_blank");
         }
 
-        // Modified track loading to handle videos
-        const mediaEntries = Object.keys(manifest.paths).filter(path => 
-            path.startsWith("Tracks/") || path.startsWith("Reels/")
-        );
-        
-        const manifestTracks = mediaEntries.map((path) => {
-            const filename = path.split("/").pop();
-            const isVideo = path.startsWith("Reels/");
-            
-            // Improved number parsing for both video and audio files
-            let trackNumber;
-            if (isVideo) {
-                // For video files, try to match "1 - ", "1-", "1.", etc.
-                const numberMatch = filename.match(/^(\d+)[\s-_.]/);
-                trackNumber = numberMatch ? parseInt(numberMatch[1]) : 1;  // Default to 1 for videos
-            } else {
-                // For audio files, keep existing logic
-                trackNumber = parseInt(filename.match(/^\d+/)) || 0;
-            }
+        // Set up tracks/reels based on album type
+        const mediaList = albumData.type === 'video' ? albumData.reels : albumData.tracks;
+        tracks = mediaList.map(item => ({
+            title: item.title,
+            url: `${gateway}/${item.id}`,
+            number: item.number,
+            type: albumData.type || 'audio' // Use album type or default to audio
+        }));
 
-            return {
-                title: filename
-                    .replace(/^\d+[\s-_.]+/, '')  // Remove leading numbers and separators
-                    .replace(/\.[^/.]+$/, ''),     // Remove file extension
-                url: `${gateway}/${manifest.paths[path].id}`,
-                number: trackNumber,
-                type: isVideo ? 'video' : 'audio'
-            };
-        }).sort((a, b) => a.number - b.number);
-
-        tracks = manifestTracks.map(manifestTrack => {
-            // Look for matching track in album.json
-            const albumTrack = manifestTrack.type === 'video' 
-                ? albumData.reels?.find(t => t.number === manifestTrack.number)
-                : albumData.tracks?.find(t => t.number === manifestTrack.number);
-
-            console.log('Matching:', manifestTrack, 'with:', albumTrack); // Debug log
-
-            return {
-                title: albumTrack?.title || manifestTrack.title,
-                url: manifestTrack.url,
-                number: albumTrack?.number || manifestTrack.number,
-                type: manifestTrack.type,
-                duration: albumTrack?.duration
-            };
-        });
-
+        // Populate tracklist
         const tracklistBody = document.getElementById("tracklist-body");
         tracklistBody.innerHTML = "";
         tracks.forEach((track, index) => {

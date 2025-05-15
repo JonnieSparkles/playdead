@@ -262,6 +262,21 @@
                 }
             };
             document.getElementById("modal-eject-button").onclick = closePlayerModal;
+            // Add album cover animation logic
+            modalAudioPlayer.addEventListener('play', () => {
+                document.getElementById("modal-play-button").textContent = "||";
+                const modalAlbumCover = document.getElementById("modal-album-cover");
+                if (modalAlbumCover) {
+                    modalAlbumCover.classList.add("is-playing");
+                }
+            });
+            modalAudioPlayer.addEventListener('pause', () => {
+                document.getElementById("modal-play-button").textContent = ">";
+                const modalAlbumCover = document.getElementById("modal-album-cover");
+                if (modalAlbumCover) {
+                    modalAlbumCover.classList.remove("is-playing");
+                }
+            });
             // Load first track
             loadModalTrack(0);
         }

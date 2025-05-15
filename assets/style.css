@@ -738,7 +738,7 @@ pre {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(255,255,255,0.7);
     color: #ff4500;
     font-size: 2.2em;
     width: 48px;
@@ -755,12 +755,12 @@ pre {
 }
 
 .video-icon {
-    background: rgba(26, 26, 42, 0.9);
+    background: rgba(255,255,255,0.7);
     border: 2px solid #ff4500;
 }
 
 .audio-icon {
-    background: rgba(42, 42, 42, 0.9);
+    background: rgba(255,255,255,0.7);
     border: 2px solid #666;
     font-size: 1.8em; /* Slightly smaller to match video icon visual weight */
 }
@@ -894,20 +894,21 @@ pre {
 
 #close-player-modal {
     position: absolute;
-    top: 18px;
-    right: 22px;
+    top: -18px;
+    right: -18px;
     font-size: 2.4em;
     background: none;
     border: none;
     color: #bbb;
     cursor: pointer;
-    z-index: 10;
+    z-index: 4000;
     transition: color 0.2s, transform 0.2s;
     padding: 0 8px;
     line-height: 1;
     display: flex;
     align-items: center;
     justify-content: center;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.12);
 }
 #close-player-modal:hover {
     color: #fff;
@@ -1272,11 +1273,34 @@ body.modal-open {
 /* 3. Album cover: pointer cursor and hover effect for fullscreen/modal */
 #modal-album-cover {
     cursor: pointer;
-    transition: box-shadow 0.2s, transform 0.2s;
+    transition: box-shadow 0.5s cubic-bezier(.4,0,.2,1), background 0.5s cubic-bezier(.4,0,.2,1), opacity 0.5s cubic-bezier(.4,0,.2,1);
 }
 #modal-album-cover:hover {
     box-shadow: 0 0 32px 4px rgba(255,255,255,0.18);
     transform: scale(1.04) rotate(1deg);
+}
+#modal-album-cover.is-playing {
+    box-shadow: 0 0 24px 8px rgba(255, 69, 0, 0.24);
+    background: linear-gradient(45deg, #ff4500, #8b0000, #4b0082, #ff4500);
+    background-size: 300% 300%;
+    animation: 
+        fadeIn 1s ease-in forwards,
+        albumPulse 4s infinite ease-in-out,
+        gradientBorder 12s ease infinite;
+}
+@keyframes coverGlowPulse {
+    0% { box-shadow: 0 0 24px 8px rgba(255, 69, 0, 0.24); }
+    100% { box-shadow: 0 0 48px 16px rgba(255, 69, 0, 0.48); }
+}
+@keyframes gradientBorder {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+@keyframes albumPulse {
+    0% { box-shadow: 0 0 24px 8px rgba(255, 69, 0, 0.24); }
+    50% { box-shadow: 0 0 48px 16px rgba(255, 69, 0, 0.48); }
+    100% { box-shadow: 0 0 24px 8px rgba(255, 69, 0, 0.24); }
 }
 
 /* Ensure fullscreen album cover modal is always in front of player modal */

@@ -894,18 +894,24 @@ pre {
 
 #close-player-modal {
     position: absolute;
-    top: 12px;
-    right: 18px;
-    font-size: 2.2em;
+    top: 18px;
+    right: 22px;
+    font-size: 2.4em;
     background: none;
     border: none;
-    color: #ff4500;
+    color: #bbb;
     cursor: pointer;
     z-index: 10;
-    transition: color 0.2s;
+    transition: color 0.2s, transform 0.2s;
+    padding: 0 8px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 #close-player-modal:hover {
     color: #fff;
+    transform: scale(1.15) rotate(8deg);
 }
 
 #player-modal-inner {
@@ -943,8 +949,8 @@ pre {
 
 .modal-cassette-left .cassette-window {
     width: 100%;
-    max-height: 180px;
-    height: 180px;
+    max-height: 234px;
+    height: 234px;
     background: #000;
     border-radius: 12px 0 0 0;
     display: flex;
@@ -955,12 +961,13 @@ pre {
 }
 
 .modal-cassette-left .cassette-window img {
+    height: 286px !important;
+    max-height: 286px !important;
     width: auto;
-    height: 100%;
-    max-width: 100%;
-    object-fit: contain;
-    border-radius: 12px 0 0 0;
+    max-width: 98%;
+    margin: 0 auto;
     display: block;
+    box-shadow: 0 0 12px rgba(0,0,0,0.5);
 }
 
 .modal-album-bottom {
@@ -976,7 +983,7 @@ pre {
 }
 
 .modal-album-bottom .modal-current-track-title {
-    padding: 6px 10px 0 10px;
+    padding: 16px 10px 0 10px;
     font-size: 1em;
     font-weight: bold;
     color: #ffdd00;
@@ -1003,11 +1010,12 @@ pre {
 }
 
 .modal-cassette-right {
-    flex: 0 0 35%;
-    max-width: 320px;
-    min-width: 180px;
+    flex: 0 0 40%;
+    max-width: 380px;
+    min-width: 200px;
     height: 100%;
     overflow-y: auto;
+    overflow-x: hidden;
     background: #181818;
     border-radius: 0 12px 12px 0;
     box-shadow: 0 2px 8px rgba(0,0,0,0.2);
@@ -1028,30 +1036,44 @@ pre {
     font-size: 0.97em;
     color: #ffdd00;
     font-family: 'Arial', sans-serif;
+    overflow-x: hidden !important;
+    scrollbar-width: thin;
+    scrollbar-color: #444 #232323;
 }
-.modal-cassette-right .tracklist th {
-    color: #ffdd00;
-    font-weight: bold;
-    font-size: 1em;
-    background: none;
-    border-bottom: 1px solid #ff4500;
+.modal-cassette-right .tracklist table {
+    table-layout: fixed;
+    width: 100%;
+    border-collapse: collapse;
+    overflow-x: hidden !important;
 }
-.modal-cassette-right .tracklist td {
-    white-space: normal;
-    word-break: break-word;
-    overflow-wrap: break-word;
-    color: #ffdd00;
-    font-size: 0.97em;
-    background: none;
-    border-bottom: 1px solid #333;
+.modal-cassette-right .tracklist th:first-child,
+.modal-cassette-right .tracklist td:first-child {
+    width: 2.5em;
+    min-width: 2.5em;
+    max-width: 2.5em;
+    text-align: right;
+    padding-right: 8px;
 }
-.modal-cassette-right .tracklist tr.active td {
-    background: #3a1a1a;
-    color: #fff;
+.modal-cassette-right .tracklist th:last-child,
+.modal-cassette-right .tracklist td:last-child {
+    width: auto;
+    min-width: 0;
+    max-width: none;
+    text-align: left;
+    padding-left: 0;
 }
-.modal-cassette-right .tracklist tr:hover td {
-    background: #ff4500;
-    color: #fff;
+.modal-cassette-right .tracklist::-webkit-scrollbar {
+    width: 10px;
+    background: #232323;
+    border-radius: 8px;
+}
+.modal-cassette-right .tracklist::-webkit-scrollbar-thumb {
+    background: #444;
+    border-radius: 8px;
+    min-height: 40px;
+}
+.modal-cassette-right .tracklist::-webkit-scrollbar-thumb:hover {
+    background: #666;
 }
 
 @media (max-width: 900px) {
@@ -1088,4 +1110,188 @@ pre {
 /* Hide main page scroll when modal is open */
 body.modal-open {
     overflow: hidden !important;
+}
+
+/* Modal Player Improvements */
+.modal-cassette-left .cassette-window img {
+    height: 220px !important;
+    max-height: 220px !important;
+    width: auto;
+    max-width: 98%;
+    margin: 0 auto;
+    display: block;
+    box-shadow: 0 0 12px rgba(0,0,0,0.5);
+}
+
+.album-info.compact {
+    padding: 24px 0 0 0;
+    margin: 0;
+    text-align: center;
+}
+.album-info.compact h1.band,
+.album-info.compact h2.title,
+.album-info.compact .date,
+.album-info.compact .source {
+    margin-bottom: 8px;
+}
+.album-info.compact h1.band {
+    font-size: 1.25em;
+    margin: 0 0 1px 0;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+}
+.album-info.compact h2.title {
+    font-size: 1.15em;
+    margin: 0 0 1px 0;
+    font-weight: 500;
+    color: #ffdd00;
+}
+.album-info.compact .date, .album-info.compact .source {
+    font-size: 0.98em;
+    margin: 0 0 1px 0;
+    color: #ccc;
+    line-height: 1.05;
+}
+
+.modal-album-bottom.compact {
+    padding: 0 0 2px 0;
+    margin: 0;
+}
+.media-player.compact {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 0 0 0 0;
+    margin: 0;
+}
+.media-player.compact audio {
+    max-width: 320px;
+    min-width: 180px;
+    margin: 12px 8px 0 0;
+}
+.controls.compact {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center !important;
+    gap: 10px;
+    padding: 12px 0 12px 0;
+    margin: 0 auto;
+    width: 100%;
+}
+.controls.compact button {
+    font-size: 0.92em;
+    padding: 4px 8px;
+    border-radius: 3px;
+    margin: 0 2px;
+    min-width: 28px;
+    min-height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.controls.compact #modal-eject-button {
+    background-color: #8b0000;
+    color: #fff;
+}
+.controls.compact #modal-eject-button:hover {
+    background-color: #ff4500;
+}
+.controls.compact #modal-info-button {
+    background-color: #444;
+    color: #fff;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.8);
+    transition: background-color 0.2s;
+}
+.controls.compact #modal-info-button:hover {
+    background-color: #666;
+}
+
+/* Album info: use neutral white/gray */
+.album-info.compact h1.band,
+.album-info.compact h2.title {
+    color: #fff;
+}
+.album-info.compact .date, .album-info.compact .source {
+    color: #ccc;
+}
+
+/* Tracklist: more compact rows and text */
+.modal-cassette-right .tracklist th,
+.modal-cassette-right .tracklist td {
+    padding: 8px 6px;
+    line-height: 1.15;
+    font-size: 0.97em;
+}
+
+/* Only show active left border on number column */
+.modal-cassette-right .tracklist tr.active td:first-child {
+    border-left: 4px solid #bbb;
+    background: #2a2a2a;
+    color: #fff;
+    font-weight: 600;
+}
+.modal-cassette-right .tracklist tr.active td:last-child {
+    border-left: none;
+    background: #2a2a2a;
+    color: #fff;
+    font-weight: 600;
+}
+
+/* Remove border-left from all but first column in active row */
+.modal-cassette-right .tracklist td {
+    border-left: none;
+}
+
+.tracklist th,
+.tracklist td {
+    color: #fff;
+}
+.tracklist tr.active {
+    background: #2a2a2a !important;
+    color: #fff !important;
+    font-weight: 600;
+    border-left: 4px solid #bbb;
+}
+
+/* Subtle gray line under tracklist header row */
+.modal-cassette-right .tracklist th {
+    border-bottom: 2px solid #35373a;
+}
+
+/* Tracklist row breaks: soft gray */
+.modal-cassette-right .tracklist td {
+    border-bottom: 1px solid #2a2c2f;
+}
+
+/* 3. Album cover: pointer cursor and hover effect for fullscreen/modal */
+#modal-album-cover {
+    cursor: pointer;
+    transition: box-shadow 0.2s, transform 0.2s;
+}
+#modal-album-cover:hover {
+    box-shadow: 0 0 32px 4px rgba(255,255,255,0.18);
+    transform: scale(1.04) rotate(1deg);
+}
+
+/* Ensure fullscreen album cover modal is always in front of player modal */
+#modal-cover-modal {
+    z-index: 3000 !important;
+}
+#modal-cover-modal .modal-content {
+    z-index: 3100 !important;
+    position: relative;
+    display: block;
+    margin: auto;
+    top: 50%;
+    transform: translateY(-50%);
+    max-width: 90vw;
+    max-height: 90vh;
+    background: none;
+    box-shadow: none;
 }

@@ -1,8 +1,21 @@
-WHATS LEFT
+WHATS LEFT - THIS BRANCH
 =============
-Decide on album load animation
-Any changes to player.html?
+
+-Make audio on desktop work
+-Make audio on mobile work
+-Make video on desktop work
+-Make video on mobile work
+-bring back laser mode
+-info button missing
+-Decide on album load animation
+-Standardize Cassette height (double text line issue)
 Spruce up the rest of index.html
+-Still need player.html?
+-Clean up scripts
+-Clean up CSS
+-Move index.html js to a separate file?
+
+
 
 
 

@@ -55,7 +55,7 @@
 
     <footer>
         <p><strong>ar://playdead</strong> by @JonnieSparkles</p>
-        <a href="./changelog.txt" target="_blank">v5.X.X</a>
+        <a href="./changelog.txt" target="_blank">v6.X.X</a>
     </footer>
 
     <script>
@@ -148,33 +148,33 @@
                     <div class="modal-cassette-left">
                         <div class="modal-album-top">
                             <div class="cassette-window"><img id="modal-album-cover" src="https://arweave.net/${albumData.cover}" alt="${albumData.band} - ${albumData.title}"></div>
-                            <div class="album-info">
+                            <div class="album-info compact">
                                 <h1 class="band" id="modal-album-band">${albumData.band}</h1>
                                 <h2 class="title" id="modal-album-title">${albumData.title}</h2>
                                 <p class="date" id="modal-date-value">${albumData.date || ''}</p>
                                 <p class="source"><strong>Source:</strong> <span id="modal-source-value">${albumData.source || ''}</span></p>
                             </div>
                         </div>
-                        <div class="modal-album-bottom">
+                        <div class="modal-album-bottom compact">
                             <div class="modal-current-track-title" id="modal-current-track-title">Select a Track</div>
-                            <div class="media-player">
-                                <audio id="modal-audio-player" controls style="width: 100%; max-width: 400px;">
+                            <div class="media-player compact">
+                                <audio id="modal-audio-player" controls style="width: 100%; max-width: 440px;">
                                     <source id="modal-audio-source" src="" type="audio/mpeg">
                                 </audio>
                             </div>
-                            <div class="controls">
+                            <div class="controls compact">
                                 <button id="modal-prev-button" title="Back">&lt;&lt;</button>
                                 <button id="modal-play-button" title="Play/Pause">&gt;</button>
                                 <button id="modal-next-button" title="Forward">&gt;&gt;</button>
                                 <button id="modal-eject-button" title="Eject">⏏</button>
+                                <button id="modal-info-button" title="Album Info">i</button>
                             </div>
                         </div>
-                        <div class="cassette-reels"></div>
                     </div>
                     <div class="modal-cassette-right">
                         <div class="tracklist" style="margin-top:0;">
                             <table style="width:100%">
-                                <thead><tr><th>#</th><th>Title</th></tr></thead>
+                                <thead><tr><th style="width:2.5em;">#</th><th style="width:auto;">Title</th></tr></thead>
                                 <tbody id="modal-tracklist-body"></tbody>
                             </table>
                         </div>
@@ -182,9 +182,38 @@
                 `;
                 // Wire up player logic
                 setupModalPlayer();
+                if (albumData.info) {
+                    document.getElementById("modal-info-button").style.display = "inline-block";
+                    document.getElementById("modal-info-button").onclick = () => window.open(`https://arweave.net/${albumData.info}`, "_blank");
+                } else {
+                    document.getElementById("modal-info-button").style.display = "none";
+                }
             } catch (error) {
                 modalInner.innerHTML = '<div style="color:#ff4500;">Failed to load album.</div>';
             }
+            // Add modal for fullscreen cover if not present
+            if (!document.getElementById('modal-cover-modal')) {
+                const coverModal = document.createElement('div');
+                coverModal.id = 'modal-cover-modal';
+                coverModal.className = 'modal';
+                coverModal.innerHTML = `
+                    <div class="modal-content">
+                        <span class="close-modal">&times;</span>
+                        <img id="modal-cover-image" src="" alt="Full size album cover">
+                    </div>
+                `;
+                coverModal.querySelector('.close-modal').onclick = () => coverModal.style.display = 'none';
+                coverModal.onclick = (e) => { if (e.target === coverModal) coverModal.style.display = 'none'; };
+                document.body.appendChild(coverModal);
+            }
+            // Add click handler to album cover
+            const modalAlbumCover = document.getElementById('modal-album-cover');
+            modalAlbumCover.onclick = () => {
+                const coverModal = document.getElementById('modal-cover-modal');
+                const modalImg = document.getElementById('modal-cover-image');
+                modalImg.src = modalAlbumCover.src;
+                coverModal.style.display = 'block';
+            };
         }
 
         function setupModalPlayer() {

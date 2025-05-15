@@ -1,10 +1,11 @@
 v5.0.0
-- Refactored album structure to use album.json v2 format
+-Refactored album structure to use album.json v2 format
   - Integrated album cover, info, and track metadata into single manifest
   - Removed dependency on separate Arweave manifest
   - Added support for track file IDs (txids) in album metadata
   - Improved album loading performance by reducing manifest requests
   - Updated catalog accordingly
+- Modified index.html to create a cassette-style display that loads the album information dynamically from the each album in the catalog's album.json
 
 v4.2.0
 -browser tab title now shows current band and track

@@ -1,3 +1,12 @@
+WHATS LEFT
+=============
+Decide on album load animation
+Any changes to player.html?
+Spruce up the rest of index.html
+
+
+
+
 ALBUM QUEUE
 =============
 

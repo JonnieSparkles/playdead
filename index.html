@@ -44,6 +44,15 @@
         </div>
     </div>
 
+    <!-- Player Modal Overlay -->
+    <div id="player-modal" style="display:none;">
+        <div class="player-modal-content">
+            <button id="close-player-modal" title="Close">&times;</button>
+            <!-- Player content will be injected here -->
+            <div id="player-modal-inner"></div>
+        </div>
+    </div>
+
     <footer>
         <p><strong>ar://playdead</strong> by @JonnieSparkles</p>
         <a href="./changelog.txt" target="_blank">v5.X.X</a>
@@ -69,7 +78,7 @@
                         const manifestData = await manifestResponse.json();
                         
                         const cassette = document.createElement("a");
-                        cassette.href = `player.html?album=${album.id}`;
+                        cassette.href = `#album=${album.id}`;
                         cassette.className = "cassette";
                         
                         // Create cassette structure
@@ -93,22 +102,10 @@
                         
                         albumList.appendChild(cassette);
 
-                        // Add expand-fill animation on click, centered on album cover (pixel-based transform-origin)
+                        // Modal player logic
                         cassette.addEventListener('click', function(e) {
-                            e.preventDefault(); // Prevent immediate navigation
-                            const cassetteWindow = cassette.querySelector('.cassette-window');
-                            const cassetteRect = cassette.getBoundingClientRect();
-                            const windowRect = cassetteWindow.getBoundingClientRect();
-                            // Calculate the center of the cover image relative to the cassette card (in pixels)
-                            const originX = (windowRect.left - cassetteRect.left) + windowRect.width / 2;
-                            const originY = (windowRect.top - cassetteRect.top) + windowRect.height / 2;
-                            cassette.style.transformOrigin = `${originX}px ${originY}px`;
-                            cassette.classList.remove('expand-fill'); // Reset if already animating
-                            void cassette.offsetWidth; // Force reflow
-                            cassette.classList.add('expand-fill');
-                            setTimeout(() => {
-                                window.location.href = cassette.href;
-                            }, 600); // Match animation duration
+                            e.preventDefault();
+                            openPlayerModal(album.id);
                         });
                     } catch (error) {
                         console.error(`Error loading album ${album.id}:`, error);
@@ -119,17 +116,177 @@
             }
         }
 
-        document.getElementById("load-album-button").onclick = () => {
-            const txid = document.getElementById("manual-txid").value.trim();
-            if (txid) {
-                window.location.href = `player.html?album=${txid}`;
+        // Modal player functions
+        let modalTracks = [];
+        let modalCurrentTrackIndex = 0;
+        let modalAudioPlayer, modalAudioSource, modalCurrentTrackTitle;
+        let modalOriginalTitle = document.title;
+
+        async function openPlayerModal(albumId) {
+            window.location.hash = `album=${albumId}`;
+            document.body.classList.add('modal-open');
+            const modal = document.getElementById('player-modal');
+            const modalInner = document.getElementById('player-modal-inner');
+            modal.style.display = 'flex';
+            modalInner.innerHTML = '<div style="text-align:center;padding:2em;">Loading...</div>';
+            // Fetch album manifest
+            try {
+                const manifestUrl = `https://arweave.net/${albumId}`;
+                const manifestResponse = await fetch(manifestUrl);
+                const albumData = await manifestResponse.json();
+                // Prepare tracks
+                const mediaList = albumData.type === 'video' ? albumData.reels : albumData.tracks;
+                modalTracks = mediaList.map(item => ({
+                    title: item.title,
+                    url: `https://arweave.net/${item.id}`,
+                    number: item.number,
+                    type: albumData.type || 'audio'
+                }));
+                modalCurrentTrackIndex = 0;
+                // Render player UI
+                modalInner.innerHTML = `
+                    <div class="modal-cassette-left">
+                        <div class="modal-album-top">
+                            <div class="cassette-window"><img id="modal-album-cover" src="https://arweave.net/${albumData.cover}" alt="${albumData.band} - ${albumData.title}"></div>
+                            <div class="album-info">
+                                <h1 class="band" id="modal-album-band">${albumData.band}</h1>
+                                <h2 class="title" id="modal-album-title">${albumData.title}</h2>
+                                <p class="date" id="modal-date-value">${albumData.date || ''}</p>
+                                <p class="source"><strong>Source:</strong> <span id="modal-source-value">${albumData.source || ''}</span></p>
+                            </div>
+                        </div>
+                        <div class="modal-album-bottom">
+                            <div class="modal-current-track-title" id="modal-current-track-title">Select a Track</div>
+                            <div class="media-player">
+                                <audio id="modal-audio-player" controls style="width: 100%; max-width: 400px;">
+                                    <source id="modal-audio-source" src="" type="audio/mpeg">
+                                </audio>
+                            </div>
+                            <div class="controls">
+                                <button id="modal-prev-button" title="Back">&lt;&lt;</button>
+                                <button id="modal-play-button" title="Play/Pause">&gt;</button>
+                                <button id="modal-next-button" title="Forward">&gt;&gt;</button>
+                                <button id="modal-eject-button" title="Eject">⏏</button>
+                            </div>
+                        </div>
+                        <div class="cassette-reels"></div>
+                    </div>
+                    <div class="modal-cassette-right">
+                        <div class="tracklist" style="margin-top:0;">
+                            <table style="width:100%">
+                                <thead><tr><th>#</th><th>Title</th></tr></thead>
+                                <tbody id="modal-tracklist-body"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                `;
+                // Wire up player logic
+                setupModalPlayer();
+            } catch (error) {
+                modalInner.innerHTML = '<div style="color:#ff4500;">Failed to load album.</div>';
+            }
+        }
+
+        function setupModalPlayer() {
+            modalAudioPlayer = document.getElementById("modal-audio-player");
+            modalAudioSource = document.getElementById("modal-audio-source");
+            modalCurrentTrackTitle = document.getElementById("modal-current-track-title");
+            // Populate tracklist
+            const tracklistBody = document.getElementById("modal-tracklist-body");
+            tracklistBody.innerHTML = "";
+            modalTracks.forEach((track, index) => {
+                const row = document.createElement("tr");
+                row.className = "track";
+                row.innerHTML = `<td>${track.number}</td><td>${track.title}</td>`;
+                row.onclick = () => {
+                    loadModalTrack(index);
+                    playModalCurrentTrack();
+                };
+                tracklistBody.appendChild(row);
+            });
+            // Controls
+            document.getElementById("modal-play-button").onclick = () => {
+                if (modalAudioPlayer.paused) {
+                    playModalCurrentTrack();
+                } else {
+                    modalAudioPlayer.pause();
+                    document.getElementById("modal-play-button").textContent = ">";
+                }
+            };
+            document.getElementById("modal-prev-button").onclick = () => {
+                if (modalAudioPlayer.currentTime > 2) modalAudioPlayer.currentTime = 0;
+                else if (modalCurrentTrackIndex > 0) {
+                    loadModalTrack(--modalCurrentTrackIndex);
+                    playModalCurrentTrack();
+                }
+            };
+            document.getElementById("modal-next-button").onclick = () => {
+                if (modalCurrentTrackIndex < modalTracks.length - 1) {
+                    loadModalTrack(++modalCurrentTrackIndex);
+                    playModalCurrentTrack();
+                }
+            };
+            modalAudioPlayer.onended = () => {
+                if (modalCurrentTrackIndex < modalTracks.length - 1) {
+                    loadModalTrack(++modalCurrentTrackIndex);
+                    playModalCurrentTrack();
+                }
+            };
+            document.getElementById("modal-eject-button").onclick = closePlayerModal;
+            // Load first track
+            loadModalTrack(0);
+        }
+
+        function loadModalTrack(index) {
+            modalCurrentTrackIndex = index;
+            const track = modalTracks[modalCurrentTrackIndex];
+            // Remove active class from all rows
+            document.querySelectorAll('#modal-tracklist-body tr').forEach(row => {
+                row.classList.remove('active');
+            });
+            // Add active class to current track row
+            document.querySelector(`#modal-tracklist-body tr:nth-child(${index + 1})`).classList.add('active');
+            modalCurrentTrackTitle.textContent = track.title;
+            modalAudioSource.src = track.url;
+            if (!modalAudioSource.parentNode) {
+                modalAudioPlayer.appendChild(modalAudioSource);
+            }
+            modalAudioPlayer.load();
+        }
+
+        function playModalCurrentTrack() {
+            modalAudioPlayer.play();
+            document.getElementById("modal-play-button").textContent = "||";
+        }
+
+        function closePlayerModal() {
+            document.getElementById('player-modal').style.display = 'none';
+            document.getElementById('player-modal-inner').innerHTML = '';
+            window.location.hash = '';
+            document.body.classList.remove('modal-open');
+        }
+
+        document.getElementById('close-player-modal').onclick = closePlayerModal;
+
+        // Deep link support
+        window.addEventListener('hashchange', function() {
+            const hash = window.location.hash;
+            if (hash.startsWith('#album=')) {
+                const albumId = hash.replace('#album=', '');
+                openPlayerModal(albumId);
             } else {
-                alert("Please enter a valid ID.");
+                closePlayerModal();
+            }
+        });
+        // On page load, check hash
+        window.onload = function() {
+            loadAlbumList();
+            const hash = window.location.hash;
+            if (hash.startsWith('#album=')) {
+                const albumId = hash.replace('#album=', '');
+                openPlayerModal(albumId);
             }
         };
-
-        // Load the album list on page load
-        window.onload = loadAlbumList;
     </script>
 </body>
 </html>

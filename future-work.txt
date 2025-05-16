@@ -1,18 +1,22 @@
 WHATS LEFT - THIS BRANCH
 =============
 
--Make audio on desktop work
 -Make audio on mobile work
 -Make video on desktop work
 -Make video on mobile work
 -bring back laser mode
+-figure out arweave.net reliance?
+-revisit album art animation when playing
 -info button missing
 -Decide on album load animation
 -Standardize Cassette height (double text line issue)
-Spruce up the rest of index.html
+-minimize player
+-collapse tracklist
+-browser tab whats playing
+-Spruce up the rest of index.html
 -Still need player.html?
--Clean up scripts
--Clean up CSS
+-Clean up/audit scripts
+-Clean up/audit CSS
 -Move index.html js to a separate file?
 
 

@@ -49,7 +49,17 @@
         <div class="player-modal-content">
             <button id="close-player-modal" title="Close">&times;</button>
             <!-- Player content will be injected here -->
-            <div id="player-modal-inner"></div>
+            <div id="player-modal-inner">
+                <div class="modal-cassette-right">
+                    <button id="collapse-tracklist-btn" title="Collapse tracklist" class="collapse-tracklist-btn">«</button>
+                    <div class="tracklist" style="margin-top:0;">
+                        <table style="width:100%">
+                            <thead><tr><th style="width:2.5em;">#</th><th style="width:auto;">Title</th></tr></thead>
+                            <tbody id="modal-tracklist-body"></tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

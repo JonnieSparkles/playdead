@@ -146,6 +146,7 @@ async function openPlayerModal(albumId) {
                     </div>
                 </div>
                 <div class="modal-cassette-right">
+                    <button id="collapse-tracklist-btn" title="Collapse tracklist" class="collapse-tracklist-btn">«</button>
                     <div class="tracklist" style="margin-top:0;">
                         <table style="width:100%">
                             <thead><tr><th style="width:2.5em;">#</th><th style="width:auto;">Title</th></tr></thead>
@@ -183,30 +184,48 @@ async function openPlayerModal(albumId) {
     }
     // Add click handler to album cover
     const modalAlbumCover = document.getElementById('modal-album-cover');
-    modalAlbumCover.onclick = () => {
-        const coverModal = document.getElementById('modal-cover-modal');
-        const modalImg = document.getElementById('modal-cover-image');
-        modalImg.src = modalAlbumCover.src;
-        coverModal.style.display = 'block';
-    };
+    if (modalAlbumCover) {
+        modalAlbumCover.onclick = () => {
+            const coverModal = document.getElementById('modal-cover-modal');
+            const modalImg = document.getElementById('modal-cover-image');
+            modalImg.src = modalAlbumCover.src;
+            coverModal.style.display = 'block';
+        };
+    }
+    const cassetteRight = document.querySelector('.modal-cassette-right');
+    const collapseBtn = document.getElementById('collapse-tracklist-btn');
+    if (cassetteRight && collapseBtn && modalContent) {
+        collapseBtn.onclick = function() {
+            const isCollapsed = cassetteRight.classList.toggle('collapsed');
+            if (isCollapsed) {
+                modalContent.classList.add('centered-when-collapsed');
+                collapseBtn.textContent = '»';
+                collapseBtn.title = 'Expand tracklist';
+            } else {
+                modalContent.classList.remove('centered-when-collapsed');
+                collapseBtn.textContent = '«';
+                collapseBtn.title = 'Collapse tracklist';
+            }
+        };
+    }
 }
 
 function setupModalPlayer() {
     modalAudioPlayer = document.getElementById("modal-audio-player");
     modalAudioSource = document.getElementById("modal-audio-source");
     modalCurrentTrackTitle = document.getElementById("modal-current-track-title");
-    // Populate tracklist
+        // Populate tracklist
     const tracklistBody = document.getElementById("modal-tracklist-body");
-    tracklistBody.innerHTML = "";
+        tracklistBody.innerHTML = "";
     modalTracks.forEach((track, index) => {
-        const row = document.createElement("tr");
-        row.className = "track";
-        row.innerHTML = `<td>${track.number}</td><td>${track.title}</td>`;
-        row.onclick = () => {
+            const row = document.createElement("tr");
+            row.className = "track";
+            row.innerHTML = `<td>${track.number}</td><td>${track.title}</td>`;
+            row.onclick = () => {
             loadModalTrack(index);
             playModalCurrentTrack();
-        };
-        tracklistBody.appendChild(row);
+            };
+            tracklistBody.appendChild(row);
     });
     // Controls
     document.getElementById("modal-play-button").onclick = () => {

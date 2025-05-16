@@ -1782,3 +1782,61 @@ body.modal-open #player-modal {
 .player-modal-content.video-mode .modal-video-container .tracklist tr.active td {
     background: rgba(255,69,0,0.3) !important;
 }
+
+/* Collapse/expand button styles */
+.collapse-tracklist-btn {
+    position: absolute;
+    top: 50%;
+    right: -8px;
+    transform: translateY(-50%);
+    z-index: 10;
+    background: #222;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    font-size: 1.2em;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    transition: background 0.2s, color 0.2s, transform 0.2s;
+}
+.collapse-tracklist-btn:hover {
+    background: #444;
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* Collapsed state for tracklist */
+.modal-cassette-right.collapsed {
+    width: 0 !important;
+    min-width: 0 !important;
+    max-width: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    border: none !important;
+}
+.modal-cassette-right.collapsed .tracklist {
+    display: none !important;
+}
+.modal-cassette-right.collapsed .collapse-tracklist-btn {
+    right: -8px;
+    background: #222;
+    color: #fff;
+    border-radius: 50%;
+    z-index: 20;
+}
+.modal-cassette-right.collapsed .collapse-tracklist-btn:hover {
+    background: #444;
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* Shrink modal to cassette-left width when collapsed */
+.player-modal-content.centered-when-collapsed {
+    width: auto !important;
+    max-width: none !important;
+    flex: 0 0 auto !important;
+}
+.player-modal-content.centered-when-collapsed .modal-cassette-left {
+    width: auto !important;
+    flex: 0 0 auto !important;
+}

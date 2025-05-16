@@ -2,18 +2,18 @@ WHATS LEFT - THIS BRANCH
 =============
 
 -Make video on desktop work
+--maybe remove the tracklist or have it default collapse?
+
 -Make video on mobile work
 -fix audio tracklist overlapping with tracklist headers
 -bring back laser mode
 -figure out arweave.net reliance?
 -Standardize catalog Cassette height (double text line issue)
 -minimize player
--collapse tracklist
 -browser tab whats playing
 -Spruce up the rest of index.html
 -Clean up/audit scripts
 -Clean up/audit CSS
--Move index.html js to a separate file?
 -more info doesnt need to be more_info.txt anymore
 -info in iframe or something
 

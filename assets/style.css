@@ -266,11 +266,11 @@ pre {
 }
 
 #eject-button {
-    background-color: #8b0000; /* Dark red */
+    background-color: var(--dark-red);
 }
 
 #eject-button:hover {
-    background-color: #ff4500; /* Bright red on hover */
+    background-color: var(--primary-red);
 }
 
 
@@ -367,7 +367,7 @@ pre {
     content: "⚡"; /* Replace with an appropriate icon or emoji */
     margin-right: 5px;
     font-size: 1.2em;
-    color: #ff4500; /* Laser-like color */
+    color: var(--primary-red);
 }
 
 /* Responsive Adjustments */
@@ -869,12 +869,13 @@ pre {
     top: 0; left: 0; right: 0; bottom: 0;
     width: 100vw;
     height: 100vh;
-    background: rgba(10, 10, 20, 0.92);
+    background: var(--bg-modal);
     z-index: 2000;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: opacity 0.3s;
+    transition: opacity 0.3s ease-in-out;
+    opacity: 0;
 }
 
 .player-modal-content {
@@ -1127,6 +1128,7 @@ pre {
         align-items: center;
         justify-content: center;
         background: rgba(10, 10, 20, 0.97) !important;
+        opacity: 1;
     }
     /* Ensure modal content is scrollable if needed */
     .player-modal-content {
@@ -1372,8 +1374,7 @@ body.modal-open {
     box-shadow: 0 0 24px 8px rgba(255, 69, 0, 0.24);
     background: linear-gradient(45deg, #ff4500, #8b0000, #4b0082, #ff4500);
     background-size: 300% 300%;
-    animation: 
-        fadeIn 1s ease-in forwards,
+    animation:
         albumPulse 4s infinite ease-in-out,
         gradientBorder 12s ease infinite;
 }
@@ -1551,8 +1552,84 @@ body.modal-open {
 
 /* Add color pattern for modal eject button */
 #modal-eject-button {
-    background-color: #8b0000 !important;
+    background-color: var(--dark-red) !important;
 }
 #modal-eject-button:hover {
-    background-color: #ff4500 !important;
+    background-color: var(--primary-red) !important;
+}
+
+:root {
+    --primary-red: #ff4500;
+    --dark-red: #8b0000;
+    --accent-yellow: #ffdd00;
+    --bg-dark: #222;
+    --bg-modal: rgba(10, 10, 20, 0.92);
+}
+
+#player-modal {
+    backdrop-filter: blur(4px);
+    transition: opacity 0.3s ease-in-out;
+}
+
+body.modal-open #player-modal {
+    opacity: 1;
+}
+
+#eject-button {
+    background-color: var(--dark-red);
+}
+#eject-button:hover {
+    background-color: var(--primary-red);
+}
+
+#modal-eject-button {
+    background-color: var(--dark-red) !important;
+}
+#modal-eject-button:hover {
+    background-color: var(--primary-red) !important;
+}
+
+#toggle-visualizer::before {
+    color: var(--primary-red);
+}
+
+.modal-cassette-right th {
+    position: sticky;
+    top: 0;
+    background: #181818;
+    z-index: 2;
+}
+
+@keyframes coverPop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+.cover-pop {
+    animation: coverPop 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transform-origin: center;
+}
+
+/* Add a new animation for our test */
+@keyframes popEffect {
+    0% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255,69,0,0.7);
+    }
+    40% {
+        transform: scale(1.2); 
+        box-shadow: 0 0 30px 10px rgba(255,69,0,0.9);
+    }
+    80% {
+        transform: scale(0.95);
+    }
+    100% {
+        transform: scale(1);
+        box-shadow: 0 0 0 0 rgba(255,69,0,0.7);
+    }
+}
+
+.pop-effect {
+    animation: popEffect 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+    transform-origin: center;
 }

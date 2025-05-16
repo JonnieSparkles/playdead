@@ -126,8 +126,10 @@
             window.location.hash = `album=${albumId}`;
             document.body.classList.add('modal-open');
             const modal = document.getElementById('player-modal');
-            const modalInner = document.getElementById('player-modal-inner');
+            modal.style.opacity = '0';
             modal.style.display = 'flex';
+            requestAnimationFrame(() => modal.style.opacity = '1');
+            const modalInner = document.getElementById('player-modal-inner');
             modalInner.innerHTML = '<div style="text-align:center;padding:2em;">Loading...</div>';
             // Fetch album manifest
             try {
@@ -236,45 +238,61 @@
             // Controls
             document.getElementById("modal-play-button").onclick = () => {
                 if (modalAudioPlayer.paused) {
+                    triggerCoverPop();
                     playModalCurrentTrack();
                 } else {
                     modalAudioPlayer.pause();
-                    document.getElementById("modal-play-button").textContent = ">";
+                    const playButton = document.getElementById("modal-play-button");
+                    if (playButton) playButton.textContent = ">";
                 }
             };
             document.getElementById("modal-prev-button").onclick = () => {
                 if (modalAudioPlayer.currentTime > 2) modalAudioPlayer.currentTime = 0;
                 else if (modalCurrentTrackIndex > 0) {
+                    triggerCoverPop();
                     loadModalTrack(--modalCurrentTrackIndex);
                     playModalCurrentTrack();
                 }
             };
             document.getElementById("modal-next-button").onclick = () => {
                 if (modalCurrentTrackIndex < modalTracks.length - 1) {
-                    loadModalTrack(++modalCurrentTrackIndex);
-                    playModalCurrentTrack();
-                }
-            };
-            modalAudioPlayer.onended = () => {
-                if (modalCurrentTrackIndex < modalTracks.length - 1) {
+                    triggerCoverPop();
                     loadModalTrack(++modalCurrentTrackIndex);
                     playModalCurrentTrack();
                 }
             };
             document.getElementById("modal-eject-button").onclick = closePlayerModal;
-            // Add album cover animation logic
+            // Audio event listeners for animation and UI
             modalAudioPlayer.addEventListener('play', () => {
-                document.getElementById("modal-play-button").textContent = "||";
-                const modalAlbumCover = document.getElementById("modal-album-cover");
-                if (modalAlbumCover) {
-                    modalAlbumCover.classList.add("is-playing");
+                // update play button and add glow
+                const playButton = document.getElementById("modal-play-button");
+                if (playButton) playButton.textContent = "||";
+                const cover = document.getElementById("modal-album-cover");
+                if (cover) {
+                    // Force remove any existing inline styles that might interfere
+                    cover.style.animation = '';
+                    cover.style.background = '';
+                    cover.style.backgroundSize = '';
+                    cover.style.boxShadow = '';
+                    cover.style.transform = '';
+                    // Add the playing class
+                    cover.classList.add("is-playing");
                 }
             });
             modalAudioPlayer.addEventListener('pause', () => {
-                document.getElementById("modal-play-button").textContent = ">";
-                const modalAlbumCover = document.getElementById("modal-album-cover");
-                if (modalAlbumCover) {
-                    modalAlbumCover.classList.remove("is-playing");
+                // update pause button and remove glow
+                const playButton = document.getElementById("modal-play-button");
+                if (playButton) playButton.textContent = ">";
+                const cover = document.getElementById("modal-album-cover");
+                if (cover) {
+                    // Remove the playing class
+                    cover.classList.remove("is-playing");
+                    // Reset any inline styles
+                    cover.style.animation = '';
+                    cover.style.background = '';
+                    cover.style.backgroundSize = '';
+                    cover.style.boxShadow = '';
+                    cover.style.transform = '';
                 }
             });
             // Load first track
@@ -299,15 +317,19 @@
         }
 
         function playModalCurrentTrack() {
-            modalAudioPlayer.play();
-            document.getElementById("modal-play-button").textContent = "||";
+            // Just start playback, let event listeners handle UI
+            modalAudioPlayer.play().catch(() => {});
         }
 
         function closePlayerModal() {
-            document.getElementById('player-modal').style.display = 'none';
-            document.getElementById('player-modal-inner').innerHTML = '';
-            window.location.hash = '';
-            document.body.classList.remove('modal-open');
+            const modal = document.getElementById('player-modal');
+            modal.style.opacity = '0';
+            setTimeout(() => {
+                modal.style.display = 'none';
+                document.getElementById('player-modal-inner').innerHTML = '';
+                window.location.hash = '';
+                document.body.classList.remove('modal-open');
+            }, 300);
         }
 
         document.getElementById('close-player-modal').onclick = closePlayerModal;
@@ -331,6 +353,62 @@
                 openPlayerModal(albumId);
             }
         };
+
+        // Add a completely new function for triggering the pop animation
+        function triggerCoverPop() {
+            const cover = document.getElementById("modal-album-cover");
+            if (!cover) return;
+            
+            // Make sure we don't affect the continuous is-playing animation
+            // Get the current is-playing state so we can preserve it
+            const isCurrentlyPlaying = cover.classList.contains("is-playing");
+            
+            // Create a clone of the cover for the pop animation
+            // This prevents the animation from interfering with the is-playing styles
+            const tempCover = cover.cloneNode(false);
+            tempCover.style.position = 'absolute';
+            tempCover.style.top = `${cover.offsetTop}px`;
+            tempCover.style.left = `${cover.offsetLeft}px`;
+            tempCover.style.width = `${cover.offsetWidth}px`;
+            tempCover.style.height = `${cover.offsetHeight}px`;
+            tempCover.style.zIndex = '5000';
+            tempCover.style.pointerEvents = 'none';
+            tempCover.id = 'temp-pop-cover';
+            tempCover.src = cover.src;
+            cover.parentNode.appendChild(tempCover);
+            
+            // Animate the clone instead of the original element
+            const animation = tempCover.animate([
+                { // start state
+                    transform: 'scale(1)',
+                    boxShadow: '0 0 0 0 rgba(255,69,0,0)'
+                },
+                { // mid state (40%)
+                    transform: 'scale(1.06)', 
+                    boxShadow: '0 0 15px 3px rgba(255,69,0,0.5)',
+                    offset: 0.4
+                },
+                { // bounce back (80%)
+                    transform: 'scale(0.98)',
+                    offset: 0.8
+                },
+                { // end state
+                    transform: 'scale(1)',
+                    boxShadow: '0 0 0 0 rgba(255,69,0,0)'
+                }
+            ], {
+                duration: 350,
+                easing: 'cubic-bezier(0.36, 0.07, 0.19, 0.97)',
+                fill: 'forwards'
+            });
+            
+            // Remove the clone after the animation
+            animation.onfinish = () => {
+                if (tempCover.parentNode) {
+                    tempCover.parentNode.removeChild(tempCover);
+                }
+            };
+        }
     </script>
 </body>
 </html>

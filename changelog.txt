@@ -1,3 +1,7 @@
+v6.0.0
+-Refactored the app to be a single page, removing the need of a separate player page.
+-
+
 v5.0.0
 -Refactored album structure to use album.json v2 format
   - Integrated album cover, info, and track metadata into single manifest

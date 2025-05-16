@@ -114,6 +114,26 @@ Built with vanilla web technologies:
 - Web Audio API (for visualizations)
 - Canvas API (for laser effects)
 
+### Local Development
+
+To run the app locally for development:
+
+1. Start a local server using Python:
+   ```bash
+   # If you have Python 3:
+   python -m http.server 8000
+
+   # If you have Python 2:
+   python -m SimpleHTTPServer 8000
+   ```
+
+2. Open your browser and navigate to:
+   ```
+   http://localhost:8000
+   ```
+
+3. The server will automatically serve the latest version of your files. Just refresh the browser to see changes.
+
 ### Developer Testing
 
 Add `#dev` to the URL to enable testing features:

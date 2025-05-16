@@ -1,3 +1,26 @@
+WHATS LEFT - THIS BRANCH
+=============
+
+-Make video on desktop work
+-Make video on mobile work
+-bring back laser mode
+-figure out arweave.net reliance?
+-Standardize catalog Cassette height (double text line issue)
+-minimize player
+-collapse tracklist
+-browser tab whats playing
+-Spruce up the rest of index.html
+-Clean up/audit scripts
+-Clean up/audit CSS
+-Move index.html js to a separate file?
+-more info doesnt need to be more_info.txt anymore
+-info in iframe or something
+
+
+
+
+
+
 ALBUM QUEUE
 =============
 

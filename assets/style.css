@@ -944,7 +944,7 @@ pre {
     flex-direction: column;
     align-items: center;
     margin-bottom: 0;
-    padding-bottom: 0;
+    padding: 0 0 8px 0;
 }
 
 .modal-album-top .album-info h1,
@@ -974,7 +974,8 @@ pre {
     justify-content: center;
     border-bottom: 2px solid #222;
     overflow: hidden;
-    margin-bottom: 8px !important;
+    margin: 0 0 16px 0;
+    padding: 8px 0;
 }
 
 .modal-cassette-left .cassette-window img {
@@ -1112,7 +1113,7 @@ pre {
         display: none !important;
     }
     /* Ensure modal always covers the full viewport and is at highest z-index */
-    #player-modal {
+    body.modal-open #player-modal {
         width: 100vw !important;
         height: 100vh !important;
         min-width: 100vw !important;
@@ -1135,7 +1136,7 @@ pre {
         min-width: 0 !important;
         box-sizing: border-box;
         border-radius: 0 !important;
-        padding: 0 !important;
+        padding: 20px 0 10px 0 !important;
     }
     /* Make sure close button is always visible and tappable */
     #close-player-modal {
@@ -1159,7 +1160,7 @@ pre {
     .player-modal-content {
         flex-direction: column !important;
         align-items: stretch !important;
-        padding: 10px 0 10px 0;
+        padding: 20px 0 10px 0 !important;
         min-width: 0;
         min-height: 0;
         width: 100vw !important;
@@ -1214,8 +1215,8 @@ pre {
         overflow: visible !important;
         align-items: unset !important;
         justify-content: unset !important;
-        margin-bottom: 8px !important;
-        padding: 0 !important;
+        margin: 0 0 16px 0 !important;
+        padding: 8px 0 !important;
         background: #000 !important;
     }
     .modal-cassette-left .cassette-window > img,
@@ -1522,9 +1523,21 @@ body.modal-open {
 @media (max-width: 900px) {
   .player-modal-content,
   .mobile-player-container {
-    font-size: 0.92em;
+    font-size: 0.92em !important;
   }
 
+  /* Spacing for album cover region */
+  .modal-album-top {
+    padding: 0 0 8px 0 !important;
+  }
+  .modal-cassette-left .cassette-window {
+    margin: 0 0 16px 0 !important;
+    padding: 8px 0 !important;
+  }
+  #modal-album-cover {
+    margin: 0 auto !important;
+    padding: 8px 0 !important;
+  }
 }
 
 /* Responsive cap on modal height for desktop */
@@ -1534,4 +1547,12 @@ body.modal-open {
         max-height: 60vh !important;
         min-height: 525px !important;
     }
+}
+
+/* Add color pattern for modal eject button */
+#modal-eject-button {
+    background-color: #8b0000 !important;
+}
+#modal-eject-button:hover {
+    background-color: #ff4500 !important;
 }

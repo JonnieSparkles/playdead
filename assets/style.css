@@ -1093,6 +1093,62 @@ pre {
 }
 
 @media (max-width: 900px) {
+    /* Hide all background content except the modal(s) when modal is open */
+    body.modal-open > *:not(#player-modal):not(#modal-cover-modal) {
+        display: none !important;
+    }
+    /* Ensure modal always covers the full viewport and is at highest z-index */
+    #player-modal {
+        width: 100vw !important;
+        height: 100vh !important;
+        min-width: 100vw !important;
+        min-height: 100vh !important;
+        max-width: 100vw !important;
+        max-height: 100vh !important;
+        z-index: 3000 !important;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        display: flex !important;
+        align-items: center;
+        justify-content: center;
+        background: rgba(10, 10, 20, 0.97) !important;
+    }
+    /* Ensure modal content is scrollable if needed */
+    .player-modal-content {
+        max-height: 98vh !important;
+        overflow-y: auto !important;
+        width: 100vw !important;
+        min-width: 0 !important;
+        box-sizing: border-box;
+        border-radius: 0 !important;
+        padding: 0 !important;
+    }
+    /* Touch-friendly controls */
+    .controls.compact button, #close-player-modal {
+        min-width: 44px !important;
+        min-height: 44px !important;
+        font-size: 1.1em !important;
+        padding: 8px 10px !important;
+    }
+    /* Make sure close button is always visible and tappable */
+    #close-player-modal {
+        top: 8px !important;
+        right: 8px !important;
+        z-index: 4000 !important;
+        font-size: 2.2em !important;
+        background: rgba(34,34,34,0.85) !important;
+        border-radius: 50% !important;
+        width: 44px !important;
+        height: 44px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.18) !important;
+    }
+    #close-player-modal:hover {
+        background: #444 !important;
+        color: #fff !important;
+    }
     .player-modal-content {
         flex-direction: column !important;
         align-items: stretch !important;
@@ -1188,7 +1244,27 @@ pre {
         padding: 10px 0 0 0;
     }
     .modal-cassette-left .cassette-window {
+        height: auto !important;
+        max-height: none !important;
+        min-height: 0 !important;
+        display: block !important;
+        overflow: visible !important;
+        align-items: unset !important;
+        justify-content: unset !important;
         margin-bottom: 8px !important;
+        padding: 0 !important;
+        background: #000 !important;
+    }
+    .modal-cassette-left .cassette-window > img,
+    .modal-cassette-left .cassette-window img {
+        width: 100% !important;
+        height: auto !important;
+        max-width: 100% !important;
+        max-height: none !important;
+        object-fit: contain !important;
+        display: block !important;
+        margin: 0 auto !important;
+        background: #000 !important;
     }
     .album-info.compact {
         margin-bottom: 10px !important;
@@ -1628,4 +1704,96 @@ body.modal-open {
         margin-top: 0 !important;
         padding-top: 0 !important;
     }
+}
+
+@media (max-width: 900px) {
+  /* Make the entire modal scrollable, not just the tracklist */
+  #player-modal {
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+  .player-modal-content,
+  #player-modal-inner,
+  .modal-cassette-left,
+  .modal-cassette-right,
+  .modal-cassette-right .tracklist {
+    max-height: none !important;
+    overflow: visible !important;
+    height: auto !important;
+  }
+}
+
+@media (max-width: 900px) {
+  /* Prevent horizontal scroll on modal and content */
+  #player-modal,
+  .player-modal-content {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Fix album cover image being cut off */
+  .modal-cassette-left,
+  .modal-cassette-left .cassette-window,
+  #modal-album-cover {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    width: 100% !important;
+    max-width: 100vw !important;
+    box-sizing: border-box !important;
+    display: block !important;
+  }
+  .modal-cassette-left .cassette-window img,
+  #modal-album-cover {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100vw !important;
+    object-fit: contain !important;
+    margin: 0 auto !important;
+    display: block !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .modal-cassette-left .cassette-window,
+  .modal-cassette-left .cassette-window img,
+  .modal-album-top,
+  .album-info.compact {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+  }
+  .modal-cassette-left .cassette-window,
+  .modal-cassette-left .cassette-window img {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+  .album-info.compact {
+    margin-top: 0 !important;
+  }
+  .modal-album-top {
+    margin-bottom: 0 !important;
+    padding-bottom: 0 !important;
+  }
+}
+
+@media (max-width: 900px) {
+  .modal-cassette-left .cassette-window,
+  .modal-cassette-left .cassette-window img,
+  #modal-album-cover {
+    width: 100% !important;
+    height: auto !important;
+    max-width: 100vw !important;
+    max-height: 45vh !important;
+    object-fit: contain !important;
+    display: block !important;
+    margin: 0 auto !important;
+    padding: 0 !important;
+    background: #000 !important;
+    overflow: visible !important;
+  }
+  .player-modal-content,
+  #player-modal {
+    overflow-y: auto !important;
+    max-height: 100vh !important;
+  }
 }

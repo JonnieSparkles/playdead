@@ -247,18 +247,21 @@
                 }
             };
             document.getElementById("modal-prev-button").onclick = () => {
-                if (modalAudioPlayer.currentTime > 2) modalAudioPlayer.currentTime = 0;
-                else if (modalCurrentTrackIndex > 0) {
+                if (modalAudioPlayer.currentTime > 2) {
+                    modalAudioPlayer.currentTime = 0;
+                } else if (modalCurrentTrackIndex > 0) {
+                    const wasPaused = modalAudioPlayer.paused;
                     triggerCoverPop();
                     loadModalTrack(--modalCurrentTrackIndex);
-                    playModalCurrentTrack();
+                    if (!wasPaused) playModalCurrentTrack();
                 }
             };
             document.getElementById("modal-next-button").onclick = () => {
                 if (modalCurrentTrackIndex < modalTracks.length - 1) {
+                    const wasPaused = modalAudioPlayer.paused;
                     triggerCoverPop();
                     loadModalTrack(++modalCurrentTrackIndex);
-                    playModalCurrentTrack();
+                    if (!wasPaused) playModalCurrentTrack();
                 }
             };
             document.getElementById("modal-eject-button").onclick = closePlayerModal;
@@ -293,6 +296,14 @@
                     cover.style.backgroundSize = '';
                     cover.style.boxShadow = '';
                     cover.style.transform = '';
+                }
+            });
+            // Auto-advance to next track when one finishes
+            modalAudioPlayer.addEventListener('ended', () => {
+                if (modalCurrentTrackIndex < modalTracks.length - 1) {
+                    triggerCoverPop();
+                    loadModalTrack(++modalCurrentTrackIndex);
+                    playModalCurrentTrack();
                 }
             });
             // Load first track

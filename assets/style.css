@@ -1783,7 +1783,7 @@ body.modal-open {
     width: 100% !important;
     height: auto !important;
     max-width: 100vw !important;
-    max-height: 45vh !important;
+    max-height: 24vh !important;
     object-fit: contain !important;
     display: block !important;
     margin: 0 auto !important;

@@ -1644,3 +1644,141 @@ body.modal-open #player-modal {
     color: #fff;
     transform: scale(1.15) rotate(8deg);
 }
+
+/* Styles for video album modal */
+.modal-video-container {
+    display: flex;
+    flex-direction: column;
+    width: 90vw;
+    max-width: 800px;
+    max-height: 90vh;
+    padding: 1em;
+    background: #111;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0,0,0,0.8);
+}
+
+/* Ensure video modal container fills modal and hides overflow */
+#player-modal-inner > .modal-video-container {
+    height: 100%;
+    overflow: hidden;
+}
+
+/* Video element sizing */
+#modal-video-player {
+    max-height: 40vh;
+}
+
+/* Album info typography and spacing */
+.modal-video-container .album-info {
+    margin: 0 0 1em 0;
+    line-height: 1.2;
+}
+
+/* Tracklist scroll only */
+.modal-video-container .tracklist {
+    flex: 1 1 auto;
+    overflow-y: auto;
+}
+
+/* Controls sticky adjustment remains */
+.modal-video-container .controls {
+    display: flex;
+    justify-content: center;
+    gap: 1em;
+    margin-bottom: 1em;
+    position: sticky;
+    bottom: 0;
+    background: #111;
+    padding-top: 0.5em;
+    z-index: 5;
+}
+
+/* Video-mode overrides for desktop layout */
+#player-modal-inner.video-mode {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    width: 100%;
+    height: 100%;
+}
+#player-modal-inner.video-mode .modal-video-container {
+    flex: 1 1 auto;
+    width: 100%;
+}
+
+/* Desktop overrides for video-mode in .player-modal-content */
+.player-modal-content.video-mode {
+    flex-direction: column !important;
+    max-height: 80vh !important;
+    min-height: auto !important;
+    height: auto !important;
+}
+.player-modal-content.video-mode .modal-video-container {
+    padding: 0.5em !important;
+    max-height: 75vh !important;
+}
+
+/* video-mode album-info typography (match audio-mode) */
+.player-modal-content.video-mode .modal-video-container .album-info h1,
+.player-modal-content.video-mode .modal-video-container .album-info h2,
+.player-modal-content.video-mode .modal-video-container .album-info p {
+    margin: 2px 0;
+    line-height: 1.2;
+}
+.player-modal-content.video-mode .modal-video-container .album-info h1 {
+    font-size: 1.3em;
+}
+.player-modal-content.video-mode .modal-video-container .album-info h2 {
+    font-size: 1.1em;
+}
+.player-modal-content.video-mode .modal-video-container .album-info p {
+    font-size: 0.85em;
+}
+
+/* Fix video-mode controls to match audio-mode */
+.player-modal-content.video-mode .modal-video-container .controls {
+    padding: 2px 8px 0 8px !important;
+    gap: 6px !important;
+    margin-bottom: 1em !important;
+    justify-content: center !important;
+}
+.player-modal-content.video-mode .modal-video-container .controls button {
+    font-size: 0.95em !important;
+    padding: 4px 8px !important;
+    height: 30px !important;
+    border-radius: 4px !important;
+}
+
+/* Ensure the video container expands to show tracklist */
+.player-modal-content.video-mode #player-modal-inner > .modal-video-container {
+    height: auto !important;
+    overflow: visible !important;
+}
+
+/* Show and style tracklist in video-mode */
+.player-modal-content.video-mode .modal-video-container .tracklist {
+    flex: none !important;
+    overflow: visible !important;
+    margin: 1em 0 0 0 !important;
+    padding: 8px !important;
+    background: #181818 !important;
+    border-radius: 4px !important;
+}
+.player-modal-content.video-mode .modal-video-container .tracklist table {
+    width: 100% !important;
+    border-collapse: collapse !important;
+}
+.player-modal-content.video-mode .modal-video-container .tracklist th:first-child,
+.player-modal-content.video-mode .modal-video-container .tracklist td:first-child {
+    width: 2.5em !important;
+    padding-right: 8px !important;
+}
+.player-modal-content.video-mode .modal-video-container .tracklist th,
+.player-modal-content.video-mode .modal-video-container .tracklist td {
+    padding: 4px 8px !important;
+    color: #ffdd00 !important;
+}
+.player-modal-content.video-mode .modal-video-container .tracklist tr.active td {
+    background: rgba(255,69,0,0.3) !important;
+}

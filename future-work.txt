@@ -3,6 +3,7 @@ WHATS LEFT - THIS BRANCH
 
 -Make video on desktop work
 -Make video on mobile work
+-fix audio tracklist overlapping with tracklist headers
 -bring back laser mode
 -figure out arweave.net reliance?
 -Standardize catalog Cassette height (double text line issue)

@@ -129,6 +129,7 @@
             modal.style.opacity = '0';
             modal.style.display = 'flex';
             requestAnimationFrame(() => modal.style.opacity = '1');
+            const modalContent = document.querySelector('.player-modal-content');
             const modalInner = document.getElementById('player-modal-inner');
             modalInner.innerHTML = '<div style="text-align:center;padding:2em;">Loading...</div>';
             // Fetch album manifest
@@ -146,44 +147,77 @@
                 }));
                 modalCurrentTrackIndex = 0;
                 // Render player UI
-                modalInner.innerHTML = `
-                    <div class="modal-cassette-left">
-                        <div class="modal-album-top">
-                            <div class="cassette-window"><img id="modal-album-cover" src="https://arweave.net/${albumData.cover}" alt="${albumData.band} - ${albumData.title}"></div>
+                if (albumData.type === 'video') {
+                    modalContent.classList.add('video-mode');
+                    modalInner.classList.add('video-mode');
+                    modalInner.innerHTML = `
+                        <div class="modal-video-container">
+                            <video id="modal-video-player" controls style="width:100%; max-height:50vh; background:black;" poster="https://arweave.net/${albumData.cover}"></video>
                             <div class="album-info">
-                                <h1 class="band" id="modal-album-band">${albumData.band}</h1>
-                                <h2 class="title" id="modal-album-title">${albumData.title}</h2>
-                                <p class="date" id="modal-date-value">${albumData.date || ''}</p>
-                                <p class="source"><strong>Source:</strong> <span id="modal-source-value">${albumData.source || ''}</span></p>
+                                <h1 id="modal-album-band">${albumData.band}</h1>
+                                <h2 id="modal-album-title">${albumData.title}</h2>
+                                <p id="modal-date-value">${albumData.date || ''}</p>
+                                <p><strong>Source:</strong> <span id="modal-source-value">${albumData.source || ''}</span></p>
                             </div>
-                        </div>
-                        <div class="modal-album-bottom">
-                            <div class="modal-current-track-title" id="modal-current-track-title">Select a Track</div>
-                            <div class="media-player">
-                                <audio id="modal-audio-player" controls style="width: 100%; max-width: 440px;">
-                                    <source id="modal-audio-source" src="" type="audio/mpeg">
-                                </audio>
-                            </div>
+                            <div class="modal-current-track-title" id="modal-current-track-title">Select a Reel</div>
                             <div class="controls">
-                                <button id="modal-prev-button" title="Back">&lt;&lt;</button>
-                                <button id="modal-play-button" title="Play/Pause">&gt;</button>
-                                <button id="modal-next-button" title="Forward">&gt;&gt;</button>
-                                <button id="modal-eject-button" title="Eject">⏏</button>
-                                <button id="modal-info-button" title="Album Info">i</button>
+                                <button id="modal-prev-button">&lt;&lt;</button>
+                                <button id="modal-play-button">&gt;</button>
+                                <button id="modal-next-button">&gt;&gt;</button>
+                                <button id="modal-eject-button">⏏</button>
+                                <button id="modal-info-button">i</button>
+                            </div>
+                            <div class="tracklist" style="overflow-y:auto; flex-grow:1; margin-top:1em;">
+                                <table style="width:100%">
+                                    <thead><tr><th style="width:2.5em;">#</th><th style="width:auto;">Title</th></tr></thead>
+                                    <tbody id="modal-tracklist-body"></tbody>
+                                </table>
                             </div>
                         </div>
-                    </div>
-                    <div class="modal-cassette-right">
-                        <div class="tracklist" style="margin-top:0;">
-                            <table style="width:100%">
-                                <thead><tr><th style="width:2.5em;">#</th><th style="width:auto;">Title</th></tr></thead>
-                                <tbody id="modal-tracklist-body"></tbody>
-                            </table>
+                    `;
+                    setupModalVideoPlayer();
+                } else {
+                    modalContent.classList.remove('video-mode');
+                    modalInner.classList.remove('video-mode');
+                    modalInner.innerHTML = `
+                        <div class="modal-cassette-left">
+                            <div class="modal-album-top">
+                                <div class="cassette-window"><img id="modal-album-cover" src="https://arweave.net/${albumData.cover}" alt="${albumData.band} - ${albumData.title}"></div>
+                                <div class="album-info">
+                                    <h1 class="band" id="modal-album-band">${albumData.band}</h1>
+                                    <h2 class="title" id="modal-album-title">${albumData.title}</h2>
+                                    <p class="date" id="modal-date-value">${albumData.date || ''}</p>
+                                    <p class="source"><strong>Source:</strong> <span id="modal-source-value">${albumData.source || ''}</span></p>
+                                </div>
+                            </div>
+                            <div class="modal-album-bottom">
+                                <div class="modal-current-track-title" id="modal-current-track-title">Select a Track</div>
+                                <div class="media-player">
+                                    <audio id="modal-audio-player" controls style="width: 100%; max-width: 440px;">
+                                        <source id="modal-audio-source" src="" type="audio/mpeg">
+                                    </audio>
+                                </div>
+                                <div class="controls">
+                                    <button id="modal-prev-button" title="Back">&lt;&lt;</button>
+                                    <button id="modal-play-button" title="Play/Pause">&gt;</button>
+                                    <button id="modal-next-button" title="Forward">&gt;&gt;</button>
+                                    <button id="modal-eject-button" title="Eject">⏏</button>
+                                    <button id="modal-info-button" title="Album Info">i</button>
+                                </div>
+                            </div>
                         </div>
-                    </div>
-                `;
-                // Wire up player logic
-                setupModalPlayer();
+                        <div class="modal-cassette-right">
+                            <div class="tracklist" style="margin-top:0;">
+                                <table style="width:100%">
+                                    <thead><tr><th style="width:2.5em;">#</th><th style="width:auto;">Title</th></tr></thead>
+                                    <tbody id="modal-tracklist-body"></tbody>
+                                </table>
+                            </div>
+                        </div>
+                    `;
+                    // Wire up player logic
+                    setupModalPlayer();
+                }
                 if (albumData.info) {
                     document.getElementById("modal-info-button").style.display = "inline-block";
                     document.getElementById("modal-info-button").onclick = () => window.open(`https://arweave.net/${albumData.info}`, "_blank");
@@ -419,6 +453,76 @@
                     tempCover.parentNode.removeChild(tempCover);
                 }
             };
+        }
+
+        // New functions for video album playback
+        function setupModalVideoPlayer() {
+            const modalVideoPlayer = document.getElementById("modal-video-player");
+            modalCurrentTrackTitle = document.getElementById("modal-current-track-title");
+            // Populate tracklist
+            const tracklistBody = document.getElementById("modal-tracklist-body");
+            tracklistBody.innerHTML = "";
+            modalTracks.forEach((track, index) => {
+                const row = document.createElement("tr");
+                row.className = "track";
+                row.innerHTML = `<td>${track.number}</td><td>${track.title}</td>`;
+                row.onclick = () => {
+                    loadVideoTrack(index);
+                    playVideoTrack();
+                };
+                tracklistBody.appendChild(row);
+            });
+            // Controls
+            document.getElementById("modal-play-button").onclick = () => {
+                if (modalVideoPlayer.paused) {
+                    modalVideoPlayer.play();
+                    document.getElementById("modal-play-button").textContent = "||";
+                } else {
+                    modalVideoPlayer.pause();
+                    document.getElementById("modal-play-button").textContent = ">";
+                }
+            };
+            document.getElementById("modal-prev-button").onclick = () => {
+                if (modalVideoPlayer.currentTime > 2) modalVideoPlayer.currentTime = 0;
+                else if (modalCurrentTrackIndex > 0) {
+                    loadVideoTrack(--modalCurrentTrackIndex);
+                    playVideoTrack();
+                }
+            };
+            document.getElementById("modal-next-button").onclick = () => {
+                if (modalCurrentTrackIndex < modalTracks.length - 1) {
+                    loadVideoTrack(++modalCurrentTrackIndex);
+                    playVideoTrack();
+                }
+            };
+            document.getElementById("modal-eject-button").onclick = closePlayerModal;
+            // Video event listeners
+            modalVideoPlayer.addEventListener('play', () => document.getElementById("modal-play-button").textContent = "||");
+            modalVideoPlayer.addEventListener('pause', () => document.getElementById("modal-play-button").textContent = ">");
+            modalVideoPlayer.addEventListener('ended', () => {
+                if (modalCurrentTrackIndex < modalTracks.length - 1) {
+                    loadVideoTrack(++modalCurrentTrackIndex);
+                    playVideoTrack();
+                }
+            });
+            // Load first video
+            loadVideoTrack(0);
+        }
+        
+        function loadVideoTrack(index) {
+            modalCurrentTrackIndex = index;
+            const track = modalTracks[modalCurrentTrackIndex];
+            document.querySelectorAll('#modal-tracklist-body tr').forEach(row => row.classList.remove('active'));
+            document.querySelector(`#modal-tracklist-body tr:nth-child(${index + 1})`).classList.add('active');
+            modalCurrentTrackTitle.textContent = track.title;
+            const player = document.getElementById('modal-video-player');
+            player.src = track.url;
+            player.load();
+        }
+        
+        function playVideoTrack() {
+            const player = document.getElementById('modal-video-player');
+            player.play().catch(() => {});
         }
     </script>
 </body>

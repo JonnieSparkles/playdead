@@ -1,9 +1,6 @@
 WHATS LEFT - THIS BRANCH
 =============
 
-
--revisit album art animation when playing
--figure out why next tracks down autoplay
 -Make video on desktop work
 -Make video on mobile work
 -bring back laser mode

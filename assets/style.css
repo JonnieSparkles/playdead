@@ -566,6 +566,7 @@ pre {
     font-size: 40px;
     font-weight: bold;
     cursor: pointer;
+    transition: color 0.2s, transform 0.2s;
 }
 
 /* Update modal styles for mobile */
@@ -587,6 +588,7 @@ pre {
         top: 10px;
         font-size: 36px; /* Slightly smaller but still tappable */
         padding: 10px; /* Larger tap target */
+        transition: color 0.2s, transform 0.2s;
     }
 }
 
@@ -1632,4 +1634,13 @@ body.modal-open #player-modal {
 .pop-effect {
     animation: popEffect 0.5s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
     transform-origin: center;
+}
+
+/* Fullscreen cover modal close button hover effect */
+#modal-cover-modal .close-modal {
+    transition: color 0.2s, transform 0.2s;
+}
+#modal-cover-modal .close-modal:hover {
+    color: #fff;
+    transform: scale(1.15) rotate(8deg);
 }

@@ -19,6 +19,8 @@ WHATS LEFT - THIS BRANCH
 -Clean up/audit scripts
 -Clean up/audit CSS
 -Move index.html js to a separate file?
+-more info doesnt need to be more_info.txt anymore
+-info in iframe or something
 
 
 

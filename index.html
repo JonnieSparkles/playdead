@@ -148,21 +148,21 @@
                     <div class="modal-cassette-left">
                         <div class="modal-album-top">
                             <div class="cassette-window"><img id="modal-album-cover" src="https://arweave.net/${albumData.cover}" alt="${albumData.band} - ${albumData.title}"></div>
-                            <div class="album-info compact">
+                            <div class="album-info">
                                 <h1 class="band" id="modal-album-band">${albumData.band}</h1>
                                 <h2 class="title" id="modal-album-title">${albumData.title}</h2>
                                 <p class="date" id="modal-date-value">${albumData.date || ''}</p>
                                 <p class="source"><strong>Source:</strong> <span id="modal-source-value">${albumData.source || ''}</span></p>
                             </div>
                         </div>
-                        <div class="modal-album-bottom compact">
+                        <div class="modal-album-bottom">
                             <div class="modal-current-track-title" id="modal-current-track-title">Select a Track</div>
-                            <div class="media-player compact">
+                            <div class="media-player">
                                 <audio id="modal-audio-player" controls style="width: 100%; max-width: 440px;">
                                     <source id="modal-audio-source" src="" type="audio/mpeg">
                                 </audio>
                             </div>
-                            <div class="controls compact">
+                            <div class="controls">
                                 <button id="modal-prev-button" title="Back">&lt;&lt;</button>
                                 <button id="modal-play-button" title="Play/Pause">&gt;</button>
                                 <button id="modal-next-button" title="Forward">&gt;&gt;</button>

@@ -961,7 +961,7 @@ pre {
     justify-content: center;
     border-bottom: 2px solid #222;
     overflow: hidden;
-    margin-bottom: 6px !important;
+    margin-bottom: 8px !important;
 }
 
 .modal-cassette-left .cassette-window img {
@@ -1188,7 +1188,7 @@ pre {
         padding: 10px 0 0 0;
     }
     .modal-cassette-left .cassette-window {
-        margin-bottom: 10px !important;
+        margin-bottom: 8px !important;
     }
     .album-info.compact {
         margin-bottom: 10px !important;
@@ -1596,4 +1596,36 @@ body.modal-open {
 
 @media (max-width: 600px) {
     /* Existing mobile overrides remain unchanged */
+}
+
+/* Consistent vertical gap between media player and controls across all modes */
+.media-player.compact {
+    padding-bottom: 12px !important;
+    margin-bottom: 0 !important;
+}
+.controls.compact {
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+}
+
+@media (max-width: 900px) and (min-width: 601px) {
+    .media-player.compact {
+        padding-bottom: 12px !important;
+        margin-bottom: 0 !important;
+    }
+    .controls.compact {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
+}
+
+@media (max-width: 600px) {
+    .media-player.compact {
+        padding-bottom: 12px !important;
+        margin-bottom: 0 !important;
+    }
+    .controls.compact {
+        margin-top: 0 !important;
+        padding-top: 0 !important;
+    }
 }

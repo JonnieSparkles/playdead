@@ -1,3 +1,6 @@
+v5.3.0
+-Add farcaster mini-app metadata
+
 v5.2.0
 -Add farcaster mini-app support
 

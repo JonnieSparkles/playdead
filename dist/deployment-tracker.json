@@ -1,10 +1,10 @@
 {
   "trackerVersion": "1.0.0",
-  "lastDeployCommit": "fa48de833765056b",
-  "lastDeployed": "2025-10-17T17:31:19.026Z",
-  "deploymentCount": 2,
+  "lastDeployCommit": "66cebed4bb0c08e4",
+  "lastDeployed": "2025-10-17T18:07:00.040Z",
+  "deploymentCount": 3,
   "fileHashes": {
-    ".well-known/farcaster.json": "dd7668ac26e8df1b9c1938997922572735312c05",
+    ".well-known/farcaster.json": "d4b619d36d5fb7b37d14dc442a3bdd9132b1a41b",
     "assets/app-logo-large.png": "30a3b3f579444b12a565742f3bbb1042072b1ac5",
     "assets/app-logo.png": "10b4249a09e836d5b8d4faeb5c2156d0faa6bc6a",
     "assets/default-cover.png": "3221bea4d9cbf0406dc3889ecfda748646765579",
@@ -36,6 +36,14 @@
     "scripts/farcaster-sdk.js": "e424184d699946eb0ca51b3daa7170150de4877e"
   },
   "recentDeployments": [
+    {
+      "commit": "66cebed4bb0c08e4",
+      "manifestTxId": "wat2aK9ApGVGTeeQ8AFUPY2NIragSNae5vePx_eiegw",
+      "changedFiles": [
+        ".well-known/farcaster.json"
+      ],
+      "deployed": "2025-10-17T18:07:00.040Z"
+    },
     {
       "commit": "fa48de833765056b",
       "manifestTxId": "zxno0466wiWR51_h3J4_FqHTF5c-bhW0PMkTlQRTwjo",

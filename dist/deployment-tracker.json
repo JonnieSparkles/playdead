@@ -1,8 +1,8 @@
 {
   "trackerVersion": "1.0.0",
-  "lastDeployCommit": "66cebed4bb0c08e4",
-  "lastDeployed": "2025-10-17T18:07:00.040Z",
-  "deploymentCount": 3,
+  "lastDeployCommit": "8abb5d88252896b8",
+  "lastDeployed": "2025-10-17T20:02:45.866Z",
+  "deploymentCount": 4,
   "fileHashes": {
     ".well-known/farcaster.json": "d4b619d36d5fb7b37d14dc442a3bdd9132b1a41b",
     "assets/app-logo-large.png": "30a3b3f579444b12a565742f3bbb1042072b1ac5",
@@ -26,7 +26,7 @@
     "examples/video-album/album_cover.png": "7866f02ce79a10136dac6a2c4de3afbbdd7482c1",
     "examples/video-album/more_info.txt": "5de416e8bb68a9356be824a5a90b456916d82269",
     "examples/video-album/Reels/place-reels-here.txt": "d7319ccd7d7181bc471537c50c57888bd69fb332",
-    "index.html": "c138d91a1dfc1b5a05556f59b83888ec5380e447",
+    "index.html": "f4a9114139795283e56c1a79267297fc7464ca4b",
     "player.html": "9df2955f006f9b30415a9afec06b53b7ef5c32df",
     "scripts/laser-show.js": "656f75494fcb8378c689a7eee803398b31aa8f3d",
     "scripts/player.js": "6d30e9c7f834828a27ffe5a70d4e9ee56f40efa5",
@@ -36,6 +36,14 @@
     "scripts/farcaster-sdk.js": "e424184d699946eb0ca51b3daa7170150de4877e"
   },
   "recentDeployments": [
+    {
+      "commit": "8abb5d88252896b8",
+      "manifestTxId": "ZAhBBXGs4TcTIGTt6-nvemN7uNyezF4NQ3NphGhSEgI",
+      "changedFiles": [
+        "index.html"
+      ],
+      "deployed": "2025-10-17T20:02:45.866Z"
+    },
     {
       "commit": "66cebed4bb0c08e4",
       "manifestTxId": "wat2aK9ApGVGTeeQ8AFUPY2NIragSNae5vePx_eiegw",
@@ -55,42 +63,6 @@
         "scripts/player.js"
       ],
       "deployed": "2025-10-17T17:31:19.026Z"
-    },
-    {
-      "commit": "d8d1e835415a8e03",
-      "manifestTxId": "pJUJshX-29dFlNO9WMvsqP8n2waQW8JcwWUcz38k9E4",
-      "changedFiles": [
-        ".well-known/farcaster.json",
-        "assets/app-logo-large.png",
-        "assets/app-logo.png",
-        "assets/default-cover.png",
-        "assets/favicon.ico",
-        "assets/icon-cassette.png",
-        "assets/icon-insert.png",
-        "assets/icon-recorder.png",
-        "assets/style.css",
-        "assets/tg-logo.png",
-        "catalog.json",
-        "changelog.txt",
-        "contribute.html",
-        "examples/audio-album/album-audio-v2.0.0.json",
-        "examples/audio-album/album_cover.png",
-        "examples/audio-album/more_info.txt",
-        "examples/audio-album/Tracks/place-tracks-here.txt",
-        "examples/README.md",
-        "examples/video-album/album-video-v2.0.0.json",
-        "examples/video-album/album_cover.png",
-        "examples/video-album/more_info.txt",
-        "examples/video-album/Reels/place-reels-here.txt",
-        "index.html",
-        "player.html",
-        "scripts/laser-show.js",
-        "scripts/player.js",
-        "scripts/utils.js",
-        "tools/album-setup-tool/README.md",
-        "tools/album-setup-tool/setup_album.py"
-      ],
-      "deployed": "2025-10-17T17:26:48.814Z"
     }
   ]
 }

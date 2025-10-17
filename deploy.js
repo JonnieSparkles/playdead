@@ -84,7 +84,8 @@ async function deployDirectoryDynamic(dirPath, options, startTime) {
       logger.showDeploymentSummary({
         changedFiles: result.stats.fileCount || result.changedFiles.length,
         unchangedFiles: result.stats.unchangedFiles || 0,
-        totalSize: formatBytes(result.stats.totalSize || 0),
+        totalSize: result.stats.totalSize || 0,
+        totalProjectSize: result.stats.totalProjectSize || 0,
         manifestTxId: result.manifestTxId || 'N/A',
         undername: result.undername || 'N/A'
       });

@@ -40,5 +40,33 @@
     "deploymentType": "dynamic",
     "changedFiles": 1,
     "version": "0.2.0"
+  },
+  {
+    "timestamp": "2025-10-17T01:21:26.333Z",
+    "success": true,
+    "filePath": "dist/",
+    "commitHash": "cf074f14734dcab2",
+    "txId": "FQTy5O2XhkwDHVcpDmh1fyE7TrbzicIPrgULqmjg_Oo",
+    "manifestTxId": "FQTy5O2XhkwDHVcpDmh1fyE7TrbzicIPrgULqmjg_Oo",
+    "undername": "dynamic-deploy_playdead",
+    "fileSize": 2377,
+    "duration": 4068,
+    "deploymentType": "dynamic",
+    "changedFiles": 1,
+    "version": "0.2.0"
+  },
+  {
+    "timestamp": "2025-10-17T01:27:44.493Z",
+    "success": true,
+    "filePath": "dist/",
+    "commitHash": "21d603b8370d26f3",
+    "txId": "sUSlNnY7zy09D6-OnKHA9jvcBMVW2L3wROV8ajka8y4",
+    "manifestTxId": "sUSlNnY7zy09D6-OnKHA9jvcBMVW2L3wROV8ajka8y4",
+    "undername": "dynamic-deploy_playdead",
+    "fileSize": 2379,
+    "duration": 37006,
+    "deploymentType": "dynamic",
+    "changedFiles": 1,
+    "version": "0.2.0"
   }
 ]

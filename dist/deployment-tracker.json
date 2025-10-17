@@ -1,8 +1,8 @@
 {
   "trackerVersion": "1.0.0",
-  "lastDeployCommit": "7ad976e00e7af9d6",
-  "lastDeployed": "2025-10-17T16:59:50.006Z",
-  "deploymentCount": 10,
+  "lastDeployCommit": "f6007be1a746b702",
+  "lastDeployed": "2025-10-17T17:03:58.329Z",
+  "deploymentCount": 11,
   "fileHashes": {
     "assets/app-logo-large.png": "30a3b3f579444b12a565742f3bbb1042072b1ac5",
     "assets/app-logo.png": "10b4249a09e836d5b8d4faeb5c2156d0faa6bc6a",
@@ -25,15 +25,26 @@
     "examples/video-album/album_cover.png": "7866f02ce79a10136dac6a2c4de3afbbdd7482c1",
     "examples/video-album/more_info.txt": "5de416e8bb68a9356be824a5a90b456916d82269",
     "examples/video-album/Reels/place-reels-here.txt": "d7319ccd7d7181bc471537c50c57888bd69fb332",
-    "index.html": "3b9939bc3d557c1602d5c07c52981d8ee46c7f58",
+    "index.html": "a4f339b0418ee23d8750e34ada1b3c2e35382ff4",
     "scripts/laser-show.js": "17d8fe2f1cad87967286eb60ee513c1a60086d5c",
-    "scripts/player.js": "5cd6e504f496ed459bd1b97d28e45c91bd69f50c",
+    "scripts/player.js": "be5e7e53bdcc04b5eea6a8b2f748c63e269c51d4",
     "scripts/utils.js": "0d81e7bf7b66c61aee5b1fd33a17f6afedf243db",
     "tools/album-setup-tool/README.md": "8e7adeefa8d5e37022cde3e38c33e5f8e88bf399",
     "tools/album-setup-tool/setup_album.py": "06c11b21a65d3c2b59cab74b81f19df8bf9c0b1e",
-    ".well-known/farcaster.json": "ebc215ba29e6166ce8ed3283a6794dad091c6e9a"
+    ".well-known/farcaster.json": "ebc215ba29e6166ce8ed3283a6794dad091c6e9a",
+    "scripts/farcaster-sdk.js": "109bb9cc3fb27f3b86ca0bd54f48663d95b0381e"
   },
   "recentDeployments": [
+    {
+      "commit": "f6007be1a746b702",
+      "manifestTxId": "IoF5G51AslkhM7crPWGHfY0MLHYMuizkKdIaIfxetAU",
+      "changedFiles": [
+        "index.html",
+        "scripts/farcaster-sdk.js",
+        "scripts/player.js"
+      ],
+      "deployed": "2025-10-17T17:03:58.329Z"
+    },
     {
       "commit": "7ad976e00e7af9d6",
       "manifestTxId": "degDSTQaTJi4pHDstGPXIEUZnkNSz8IARRCVQsVL2Ho",
@@ -49,17 +60,6 @@
         ".well-known/farcaster.json"
       ],
       "deployed": "2025-10-17T16:53:37.611Z"
-    },
-    {
-      "commit": "28e48813e16bad72",
-      "manifestTxId": "92ZYxpbu78cOJdfmDS0BMfAWaX3Ez0BRLppQY2Sn2IA",
-      "changedFiles": [
-        "assets/style.css",
-        "index.html",
-        "scripts/laser-show.js",
-        "scripts/player.js"
-      ],
-      "deployed": "2025-10-17T16:17:18.981Z"
     }
   ]
 }

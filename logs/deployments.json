@@ -110,5 +110,33 @@
     "deploymentType": "dynamic",
     "changedFiles": 4,
     "version": "0.2.0"
+  },
+  {
+    "timestamp": "2025-10-17T16:53:37.856Z",
+    "success": true,
+    "filePath": "dist/",
+    "commitHash": "bbde9f6e50212ecb",
+    "txId": "InLJW3EPwoam289qr_DEnHbWb0Xk8BtNqYu7-_gTm20",
+    "manifestTxId": "InLJW3EPwoam289qr_DEnHbWb0Xk8BtNqYu7-_gTm20",
+    "undername": "bbde9f6e50212ecb_playdead",
+    "fileSize": 540,
+    "duration": 21345,
+    "deploymentType": "dynamic",
+    "changedFiles": 1,
+    "version": "0.2.0"
+  },
+  {
+    "timestamp": "2025-10-17T16:59:52.182Z",
+    "success": true,
+    "filePath": "dist/",
+    "commitHash": "7ad976e00e7af9d6",
+    "txId": "degDSTQaTJi4pHDstGPXIEUZnkNSz8IARRCVQsVL2Ho",
+    "manifestTxId": "degDSTQaTJi4pHDstGPXIEUZnkNSz8IARRCVQsVL2Ho",
+    "undername": "7ad976e00e7af9d6_playdead",
+    "fileSize": 1519,
+    "duration": 15475,
+    "deploymentType": "dynamic",
+    "changedFiles": 1,
+    "version": "0.2.0"
   }
 ]

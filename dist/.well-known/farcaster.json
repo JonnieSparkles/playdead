@@ -9,6 +9,29 @@
       "splashImageUrl": "https://arweave.net/rZlID1OrspG0TPwbON5GuCZe9cQjinu0M9djltaiSOo",
       "splashBackgroundColor": "#1a1a1a",
       "requiredChains": [],
-      "requiredCapabilities": []
+      "requiredCapabilities": [],
+      "webhookUrl": "",
+      "subtitle": "Permanent Media Player",
+      "description": "A permanent media player and catalog built for Arweave, focused on preserving audience recordings, videos, and public domain content forever.",
+      "screenshotUrls": [
+        "https://arweave.net/uUzQ3V04jXI5LNexHFMN3hQWXOYpdxbmB6E1zBkfOJc"
+      ],
+      "primaryCategory": "entertainment",
+      "tags": [
+        "music",
+        "video",
+        "arweave",
+        "permanent",
+        "media",
+        "streaming",
+        "retro",
+        "psychedelic"
+      ],
+      "heroImageUrl": "https://arweave.net/uUzQ3V04jXI5LNexHFMN3hQWXOYpdxbmB6E1zBkfOJc",
+      "tagline": "Always dead, always jamming.",
+      "ogTitle": "Dead For(actually)ever via ar://playdead",
+      "ogDescription": "Always dead, always jamming.",
+      "ogImageUrl": "https://arweave.net/uUzQ3V04jXI5LNexHFMN3hQWXOYpdxbmB6E1zBkfOJc",
+      "castShareUrl": "https://playdead.arweave.net"
     }
   }

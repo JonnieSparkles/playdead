@@ -53,6 +53,13 @@ async function loadAlbumList() {
     } catch (error) {
         console.error("Error loading catalog:", error.message);
     }
+    
+    // Hide Farcaster splash screen after catalog is loaded
+    if (window.farcasterSDK && window.farcasterSDK.isAvailable()) {
+        setTimeout(async () => {
+            await window.farcasterSDK.hideSplash();
+        }, 100);
+    }
 }
 
 // Modal player functions
@@ -356,12 +363,20 @@ window.addEventListener('hashchange', function() {
     }
 });
 // On page load, check hash
-window.onload = function() {
+window.onload = async function() {
     loadAlbumList();
     const hash = window.location.hash;
     if (hash.startsWith('#album=')) {
         const albumId = hash.replace('#album=', '');
         openPlayerModal(albumId);
+    }
+    
+    // Hide Farcaster splash screen after app is fully loaded
+    if (window.farcasterSDK && window.farcasterSDK.isAvailable()) {
+        // Small delay to ensure everything is rendered
+        setTimeout(async () => {
+            await window.farcasterSDK.hideSplash();
+        }, 500);
     }
 };
 

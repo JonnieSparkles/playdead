@@ -158,6 +158,13 @@ async function loadAlbum() {
 
         setupPlayer();
         setupAlbumCoverModal();
+        
+        // Hide Farcaster splash screen after album is loaded
+        if (window.farcasterSDK && window.farcasterSDK.isAvailable()) {
+            setTimeout(async () => {
+                await window.farcasterSDK.hideSplash();
+            }, 100);
+        }
     } catch (error) {
         console.error("Error loading album:", error.message);
     }
@@ -282,7 +289,17 @@ function setupPlayer() {
 }
 
 // Initialize the album on page load
-window.onload = loadAlbum;
+window.onload = async function() {
+    loadAlbum();
+    
+    // Hide Farcaster splash screen after app is fully loaded
+    if (window.farcasterSDK && window.farcasterSDK.isAvailable()) {
+        // Small delay to ensure everything is rendered
+        setTimeout(async () => {
+            await window.farcasterSDK.hideSplash();
+        }, 500);
+    }
+};
 
 // Add these helper functions
 function updatePlayButton() {

@@ -1,4 +1,7 @@
-v5.0.0
+v5.2.0
+-Add farcaster mini-app support
+
+v5.1.0
 -Refactored album structure to use album.json v2 format
   - Integrated album cover, info, and track metadata into single manifest
   - Removed dependency on separate Arweave manifest

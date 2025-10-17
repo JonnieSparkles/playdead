@@ -46,7 +46,7 @@
 
     <footer>
         <p><strong>ar://playdead</strong> by @JonnieSparkles</p>
-        <a href="./changelog.txt" target="_blank">v5.0.0</a>
+        <a href="./changelog.txt" target="_blank">v5.2.0</a>
     </footer>
 
     <script>
@@ -99,6 +99,13 @@
             } catch (error) {
                 console.error("Error loading catalog:", error.message);
             }
+            
+            // Hide Farcaster splash screen after catalog is loaded
+            if (window.farcasterSDK && window.farcasterSDK.isAvailable()) {
+                setTimeout(async () => {
+                    await window.farcasterSDK.hideSplash();
+                }, 100);
+            }
         }
 
         document.getElementById("load-album-button").onclick = () => {
@@ -111,7 +118,19 @@
         };
 
         // Load the album list on page load
-        window.onload = loadAlbumList;
+        window.onload = async function() {
+            loadAlbumList();
+            
+            // Hide Farcaster splash screen after app is fully loaded
+            if (window.farcasterSDK && window.farcasterSDK.isAvailable()) {
+                // Small delay to ensure everything is rendered
+                setTimeout(async () => {
+                    await window.farcasterSDK.hideSplash();
+                }, 500);
+            }
+        };
     </script>
+    
+    <script src="./scripts/farcaster-sdk.js" defer></script>
 </body>
 </html>

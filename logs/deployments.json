@@ -1,0 +1,16 @@
+[
+  {
+    "timestamp": "2025-10-17T17:26:49.579Z",
+    "success": true,
+    "filePath": "dist/",
+    "commitHash": "d8d1e835415a8e03",
+    "txId": "pJUJshX-29dFlNO9WMvsqP8n2waQW8JcwWUcz38k9E4",
+    "manifestTxId": "pJUJshX-29dFlNO9WMvsqP8n2waQW8JcwWUcz38k9E4",
+    "undername": "d8d1e835415a8e03_playdead",
+    "fileSize": 9900543,
+    "duration": 45007,
+    "deploymentType": "dynamic",
+    "changedFiles": 29,
+    "version": "0.2.0"
+  }
+]

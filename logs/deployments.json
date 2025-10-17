@@ -1,19 +1,5 @@
 [
   {
-    "timestamp": "2025-10-17T00:56:28.434Z",
-    "success": true,
-    "filePath": "dist/",
-    "commitHash": "984ff890b2eb2d59",
-    "txId": "2BEdb2TJjqHS1kiRf78HWvr8EXaNFEUHEYcR-eDJ1a0",
-    "manifestTxId": "2BEdb2TJjqHS1kiRf78HWvr8EXaNFEUHEYcR-eDJ1a0",
-    "undername": "dynamic-test",
-    "fileSize": 9930592,
-    "duration": 87161,
-    "deploymentType": "dynamic",
-    "changedFiles": 27,
-    "version": "0.2.0"
-  },
-  {
     "timestamp": "2025-10-17T01:13:58.457Z",
     "success": true,
     "filePath": "dist/",
@@ -137,6 +123,20 @@
     "duration": 15475,
     "deploymentType": "dynamic",
     "changedFiles": 1,
+    "version": "0.2.0"
+  },
+  {
+    "timestamp": "2025-10-17T17:04:01.017Z",
+    "success": true,
+    "filePath": "dist/",
+    "commitHash": "f6007be1a746b702",
+    "txId": "IoF5G51AslkhM7crPWGHfY0MLHYMuizkKdIaIfxetAU",
+    "manifestTxId": "IoF5G51AslkhM7crPWGHfY0MLHYMuizkKdIaIfxetAU",
+    "undername": "f6007be1a746b702_playdead",
+    "fileSize": 29039,
+    "duration": 23092,
+    "deploymentType": "dynamic",
+    "changedFiles": 3,
     "version": "0.2.0"
   }
 ]

@@ -6,17 +6,16 @@ let farcasterSDK = null;
 // Initialize Farcaster SDK
 async function initializeFarcasterSDK() {
     try {
-        // Check if we're running in a Farcaster environment
-        if (typeof window !== 'undefined' && window.farcaster) {
-            // Import the SDK dynamically
-            const { sdk } = await import('@farcaster/miniapp-sdk');
-            farcasterSDK = sdk;
-            console.log('Farcaster SDK initialized successfully');
-            return true;
-        } else {
-            console.log('Not running in Farcaster environment, SDK not available');
-            return false;
-        }
+        // Import the SDK using the CDN method as recommended in the docs
+        const { sdk } = await import('https://esm.sh/@farcaster/miniapp-sdk');
+        farcasterSDK = sdk;
+        console.log('Farcaster SDK initialized successfully');
+        
+        // Call ready() immediately after SDK initialization
+        await sdk.actions.ready();
+        console.log('Farcaster ready() called successfully');
+        
+        return true;
     } catch (error) {
         console.log('Farcaster SDK not available:', error.message);
         return false;

@@ -106,7 +106,8 @@ async function openPlayerModal(albumId) {
                         <button id="modal-eject-button">⏏</button>
                         <button id="modal-info-button">i</button>
                     </div>
-                    <div class="tracklist" style="overflow-y:auto; flex-grow:1; margin-top:1em;">
+                    <button id="collapse-tracklist-btn" title="Collapse tracklist" class="collapse-tracklist-btn">«</button>
+                    <div class="tracklist collapsed" style="overflow-y:auto; flex-grow:1; margin-top:1em;">
                         <table style="width:100%">
                             <thead><tr><th style="width:2.5em;">#</th><th style="width:auto;">Title</th></tr></thead>
                             <tbody id="modal-tracklist-body"></tbody>
@@ -317,6 +318,11 @@ function loadModalTrack(index) {
         modalAudioPlayer.appendChild(modalAudioSource);
     }
     modalAudioPlayer.load();
+    
+    // Update browser tab title
+    const bandElement = document.getElementById('modal-album-band');
+    const band = bandElement ? bandElement.textContent : 'Unknown Artist';
+    document.title = `${band} - ${track.title}`;
 }
 
 function playModalCurrentTrack() {
@@ -332,6 +338,8 @@ function closePlayerModal() {
         document.getElementById('player-modal-inner').innerHTML = '';
         window.location.hash = '';
         document.body.classList.remove('modal-open');
+        // Reset browser tab title
+        document.title = modalOriginalTitle;
     }, 300);
 }
 
@@ -465,6 +473,27 @@ function setupModalVideoPlayer() {
     });
     // Load first video
     loadVideoTrack(0);
+    
+    // Add collapse functionality for video mode
+    const collapseBtn = document.getElementById('collapse-tracklist-btn');
+    const tracklist = document.querySelector('.tracklist');
+    if (collapseBtn && tracklist) {
+        // Start collapsed for video mode
+        tracklist.classList.add('collapsed');
+        collapseBtn.textContent = '»';
+        collapseBtn.title = 'Expand tracklist';
+        
+        collapseBtn.onclick = function() {
+            const isCollapsed = tracklist.classList.toggle('collapsed');
+            if (isCollapsed) {
+                collapseBtn.textContent = '»';
+                collapseBtn.title = 'Expand tracklist';
+            } else {
+                collapseBtn.textContent = '«';
+                collapseBtn.title = 'Collapse tracklist';
+            }
+        };
+    }
 }
 
 function loadVideoTrack(index) {
@@ -476,6 +505,11 @@ function loadVideoTrack(index) {
     const player = document.getElementById('modal-video-player');
     player.src = track.url;
     player.load();
+    
+    // Update browser tab title
+    const bandElement = document.getElementById('modal-album-band');
+    const band = bandElement ? bandElement.textContent : 'Unknown Artist';
+    document.title = `${band} - ${track.title}`;
 }
 
 function playVideoTrack() {

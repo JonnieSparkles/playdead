@@ -82,5 +82,19 @@
     "deploymentType": "dynamic",
     "changedFiles": 1,
     "version": "0.2.0"
+  },
+  {
+    "timestamp": "2025-10-17T01:35:17.645Z",
+    "success": true,
+    "filePath": "dist/",
+    "commitHash": "ba7e454ae67d3190",
+    "txId": "ScHO57TVcqRBbpv2hnHAoOwWDhZV1ztV_wnEFyUAvos",
+    "manifestTxId": "ScHO57TVcqRBbpv2hnHAoOwWDhZV1ztV_wnEFyUAvos",
+    "undername": "dynamic-deploy_playdead",
+    "fileSize": 2372,
+    "duration": 24375,
+    "deploymentType": "dynamic",
+    "changedFiles": 1,
+    "version": "0.2.0"
   }
 ]

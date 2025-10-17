@@ -1,25 +1,32 @@
 {
-    "miniapp": {
-      "version": "1",
-      "name": "ar://playdead",
-      "iconUrl": "https://arweave.net/rZlID1OrspG0TPwbON5GuCZe9cQjinu0M9djltaiSOo",
-      "homeUrl": "https://playdead.arweave.net",
-      "imageUrl": "https://arweave.net/uUzQ3V04jXI5LNexHFMN3hQWXOYpdxbmB6E1zBkfOJc",
-      "buttonTitle": "🎵 Play",
-      "splashImageUrl": "https://arweave.net/rZlID1OrspG0TPwbON5GuCZe9cQjinu0M9djltaiSOo",
-      "splashBackgroundColor": "#1a1a1a",
-      "requiredChains": [],
-      "requiredCapabilities": [],
-      "subtitle": "Permanent Media Player",
-      "description": "A permanent media player and catalog built for Arweave, focused on preserving audience recordings, videos, and public domain content forever.",
-      "screenshotUrls": [
-        "https://arweave.net/uUzQ3V04jXI5LNexHFMN3hQWXOYpdxbmB6E1zBkfOJc"
-      ],
-      "primaryCategory": "entertainment",
-      "heroImageUrl": "https://arweave.net/uUzQ3V04jXI5LNexHFMN3hQWXOYpdxbmB6E1zBkfOJc",
-      "tagline": "Always dead, always jamming.",
-      "ogDescription": "Always dead, always jamming.",
-      "ogImageUrl": "https://arweave.net/uUzQ3V04jXI5LNexHFMN3hQWXOYpdxbmB6E1zBkfOJc",
-      "castShareUrl": "https://playdead.arweave.net"
-    }
+  "accountAssociation": {
+    "header": "eyJmaWQiOjIxMDQ3NiwidHlwZSI6ImN1c3RvZHkiLCJrZXkiOiIweDc3NkIxNDU0MEFDZDg2RTQyZjQ0NkFCOWM3MkVlNTc2MkU3ZTZFMUEifQ",
+    "payload": "eyJkb21haW4iOiJwbGF5ZGVhZC5hcndlYXZlLm5ldCJ9",
+    "signature": "elcU5qJlN7X+NrcNtnVzr+VifnvIlnt7QhkxL8UNcHQV/qBSnu1A3JADLQQ3+vNegpontCMAdKiEMXChYxrNfxw="
+  },
+  "miniapp": {
+    "name": "ar://playdead",
+    "version": "1",
+    "iconUrl": "https://playdead.arweave.net/assets/app-logo.png",
+    "homeUrl": "https://playdead.arweave.net",
+    "imageUrl": "https://playdead.arweave.net/assets/app-logo.png",
+    "buttonTitle": "Jam on",
+    "splashImageUrl": "https://playdead.arweave.net/assets/app-logo.png",
+    "splashBackgroundColor": "#1a1a1a",
+    "description": "A themed player and catalog for permanently archived music.",
+    "subtitle": "Always dead, always jamming",
+    "primaryCategory": "entertainment",
+    "heroImageUrl": "https://playdead.arweave.net/assets/app-logo.png",
+    "tags": [
+      "app",
+      "music",
+      "player",
+      "psychedelic",
+      "rock"
+    ],
+    "tagline": "Always dead, always jamming",
+    "ogTitle": "playdead",
+    "ogDescription": "A themed player and catalog for permanently archived music.",
+    "ogImageUrl": "https://playdead.arweave.net/assets/app-logo.png"
   }
+}

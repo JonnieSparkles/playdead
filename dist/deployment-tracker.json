@@ -1,8 +1,8 @@
 {
   "trackerVersion": "1.0.0",
-  "lastDeployCommit": "d8d1e835415a8e03",
-  "lastDeployed": "2025-10-17T17:26:48.814Z",
-  "deploymentCount": 1,
+  "lastDeployCommit": "fa48de833765056b",
+  "lastDeployed": "2025-10-17T17:31:19.026Z",
+  "deploymentCount": 2,
   "fileHashes": {
     ".well-known/farcaster.json": "dd7668ac26e8df1b9c1938997922572735312c05",
     "assets/app-logo-large.png": "30a3b3f579444b12a565742f3bbb1042072b1ac5",
@@ -15,7 +15,7 @@
     "assets/style.css": "853b70ae5be4b111e0c2aa54a0603b170dc12c17",
     "assets/tg-logo.png": "cad22c00f7b54408351152d4f5f867a3b406ef21",
     "catalog.json": "88d624447a332e16837aefceb7056e081efc1d7e",
-    "changelog.txt": "536116e68fd2c63eb4b20f93227fd28be9a72ace",
+    "changelog.txt": "6950b60f1d80f004e45cdf63090b7238d7ee0fbc",
     "contribute.html": "7ac3052e2fedc47555c74e6905493146ea12f062",
     "examples/audio-album/album-audio-v2.0.0.json": "a4645b5314795f1e19f2688d9b31c5eafd637775",
     "examples/audio-album/album_cover.png": "7866f02ce79a10136dac6a2c4de3afbbdd7482c1",
@@ -26,15 +26,28 @@
     "examples/video-album/album_cover.png": "7866f02ce79a10136dac6a2c4de3afbbdd7482c1",
     "examples/video-album/more_info.txt": "5de416e8bb68a9356be824a5a90b456916d82269",
     "examples/video-album/Reels/place-reels-here.txt": "d7319ccd7d7181bc471537c50c57888bd69fb332",
-    "index.html": "d5c4ec55b9dd297a5c74c51ebc67a42cca6e230e",
-    "player.html": "f3871c869e92f34e89ed25c14666d60286df5aaa",
+    "index.html": "c138d91a1dfc1b5a05556f59b83888ec5380e447",
+    "player.html": "9df2955f006f9b30415a9afec06b53b7ef5c32df",
     "scripts/laser-show.js": "656f75494fcb8378c689a7eee803398b31aa8f3d",
-    "scripts/player.js": "860c5a06ad69eaa296ee7e3b6952bbcd5e997e6a",
+    "scripts/player.js": "6d30e9c7f834828a27ffe5a70d4e9ee56f40efa5",
     "scripts/utils.js": "0d81e7bf7b66c61aee5b1fd33a17f6afedf243db",
     "tools/album-setup-tool/README.md": "8e7adeefa8d5e37022cde3e38c33e5f8e88bf399",
-    "tools/album-setup-tool/setup_album.py": "06c11b21a65d3c2b59cab74b81f19df8bf9c0b1e"
+    "tools/album-setup-tool/setup_album.py": "06c11b21a65d3c2b59cab74b81f19df8bf9c0b1e",
+    "scripts/farcaster-sdk.js": "e424184d699946eb0ca51b3daa7170150de4877e"
   },
   "recentDeployments": [
+    {
+      "commit": "fa48de833765056b",
+      "manifestTxId": "zxno0466wiWR51_h3J4_FqHTF5c-bhW0PMkTlQRTwjo",
+      "changedFiles": [
+        "changelog.txt",
+        "index.html",
+        "player.html",
+        "scripts/farcaster-sdk.js",
+        "scripts/player.js"
+      ],
+      "deployed": "2025-10-17T17:31:19.026Z"
+    },
     {
       "commit": "d8d1e835415a8e03",
       "manifestTxId": "pJUJshX-29dFlNO9WMvsqP8n2waQW8JcwWUcz38k9E4",

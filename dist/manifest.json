@@ -39,7 +39,7 @@
       "id": "dwgsDgWt3ssCtPkSEjObnrHD_GQHOHjLeIAcMyk6M30"
     },
     "changelog.txt": {
-      "id": "6lcr7dEDOR0j-GohuAPbLLOYsQk0OrIvEuYspLHVpJ8"
+      "id": "cQ7YQEDoXAuRDaXPXBohpA-OWWiocJN3fQ_yOM_inVE"
     },
     "contribute.html": {
       "id": "L_uMzXlwPMTu2TdmCKNdNF715mA5JlQ0e-SksamKjqY"
@@ -72,16 +72,16 @@
       "id": "tPnSrm1TymtH1BbRTKDMOgGItnthO7OIViiYNVs9pcY"
     },
     "index.html": {
-      "id": "eke7XwrtKCKlIMcXJjKxSzvGN_Hj_XRCDjR8_xowjLY"
+      "id": "6kIrYO78t_Q_KUTJnZ3UdiiFlUvl7JjWGjsTHySN0jg"
     },
     "player.html": {
-      "id": "hXLoIfijDyrkM1JuX8rWhAV7w3KnkK1jsLVN4CJpxqs"
+      "id": "RAhvGDPgdfnuOiSewWEuoRQphopKcxYwC2ji2kVvxjQ"
     },
     "scripts/laser-show.js": {
       "id": "IzegFUPF2-JJ35muCjL51Wsi6ITkVd_tHvu2h6DLeug"
     },
     "scripts/player.js": {
-      "id": "YeXVT6dyyzuEpbt9RXm4_ClAiCC1gwpjAXAVwWY_BZ8"
+      "id": "tGYCrZMXn_6cAdqc7EjpifmDJANeWutwn-iObKdOGsw"
     },
     "scripts/utils.js": {
       "id": "y8d-64nh_r9BEErkefpZ-OF2s6l_LFULFL0Yv1fxvWQ"
@@ -91,6 +91,9 @@
     },
     "tools/album-setup-tool/setup_album.py": {
       "id": "XbRJyfGMB8wDuZJ9kpRAIIfkZHUE6TgQgcCG2hf6Zq4"
+    },
+    "scripts/farcaster-sdk.js": {
+      "id": "jMpnM8NYT-ewRYdy_XvXAFxM7cCi_aZtZQLKOyQvrZg"
     }
   }
 }

@@ -1,8 +1,8 @@
 {
   "trackerVersion": "1.0.0",
-  "lastDeployCommit": "3a0b82619f38d873",
-  "lastDeployed": "2025-10-17T20:05:57.041Z",
-  "deploymentCount": 5,
+  "lastDeployCommit": "7fecd0b050d67f08",
+  "lastDeployed": "2025-10-17T20:40:58.159Z",
+  "deploymentCount": 6,
   "fileHashes": {
     ".well-known/farcaster.json": "d4b619d36d5fb7b37d14dc442a3bdd9132b1a41b",
     "assets/app-logo-large.png": "30a3b3f579444b12a565742f3bbb1042072b1ac5",
@@ -26,8 +26,8 @@
     "examples/video-album/album_cover.png": "7866f02ce79a10136dac6a2c4de3afbbdd7482c1",
     "examples/video-album/more_info.txt": "5de416e8bb68a9356be824a5a90b456916d82269",
     "examples/video-album/Reels/place-reels-here.txt": "d7319ccd7d7181bc471537c50c57888bd69fb332",
-    "index.html": "3677f693f2ea64c3a6cbbfea12429981f1793bdc",
-    "player.html": "29b09b8a88d093a9fdda2774caf1385e95b41371",
+    "index.html": "4a0a023f64e9086d62d0671563bdbd57e297357c",
+    "player.html": "b8b5e23c5fa4ec15e3078e32ba349179aad8f677",
     "scripts/laser-show.js": "656f75494fcb8378c689a7eee803398b31aa8f3d",
     "scripts/player.js": "6d30e9c7f834828a27ffe5a70d4e9ee56f40efa5",
     "scripts/utils.js": "0d81e7bf7b66c61aee5b1fd33a17f6afedf243db",
@@ -36,6 +36,15 @@
     "scripts/farcaster-sdk.js": "e424184d699946eb0ca51b3daa7170150de4877e"
   },
   "recentDeployments": [
+    {
+      "commit": "7fecd0b050d67f08",
+      "manifestTxId": "IENAR-0nrLQLHANmbZSO-MUBo_8gurNboIHPWTziOZo",
+      "changedFiles": [
+        "index.html",
+        "player.html"
+      ],
+      "deployed": "2025-10-17T20:40:58.159Z"
+    },
     {
       "commit": "3a0b82619f38d873",
       "manifestTxId": "6RjGLHp7U1H9CLxdOcPA43h7a6_rrJvRIHB5UaYuPd8",
@@ -53,14 +62,6 @@
         "index.html"
       ],
       "deployed": "2025-10-17T20:02:45.866Z"
-    },
-    {
-      "commit": "66cebed4bb0c08e4",
-      "manifestTxId": "wat2aK9ApGVGTeeQ8AFUPY2NIragSNae5vePx_eiegw",
-      "changedFiles": [
-        ".well-known/farcaster.json"
-      ],
-      "deployed": "2025-10-17T18:07:00.040Z"
     }
   ]
 }

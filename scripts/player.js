@@ -1,4 +1,5 @@
 // player.js - Handles player-specific functionality
+// Supports both audio and video playback with modal interface
 
 let currentTrackIndex = 0;
 let tracks = [];
@@ -35,9 +36,8 @@ function loadTrack(index) {
 
     // Handle video vs audio content
     if (track.type === 'video') {
-        // Hide album cover for video content
-        const albumCover = document.getElementById('album-cover');
-        albumCover.style.display = 'none';
+        // Show video modal and hide audio player
+        showVideoModal();
         
         // Switch to video player if not already present
         if (!document.getElementById('video-player')) {
@@ -45,26 +45,33 @@ function loadTrack(index) {
             videoPlayer.id = 'video-player';
             videoPlayer.controls = true;
             videoPlayer.style.maxWidth = '100%';
+            videoPlayer.style.maxHeight = '100%';
             // Add event listeners immediately after creating video player
-            videoPlayer.addEventListener('play', updatePlayButton);
-            videoPlayer.addEventListener('pause', updatePauseButton);
-            audioPlayer.parentNode.replaceChild(videoPlayer, audioPlayer);
-            audioPlayer = videoPlayer;
+            videoPlayer.addEventListener('play', updateVideoPlayButton);
+            videoPlayer.addEventListener('pause', updateVideoPauseButton);
+            document.getElementById('video-player-wrapper').appendChild(videoPlayer);
         }
+        audioPlayer = document.getElementById('video-player');
         audioPlayer.src = track.url;
         document.dispatchEvent(new Event('mediaTypeChanged'));
     } else {
-        // Show album cover for audio content
-        const albumCover = document.getElementById('album-cover');
-        albumCover.style.display = 'block';
+        // Hide video modal and show audio player
+        hideVideoModal();
         
         // Switch back to audio player if needed
         if (document.getElementById('video-player')) {
             const audioElement = document.createElement('audio');
             audioElement.id = 'audio-player';
             audioElement.controls = true;
+            audioElement.style.width = '100%';
+            audioElement.style.maxWidth = '600px';
             const videoPlayer = document.getElementById('video-player');
-            videoPlayer.parentNode.replaceChild(audioElement, videoPlayer);
+            if (videoPlayer.parentNode) {
+                videoPlayer.parentNode.removeChild(videoPlayer);
+            }
+            const audioContainer = document.getElementById('audio-player-container');
+            const mediaPlayer = audioContainer.querySelector('.media-player');
+            mediaPlayer.appendChild(audioElement);
             audioPlayer = audioElement;
             // Add event listeners for audio player after it's created
             audioPlayer.addEventListener('play', updatePlayButton);
@@ -89,7 +96,14 @@ function loadTrack(index) {
 // Play the current track
 function playCurrentTrack() {
     audioPlayer.play();
-    document.getElementById("play-button").textContent = "||";
+    
+    // Update appropriate play button based on mode
+    const playButton = document.getElementById("play-button");
+    const videoPlayButton = document.getElementById("video-play-button");
+    
+    if (playButton) playButton.textContent = "||";
+    if (videoPlayButton) videoPlayButton.textContent = "||";
+    
     if (document.getElementById("album-cover")) {
         document.getElementById("album-cover").classList.add("is-playing");
     }
@@ -142,10 +156,16 @@ async function loadAlbum() {
             type: albumData.type || 'audio' // Use album type or default to audio
         }));
 
-        // Populate tracklist
+        // Populate tracklist for both audio and video
         const tracklistBody = document.getElementById("tracklist-body");
+        const videoTracklistBody = document.getElementById("video-tracklist-body");
+        
+        // Clear existing tracklists
         tracklistBody.innerHTML = "";
+        if (videoTracklistBody) videoTracklistBody.innerHTML = "";
+        
         tracks.forEach((track, index) => {
+            // Audio tracklist
             const row = document.createElement("tr");
             row.className = "track";
             row.innerHTML = `<td>${track.number}</td><td>${track.title}</td>`;
@@ -154,6 +174,18 @@ async function loadAlbum() {
                 playCurrentTrack();
             };
             tracklistBody.appendChild(row);
+            
+            // Video tracklist
+            if (videoTracklistBody) {
+                const videoRow = document.createElement("tr");
+                videoRow.className = "track";
+                videoRow.innerHTML = `<td>${track.number}</td><td>${track.title}</td>`;
+                videoRow.onclick = () => {
+                    loadTrack(index);
+                    playCurrentTrack();
+                };
+                videoTracklistBody.appendChild(videoRow);
+            }
         });
 
         setupPlayer();
@@ -179,7 +211,12 @@ function setupPlayer() {
     });
 
     audioPlayer.addEventListener('pause', () => {
-        document.getElementById("play-button").textContent = ">";
+        const playButton = document.getElementById("play-button");
+        const videoPlayButton = document.getElementById("video-play-button");
+        
+        if (playButton) playButton.textContent = ">";
+        if (videoPlayButton) videoPlayButton.textContent = ">";
+        
         const albumCover = document.getElementById("album-cover");
         if (albumCover) {
             albumCover.classList.remove("is-playing");
@@ -191,7 +228,12 @@ function setupPlayer() {
             playCurrentTrack();
         } else {
             audioPlayer.pause();
-            document.getElementById("play-button").textContent = ">";
+            const playButton = document.getElementById("play-button");
+            const videoPlayButton = document.getElementById("video-play-button");
+            
+            if (playButton) playButton.textContent = ">";
+            if (videoPlayButton) videoPlayButton.textContent = ">";
+            
             const albumCover = document.getElementById("album-cover");
             if (albumCover) {
                 albumCover.classList.remove("is-playing");
@@ -223,6 +265,14 @@ function setupPlayer() {
 
     document.getElementById("eject-button").onclick = () => {
         window.location.href = "index.html";
+    };
+    
+    document.getElementById("audio-laser-toggle").onclick = () => {
+        // Trigger the main laser toggle
+        const mainLaserToggle = document.getElementById('toggle-visualizer');
+        if (mainLaserToggle) {
+            mainLaserToggle.click();
+        }
     };
 
     loadTrack(0);
@@ -291,6 +341,143 @@ function updatePlayButton() {
 
 function updatePauseButton() {
     document.getElementById("play-button").textContent = ">";
+}
+
+// Video Modal Management Functions
+// Handles switching between audio and video player modes
+function showVideoModal() {
+    const videoModal = document.getElementById('video-modal');
+    const audioContainer = document.getElementById('audio-player-container');
+    const audioTracklist = document.getElementById('audio-tracklist');
+    
+    if (videoModal) {
+        videoModal.style.display = 'block';
+    }
+    if (audioContainer) {
+        audioContainer.style.display = 'none';
+    }
+    if (audioTracklist) {
+        audioTracklist.style.display = 'none';
+    }
+    
+    // Set up video modal controls
+    setupVideoModalControls();
+}
+
+function hideVideoModal() {
+    const videoModal = document.getElementById('video-modal');
+    const audioContainer = document.getElementById('audio-player-container');
+    const audioTracklist = document.getElementById('audio-tracklist');
+    
+    if (videoModal) {
+        videoModal.style.display = 'none';
+    }
+    if (audioContainer) {
+        audioContainer.style.display = 'block';
+    }
+    if (audioTracklist) {
+        audioTracklist.style.display = 'block';
+    }
+}
+
+function setupVideoModalControls() {
+    // Set up video modal control button event handlers
+    // Video control buttons
+    const videoPlayButton = document.getElementById('video-play-button');
+    const videoPrevButton = document.getElementById('video-prev-button');
+    const videoNextButton = document.getElementById('video-next-button');
+    const videoEjectButton = document.getElementById('video-eject-button');
+    const videoInfoButton = document.getElementById('video-info-button');
+    const videoTracklistToggle = document.getElementById('video-tracklist-toggle');
+    const videoTracklistCollapse = document.getElementById('video-tracklist-collapse');
+    const videoLaserToggle = document.getElementById('video-laser-toggle');
+    
+    if (videoPlayButton) {
+        videoPlayButton.onclick = () => {
+            if (audioPlayer.paused) {
+                playCurrentTrack();
+            } else {
+                audioPlayer.pause();
+                updateVideoPauseButton();
+            }
+        };
+    }
+    
+    if (videoPrevButton) {
+        videoPrevButton.onclick = () => {
+            if (audioPlayer.currentTime > 2) audioPlayer.currentTime = 0;
+            else if (currentTrackIndex > 0) {
+                loadTrack(--currentTrackIndex);
+                playCurrentTrack();
+            }
+        };
+    }
+    
+    if (videoNextButton) {
+        videoNextButton.onclick = () => {
+            if (currentTrackIndex < tracks.length - 1) {
+                loadTrack(++currentTrackIndex);
+                playCurrentTrack();
+            }
+        };
+    }
+    
+    if (videoEjectButton) {
+        videoEjectButton.onclick = () => {
+            window.location.href = "index.html";
+        };
+    }
+    
+    if (videoInfoButton) {
+        videoInfoButton.onclick = () => {
+            const infoButton = document.getElementById("info-button");
+            if (infoButton && infoButton.onclick) {
+                infoButton.onclick();
+            }
+        };
+    }
+    
+    if (videoTracklistToggle) {
+        videoTracklistToggle.onclick = () => {
+            const tracklistContainer = document.getElementById('video-tracklist-container');
+            if (tracklistContainer) {
+                tracklistContainer.classList.toggle('collapsed');
+            }
+        };
+    }
+    
+    if (videoTracklistCollapse) {
+        videoTracklistCollapse.onclick = () => {
+            const tracklistContainer = document.getElementById('video-tracklist-container');
+            if (tracklistContainer) {
+                tracklistContainer.classList.add('collapsed');
+            }
+        };
+    }
+    
+    if (videoLaserToggle) {
+        videoLaserToggle.onclick = () => {
+            // Trigger the main laser toggle
+            const mainLaserToggle = document.getElementById('toggle-visualizer');
+            if (mainLaserToggle) {
+                mainLaserToggle.click();
+            }
+        };
+    }
+}
+
+function updateVideoPlayButton() {
+    const videoPlayButton = document.getElementById('video-play-button');
+    if (videoPlayButton) {
+        videoPlayButton.textContent = "||";
+    }
+}
+
+function updateVideoPauseButton() {
+    const videoPlayButton = document.getElementById('video-play-button');
+    if (videoPlayButton) {
+        videoPlayButton.textContent = ">";
+    }
 }
 
 // Add near the top with other initialization code

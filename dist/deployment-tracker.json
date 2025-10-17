@@ -1,8 +1,8 @@
 {
   "trackerVersion": "1.0.0",
-  "lastDeployCommit": "8abb5d88252896b8",
-  "lastDeployed": "2025-10-17T20:02:45.866Z",
-  "deploymentCount": 4,
+  "lastDeployCommit": "3a0b82619f38d873",
+  "lastDeployed": "2025-10-17T20:05:57.041Z",
+  "deploymentCount": 5,
   "fileHashes": {
     ".well-known/farcaster.json": "d4b619d36d5fb7b37d14dc442a3bdd9132b1a41b",
     "assets/app-logo-large.png": "30a3b3f579444b12a565742f3bbb1042072b1ac5",
@@ -15,7 +15,7 @@
     "assets/style.css": "853b70ae5be4b111e0c2aa54a0603b170dc12c17",
     "assets/tg-logo.png": "cad22c00f7b54408351152d4f5f867a3b406ef21",
     "catalog.json": "88d624447a332e16837aefceb7056e081efc1d7e",
-    "changelog.txt": "6950b60f1d80f004e45cdf63090b7238d7ee0fbc",
+    "changelog.txt": "436b84db574436a4364eb9ba6d5841e44563533f",
     "contribute.html": "7ac3052e2fedc47555c74e6905493146ea12f062",
     "examples/audio-album/album-audio-v2.0.0.json": "a4645b5314795f1e19f2688d9b31c5eafd637775",
     "examples/audio-album/album_cover.png": "7866f02ce79a10136dac6a2c4de3afbbdd7482c1",
@@ -26,8 +26,8 @@
     "examples/video-album/album_cover.png": "7866f02ce79a10136dac6a2c4de3afbbdd7482c1",
     "examples/video-album/more_info.txt": "5de416e8bb68a9356be824a5a90b456916d82269",
     "examples/video-album/Reels/place-reels-here.txt": "d7319ccd7d7181bc471537c50c57888bd69fb332",
-    "index.html": "f4a9114139795283e56c1a79267297fc7464ca4b",
-    "player.html": "9df2955f006f9b30415a9afec06b53b7ef5c32df",
+    "index.html": "3677f693f2ea64c3a6cbbfea12429981f1793bdc",
+    "player.html": "29b09b8a88d093a9fdda2774caf1385e95b41371",
     "scripts/laser-show.js": "656f75494fcb8378c689a7eee803398b31aa8f3d",
     "scripts/player.js": "6d30e9c7f834828a27ffe5a70d4e9ee56f40efa5",
     "scripts/utils.js": "0d81e7bf7b66c61aee5b1fd33a17f6afedf243db",
@@ -36,6 +36,16 @@
     "scripts/farcaster-sdk.js": "e424184d699946eb0ca51b3daa7170150de4877e"
   },
   "recentDeployments": [
+    {
+      "commit": "3a0b82619f38d873",
+      "manifestTxId": "6RjGLHp7U1H9CLxdOcPA43h7a6_rrJvRIHB5UaYuPd8",
+      "changedFiles": [
+        "changelog.txt",
+        "index.html",
+        "player.html"
+      ],
+      "deployed": "2025-10-17T20:05:57.041Z"
+    },
     {
       "commit": "8abb5d88252896b8",
       "manifestTxId": "ZAhBBXGs4TcTIGTt6-nvemN7uNyezF4NQ3NphGhSEgI",
@@ -51,18 +61,6 @@
         ".well-known/farcaster.json"
       ],
       "deployed": "2025-10-17T18:07:00.040Z"
-    },
-    {
-      "commit": "fa48de833765056b",
-      "manifestTxId": "zxno0466wiWR51_h3J4_FqHTF5c-bhW0PMkTlQRTwjo",
-      "changedFiles": [
-        "changelog.txt",
-        "index.html",
-        "player.html",
-        "scripts/farcaster-sdk.js",
-        "scripts/player.js"
-      ],
-      "deployed": "2025-10-17T17:31:19.026Z"
     }
   ]
 }

@@ -1,0 +1,96 @@
+{
+  "manifest": "arweave/paths",
+  "version": "0.2.0",
+  "index": {
+    "path": "index.html"
+  },
+  "paths": {
+    ".well-known/farcaster.json": {
+      "id": "pad4MrNDbcPiqkYC-F9SlgJfu353G_BT4bGQphCMiy8"
+    },
+    "assets/app-logo-large.png": {
+      "id": "Qn7efzj16UzM9IpKtqGSuEFp6LerIGli5LaY27_bc0Y"
+    },
+    "assets/app-logo.png": {
+      "id": "FAfkiYSQfu6iu4m5godfabFIjVZ40AzVc433x8JQrTs"
+    },
+    "assets/default-cover.png": {
+      "id": "TNQ6EzCpknGxUIle1-T-t9Wqtu2L4EkGkeBJ5uZLPCM"
+    },
+    "assets/favicon.ico": {
+      "id": "bYXZZ_x8ragSr1zNfGDCqpdnJxTsFmSmLY8GSRekEfs"
+    },
+    "assets/icon-cassette.png": {
+      "id": "_zkdxXm4sRPxmkiFYotSRSy3AnRbVTWaowz0vRmHiKI"
+    },
+    "assets/icon-insert.png": {
+      "id": "S17ndRSdN2CkcoVtuunGiVehMgpmEhRZ8Lp4_hFKhF8"
+    },
+    "assets/icon-recorder.png": {
+      "id": "C6SjMVjWendSwhEOIgWonOKDC1iqSdCWN8kpkj2VkxM"
+    },
+    "assets/style.css": {
+      "id": "FSFP-WGv8iBKlkFaj033dJ-Rp7XMIUFYU69db6pdOPU"
+    },
+    "assets/tg-logo.png": {
+      "id": "GcXXpmEUHNMFsayagBcU1YtMRTEHdmMrfsRbEVLPIVw"
+    },
+    "catalog.json": {
+      "id": "dwgsDgWt3ssCtPkSEjObnrHD_GQHOHjLeIAcMyk6M30"
+    },
+    "changelog.txt": {
+      "id": "6lcr7dEDOR0j-GohuAPbLLOYsQk0OrIvEuYspLHVpJ8"
+    },
+    "contribute.html": {
+      "id": "L_uMzXlwPMTu2TdmCKNdNF715mA5JlQ0e-SksamKjqY"
+    },
+    "examples/audio-album/album-audio-v2.0.0.json": {
+      "id": "22o278goVaOq1eyqJXcta9hzZ-NiwVZKBDPsHMbgKH0"
+    },
+    "examples/audio-album/album_cover.png": {
+      "id": "nPI32LS6xfxJlS6NZaxfOVnodMa2T8JN6xIPA4rjFPA"
+    },
+    "examples/audio-album/more_info.txt": {
+      "id": "qnOe89tIKSeAaiqzz54NwYDNnxW8EAE0FaAGvAy63B0"
+    },
+    "examples/audio-album/Tracks/place-tracks-here.txt": {
+      "id": "nVES4jY4nKX-cpLo4OJS0yztVdjWfzo1-6FVLAwdo9s"
+    },
+    "examples/README.md": {
+      "id": "ub5qtKNfcFRVEJnmFaE-lRhG9Hl2Ciiot2ZlJCHHTQg"
+    },
+    "examples/video-album/album-video-v2.0.0.json": {
+      "id": "Mx0lfJkdhZGVTaww5z0c7PVnG8N8eBrBNTiW3mlLeHQ"
+    },
+    "examples/video-album/album_cover.png": {
+      "id": "ASPNIANbATdzUt65SXT3zm3ec5IU7jzpA7M6B8UbIh4"
+    },
+    "examples/video-album/more_info.txt": {
+      "id": "Th9PP1vJ5XqduIK7Yrff_5LrqAlWv421lp14YBuybdU"
+    },
+    "examples/video-album/Reels/place-reels-here.txt": {
+      "id": "tPnSrm1TymtH1BbRTKDMOgGItnthO7OIViiYNVs9pcY"
+    },
+    "index.html": {
+      "id": "eke7XwrtKCKlIMcXJjKxSzvGN_Hj_XRCDjR8_xowjLY"
+    },
+    "player.html": {
+      "id": "hXLoIfijDyrkM1JuX8rWhAV7w3KnkK1jsLVN4CJpxqs"
+    },
+    "scripts/laser-show.js": {
+      "id": "IzegFUPF2-JJ35muCjL51Wsi6ITkVd_tHvu2h6DLeug"
+    },
+    "scripts/player.js": {
+      "id": "YeXVT6dyyzuEpbt9RXm4_ClAiCC1gwpjAXAVwWY_BZ8"
+    },
+    "scripts/utils.js": {
+      "id": "y8d-64nh_r9BEErkefpZ-OF2s6l_LFULFL0Yv1fxvWQ"
+    },
+    "tools/album-setup-tool/README.md": {
+      "id": "3jD-c-gCUxbzPRcrcYp5JsCqZ2E_-WOwra2YpSEno7g"
+    },
+    "tools/album-setup-tool/setup_album.py": {
+      "id": "XbRJyfGMB8wDuZJ9kpRAIIfkZHUE6TgQgcCG2hf6Zq4"
+    }
+  }
+}

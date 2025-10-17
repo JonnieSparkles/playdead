@@ -1,8 +1,8 @@
 {
   "trackerVersion": "1.0.0",
-  "lastDeployCommit": "5a3af296fb7860e1",
-  "lastDeployed": "2025-10-17T01:13:58.090Z",
-  "deploymentCount": 2,
+  "lastDeployCommit": "e4f2d807cd8d7cf4",
+  "lastDeployed": "2025-10-17T01:17:26.858Z",
+  "deploymentCount": 3,
   "fileHashes": {
     "assets/app-logo-large.png": "30a3b3f579444b12a565742f3bbb1042072b1ac5",
     "assets/app-logo.png": "10b4249a09e836d5b8d4faeb5c2156d0faa6bc6a",
@@ -14,7 +14,7 @@
     "assets/style.css": "0df500a0efdfd2c06269ff1886c29dededd5938b",
     "assets/tg-logo.png": "cad22c00f7b54408351152d4f5f867a3b406ef21",
     "catalog.json": "88d624447a332e16837aefceb7056e081efc1d7e",
-    "changelog.txt": "60613270ef79495535f074e3820c3fb9b4d5f9c7",
+    "changelog.txt": "7da3b4f330c8367c8727d907940d84f8d0d03f2e",
     "contribute.html": "7ac3052e2fedc47555c74e6905493146ea12f062",
     "examples/audio-album/album-audio-v2.0.0.json": "a4645b5314795f1e19f2688d9b31c5eafd637775",
     "examples/audio-album/album_cover.png": "7866f02ce79a10136dac6a2c4de3afbbdd7482c1",
@@ -33,6 +33,14 @@
     "tools/album-setup-tool/setup_album.py": "06c11b21a65d3c2b59cab74b81f19df8bf9c0b1e"
   },
   "recentDeployments": [
+    {
+      "commit": "e4f2d807cd8d7cf4",
+      "manifestTxId": "xEle_BekQll8COdV3bjbgluCA0vHMxLO8IVjbJ-DWn4",
+      "changedFiles": [
+        "changelog.txt"
+      ],
+      "deployed": "2025-10-17T01:17:26.858Z"
+    },
     {
       "commit": "5a3af296fb7860e1",
       "manifestTxId": "PpEB28U4pCYVlwhEzhS1SID7bIUhESqJHg7TsgS6BPQ",

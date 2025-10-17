@@ -1,19 +1,5 @@
 [
   {
-    "timestamp": "2025-10-17T01:17:27.395Z",
-    "success": true,
-    "filePath": "dist/",
-    "commitHash": "e4f2d807cd8d7cf4",
-    "txId": "xEle_BekQll8COdV3bjbgluCA0vHMxLO8IVjbJ-DWn4",
-    "manifestTxId": "xEle_BekQll8COdV3bjbgluCA0vHMxLO8IVjbJ-DWn4",
-    "undername": "dynamic-deploy_playdead",
-    "fileSize": 2369,
-    "duration": 25358,
-    "deploymentType": "dynamic",
-    "changedFiles": 1,
-    "version": "0.2.0"
-  },
-  {
     "timestamp": "2025-10-17T01:21:26.333Z",
     "success": true,
     "filePath": "dist/",
@@ -137,6 +123,20 @@
     "duration": 18981,
     "deploymentType": "dynamic",
     "changedFiles": 3,
+    "version": "0.2.0"
+  },
+  {
+    "timestamp": "2025-10-17T18:27:37.067Z",
+    "success": true,
+    "filePath": "dist/",
+    "commitHash": "a89b712d84ce0704",
+    "txId": "82wHiR5AM8BOHUVvITsVIENhLa-OY1kROO35iu5Y_h0",
+    "manifestTxId": "82wHiR5AM8BOHUVvITsVIENhLa-OY1kROO35iu5Y_h0",
+    "undername": "spa-test_playdead",
+    "fileSize": 2377,
+    "duration": 33712,
+    "deploymentType": "dynamic",
+    "changedFiles": 1,
     "version": "0.2.0"
   }
 ]

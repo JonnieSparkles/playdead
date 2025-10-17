@@ -12,5 +12,19 @@
     "deploymentType": "dynamic",
     "changedFiles": 29,
     "version": "0.2.0"
+  },
+  {
+    "timestamp": "2025-10-17T17:31:19.459Z",
+    "success": true,
+    "filePath": "dist/",
+    "commitHash": "fa48de833765056b",
+    "txId": "zxno0466wiWR51_h3J4_FqHTF5c-bhW0PMkTlQRTwjo",
+    "manifestTxId": "zxno0466wiWR51_h3J4_FqHTF5c-bhW0PMkTlQRTwjo",
+    "undername": "fa48de833765056b_playdead",
+    "fileSize": 25939,
+    "duration": 20476,
+    "deploymentType": "dynamic",
+    "changedFiles": 5,
+    "version": "0.2.0"
   }
 ]

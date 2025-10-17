@@ -85,6 +85,9 @@
     },
     "tools/album-setup-tool/setup_album.py": {
       "id": "wp77zsLyM17QkqCf1u9jZIvoDYBOTSMdZGCYgVQFrFk"
+    },
+    ".well-known/farcaster.json": {
+      "id": "GlEv-EIPPVtoXG45gSbhsW0N1G_m4LjI254iVdd9Zr0"
     }
   }
 }

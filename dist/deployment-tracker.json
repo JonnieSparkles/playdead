@@ -1,8 +1,8 @@
 {
   "trackerVersion": "1.0.0",
-  "lastDeployCommit": "28e48813e16bad72",
-  "lastDeployed": "2025-10-17T16:17:18.981Z",
-  "deploymentCount": 8,
+  "lastDeployCommit": "bbde9f6e50212ecb",
+  "lastDeployed": "2025-10-17T16:53:37.611Z",
+  "deploymentCount": 9,
   "fileHashes": {
     "assets/app-logo-large.png": "30a3b3f579444b12a565742f3bbb1042072b1ac5",
     "assets/app-logo.png": "10b4249a09e836d5b8d4faeb5c2156d0faa6bc6a",
@@ -30,9 +30,18 @@
     "scripts/player.js": "5cd6e504f496ed459bd1b97d28e45c91bd69f50c",
     "scripts/utils.js": "0d81e7bf7b66c61aee5b1fd33a17f6afedf243db",
     "tools/album-setup-tool/README.md": "8e7adeefa8d5e37022cde3e38c33e5f8e88bf399",
-    "tools/album-setup-tool/setup_album.py": "06c11b21a65d3c2b59cab74b81f19df8bf9c0b1e"
+    "tools/album-setup-tool/setup_album.py": "06c11b21a65d3c2b59cab74b81f19df8bf9c0b1e",
+    ".well-known/farcaster.json": "24aaf5f312b5c91b2b401ca1c433e4fb30244eff"
   },
   "recentDeployments": [
+    {
+      "commit": "bbde9f6e50212ecb",
+      "manifestTxId": "InLJW3EPwoam289qr_DEnHbWb0Xk8BtNqYu7-_gTm20",
+      "changedFiles": [
+        ".well-known/farcaster.json"
+      ],
+      "deployed": "2025-10-17T16:53:37.611Z"
+    },
     {
       "commit": "28e48813e16bad72",
       "manifestTxId": "92ZYxpbu78cOJdfmDS0BMfAWaX3Ez0BRLppQY2Sn2IA",
@@ -51,14 +60,6 @@
         "changelog.txt"
       ],
       "deployed": "2025-10-17T01:35:17.310Z"
-    },
-    {
-      "commit": "b9a5ef77b86ec452",
-      "manifestTxId": "eJYTDf2PyRsPhWymx6I0bElH8yqtl0HGfI0DlQjQ8ZM",
-      "changedFiles": [
-        "changelog.txt"
-      ],
-      "deployed": "2025-10-17T01:32:06.537Z"
     }
   ]
 }

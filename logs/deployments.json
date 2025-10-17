@@ -1,0 +1,16 @@
+[
+  {
+    "timestamp": "2025-10-17T00:56:28.434Z",
+    "success": true,
+    "filePath": "dist/",
+    "commitHash": "984ff890b2eb2d59",
+    "txId": "2BEdb2TJjqHS1kiRf78HWvr8EXaNFEUHEYcR-eDJ1a0",
+    "manifestTxId": "2BEdb2TJjqHS1kiRf78HWvr8EXaNFEUHEYcR-eDJ1a0",
+    "undername": "dynamic-test",
+    "fileSize": 9930592,
+    "duration": 87161,
+    "deploymentType": "dynamic",
+    "changedFiles": 27,
+    "version": "0.2.0"
+  }
+]

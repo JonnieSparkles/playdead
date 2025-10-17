@@ -1,3 +1,5 @@
+TEST
+
 v6.0.0
 -Refactored the app to be a single page, removing the need of a separate player page.
 -

@@ -7,7 +7,7 @@ const modes = ["ripple", "classic", "spotlights"];
 const canvas = document.getElementById("laser-visualizer");
 const ctx = canvas.getContext("2d");
 const toggleButton = document.getElementById("toggle-visualizer");
-let mediaElement = document.getElementById('audio-player') || document.getElementById('video-player') || {
+let mediaElement = document.getElementById('modal-audio-player') || document.getElementById('modal-video-player') || document.getElementById('audio-player') || document.getElementById('video-player') || {
     // Provide default properties/methods if no media element exists
     paused: true,
     currentTime: 0,
@@ -699,7 +699,7 @@ function calculateSmoothedIntensity(rawIntensity) {
 
 // Update the updateMediaElement function to handle missing media element
 function updateMediaElement() {
-    const newMediaElement = document.getElementById('audio-player') || document.getElementById('video-player');
+    const newMediaElement = document.getElementById('modal-audio-player') || document.getElementById('modal-video-player') || document.getElementById('audio-player') || document.getElementById('video-player');
     if (newMediaElement) {
         if (mediaElement !== newMediaElement) {
             // Remove listeners from old element if it exists and has removeEventListener

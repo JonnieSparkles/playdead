@@ -1,8 +1,8 @@
 {
   "trackerVersion": "1.0.0",
-  "lastDeployCommit": "ba7e454ae67d3190",
-  "lastDeployed": "2025-10-17T01:35:17.310Z",
-  "deploymentCount": 7,
+  "lastDeployCommit": "28e48813e16bad72",
+  "lastDeployed": "2025-10-17T16:17:18.981Z",
+  "deploymentCount": 8,
   "fileHashes": {
     "assets/app-logo-large.png": "30a3b3f579444b12a565742f3bbb1042072b1ac5",
     "assets/app-logo.png": "10b4249a09e836d5b8d4faeb5c2156d0faa6bc6a",
@@ -11,7 +11,7 @@
     "assets/icon-cassette.png": "810f316a618a0d534ffceeb31572d8341bfba69b",
     "assets/icon-insert.png": "d336e389776ca4232597dbc680397b0450e4a976",
     "assets/icon-recorder.png": "f785e11e80bdbb33df370734dbb6397b16b57cb7",
-    "assets/style.css": "0df500a0efdfd2c06269ff1886c29dededd5938b",
+    "assets/style.css": "309ff2b6f9f87ed6908353428e09b2a16ef52738",
     "assets/tg-logo.png": "cad22c00f7b54408351152d4f5f867a3b406ef21",
     "catalog.json": "88d624447a332e16837aefceb7056e081efc1d7e",
     "changelog.txt": "57358dbfe07d4cede6e1e9f62dd72e0a2ab10ed1",
@@ -25,14 +25,25 @@
     "examples/video-album/album_cover.png": "7866f02ce79a10136dac6a2c4de3afbbdd7482c1",
     "examples/video-album/more_info.txt": "5de416e8bb68a9356be824a5a90b456916d82269",
     "examples/video-album/Reels/place-reels-here.txt": "d7319ccd7d7181bc471537c50c57888bd69fb332",
-    "index.html": "1face3f4c8308d80e7b09c8018b664abc4ee17c3",
-    "scripts/laser-show.js": "656f75494fcb8378c689a7eee803398b31aa8f3d",
-    "scripts/player.js": "def13666870c56eb7c014373d951042844d2addd",
+    "index.html": "3b9939bc3d557c1602d5c07c52981d8ee46c7f58",
+    "scripts/laser-show.js": "17d8fe2f1cad87967286eb60ee513c1a60086d5c",
+    "scripts/player.js": "5cd6e504f496ed459bd1b97d28e45c91bd69f50c",
     "scripts/utils.js": "0d81e7bf7b66c61aee5b1fd33a17f6afedf243db",
     "tools/album-setup-tool/README.md": "8e7adeefa8d5e37022cde3e38c33e5f8e88bf399",
     "tools/album-setup-tool/setup_album.py": "06c11b21a65d3c2b59cab74b81f19df8bf9c0b1e"
   },
   "recentDeployments": [
+    {
+      "commit": "28e48813e16bad72",
+      "manifestTxId": "92ZYxpbu78cOJdfmDS0BMfAWaX3Ez0BRLppQY2Sn2IA",
+      "changedFiles": [
+        "assets/style.css",
+        "index.html",
+        "scripts/laser-show.js",
+        "scripts/player.js"
+      ],
+      "deployed": "2025-10-17T16:17:18.981Z"
+    },
     {
       "commit": "ba7e454ae67d3190",
       "manifestTxId": "ScHO57TVcqRBbpv2hnHAoOwWDhZV1ztV_wnEFyUAvos",
@@ -48,14 +59,6 @@
         "changelog.txt"
       ],
       "deployed": "2025-10-17T01:32:06.537Z"
-    },
-    {
-      "commit": "21d603b8370d26f3",
-      "manifestTxId": "sUSlNnY7zy09D6-OnKHA9jvcBMVW2L3wROV8ajka8y4",
-      "changedFiles": [
-        "changelog.txt"
-      ],
-      "deployed": "2025-10-17T01:27:44.167Z"
     }
   ]
 }

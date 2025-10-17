@@ -1,19 +1,5 @@
 [
   {
-    "timestamp": "2025-10-17T01:13:58.457Z",
-    "success": true,
-    "filePath": "dist/",
-    "commitHash": "5a3af296fb7860e1",
-    "txId": "PpEB28U4pCYVlwhEzhS1SID7bIUhESqJHg7TsgS6BPQ",
-    "manifestTxId": "PpEB28U4pCYVlwhEzhS1SID7bIUhESqJHg7TsgS6BPQ",
-    "undername": "5a3af296fb7860e1",
-    "fileSize": 2377,
-    "duration": 3811,
-    "deploymentType": "dynamic",
-    "changedFiles": 1,
-    "version": "0.2.0"
-  },
-  {
     "timestamp": "2025-10-17T01:17:27.395Z",
     "success": true,
     "filePath": "dist/",
@@ -135,6 +121,20 @@
     "undername": "f6007be1a746b702_playdead",
     "fileSize": 29039,
     "duration": 23092,
+    "deploymentType": "dynamic",
+    "changedFiles": 3,
+    "version": "0.2.0"
+  },
+  {
+    "timestamp": "2025-10-17T17:12:39.674Z",
+    "success": true,
+    "filePath": "dist/",
+    "commitHash": "2a40b835bd5376d3",
+    "txId": "pS8-W_kgd3ErRMTTsMgfjOsSYa5N6QBhTO38WIssmlc",
+    "manifestTxId": "pS8-W_kgd3ErRMTTsMgfjOsSYa5N6QBhTO38WIssmlc",
+    "undername": "2a40b835bd5376d3_playdead",
+    "fileSize": 6241,
+    "duration": 18981,
     "deploymentType": "dynamic",
     "changedFiles": 3,
     "version": "0.2.0"

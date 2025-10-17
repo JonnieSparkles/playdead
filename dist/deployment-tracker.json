@@ -1,8 +1,8 @@
 {
   "trackerVersion": "1.0.0",
-  "lastDeployCommit": "f6007be1a746b702",
-  "lastDeployed": "2025-10-17T17:03:58.329Z",
-  "deploymentCount": 11,
+  "lastDeployCommit": "2a40b835bd5376d3",
+  "lastDeployed": "2025-10-17T17:12:38.986Z",
+  "deploymentCount": 12,
   "fileHashes": {
     "assets/app-logo-large.png": "30a3b3f579444b12a565742f3bbb1042072b1ac5",
     "assets/app-logo.png": "10b4249a09e836d5b8d4faeb5c2156d0faa6bc6a",
@@ -25,16 +25,26 @@
     "examples/video-album/album_cover.png": "7866f02ce79a10136dac6a2c4de3afbbdd7482c1",
     "examples/video-album/more_info.txt": "5de416e8bb68a9356be824a5a90b456916d82269",
     "examples/video-album/Reels/place-reels-here.txt": "d7319ccd7d7181bc471537c50c57888bd69fb332",
-    "index.html": "a4f339b0418ee23d8750e34ada1b3c2e35382ff4",
+    "index.html": "60343824a27b3f0d4f255af5170f8c5e147263d7",
     "scripts/laser-show.js": "17d8fe2f1cad87967286eb60ee513c1a60086d5c",
     "scripts/player.js": "be5e7e53bdcc04b5eea6a8b2f748c63e269c51d4",
     "scripts/utils.js": "0d81e7bf7b66c61aee5b1fd33a17f6afedf243db",
     "tools/album-setup-tool/README.md": "8e7adeefa8d5e37022cde3e38c33e5f8e88bf399",
     "tools/album-setup-tool/setup_album.py": "06c11b21a65d3c2b59cab74b81f19df8bf9c0b1e",
-    ".well-known/farcaster.json": "ebc215ba29e6166ce8ed3283a6794dad091c6e9a",
-    "scripts/farcaster-sdk.js": "109bb9cc3fb27f3b86ca0bd54f48663d95b0381e"
+    ".well-known/farcaster.json": "dd7668ac26e8df1b9c1938997922572735312c05",
+    "scripts/farcaster-sdk.js": "e424184d699946eb0ca51b3daa7170150de4877e"
   },
   "recentDeployments": [
+    {
+      "commit": "2a40b835bd5376d3",
+      "manifestTxId": "pS8-W_kgd3ErRMTTsMgfjOsSYa5N6QBhTO38WIssmlc",
+      "changedFiles": [
+        ".well-known/farcaster.json",
+        "index.html",
+        "scripts/farcaster-sdk.js"
+      ],
+      "deployed": "2025-10-17T17:12:38.986Z"
+    },
     {
       "commit": "f6007be1a746b702",
       "manifestTxId": "IoF5G51AslkhM7crPWGHfY0MLHYMuizkKdIaIfxetAU",
@@ -52,14 +62,6 @@
         ".well-known/farcaster.json"
       ],
       "deployed": "2025-10-17T16:59:50.006Z"
-    },
-    {
-      "commit": "bbde9f6e50212ecb",
-      "manifestTxId": "InLJW3EPwoam289qr_DEnHbWb0Xk8BtNqYu7-_gTm20",
-      "changedFiles": [
-        ".well-known/farcaster.json"
-      ],
-      "deployed": "2025-10-17T16:53:37.611Z"
     }
   ]
 }

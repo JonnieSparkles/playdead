@@ -15,6 +15,22 @@
     <meta name="twitter:description" content="Always dead, always jamming." />
     <meta name="twitter:image" content="https://arweave.net/uUzQ3V04jXI5LNexHFMN3hQWXOYpdxbmB6E1zBkfOJc" />
 
+    <!-- Farcaster Miniapp -->
+    <meta name="fc:miniapp" content='{
+      "version": "1",
+      "imageUrl": "https://playdead.arweave.net/assets/app-logo.png",
+      "button": {
+        "title": "Jam on!",
+        "action": {
+          "type": "launch_frame",
+          "name": "playdead",
+          "url": "https://playdead.arweave.net",
+          "splashImageUrl": "https://playdead.arweave.net/assets/app-logo.png",
+          "splashBackgroundColor": "#1a1a1a"
+        }
+      }
+    }'>
+
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -99,13 +115,6 @@
             } catch (error) {
                 console.error("Error loading catalog:", error.message);
             }
-            
-            // Hide Farcaster splash screen after catalog is loaded
-            if (window.farcasterSDK && window.farcasterSDK.isAvailable()) {
-                setTimeout(async () => {
-                    await window.farcasterSDK.hideSplash();
-                }, 100);
-            }
         }
 
         document.getElementById("load-album-button").onclick = () => {
@@ -120,14 +129,6 @@
         // Load the album list on page load
         window.onload = async function() {
             loadAlbumList();
-            
-            // Hide Farcaster splash screen after app is fully loaded
-            if (window.farcasterSDK && window.farcasterSDK.isAvailable()) {
-                // Small delay to ensure everything is rendered
-                setTimeout(async () => {
-                    await window.farcasterSDK.hideSplash();
-                }, 500);
-            }
         };
     </script>
     

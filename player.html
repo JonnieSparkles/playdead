@@ -41,21 +41,63 @@
         <p id="album-source" class="source"><strong>Source:</strong> <span id="source-value"></span></p>
     </div>
    
-    <div class="media-player">
+    <!-- Audio Player Mode -->
+    <div id="audio-player-container" class="media-player">
         <h3 id="current-track-title">Select a Track</h3>
         <audio id="audio-player" controls style="width: 100%; max-width: 600px;">
             <source id="audio-source" src="" type="audio/mpeg">
         </audio>
-        <!-- Video player will be dynamically inserted here when needed -->
         <div class="controls">
             <button id="prev-button" title="Back"><<</button>
             <button id="play-button" title="Play/Pause">></button>
             <button id="next-button" title="Forward">>></button>
             <button id="eject-button" title="Eject">⏏</button>
             <button id="info-button" title="Album Info">i</button>
+            <button id="audio-laser-toggle" title="Laser Show">⚡</button>
         </div>
     </div>
-    <div class="tracklist">
+    
+    <!-- Video Player Modal -->
+    <div id="video-modal" class="modal-video" style="display: none;">
+        <div class="modal-video-container">
+            <div class="video-player-section">
+                <div class="video-controls">
+                    <button id="video-prev-button" title="Back"><<</button>
+                    <button id="video-play-button" title="Play/Pause">></button>
+                    <button id="video-next-button" title="Forward">>></button>
+                    <button id="video-eject-button" title="Eject">⏏</button>
+                    <button id="video-info-button" title="Album Info">i</button>
+                    <button id="video-tracklist-toggle" title="Toggle Tracklist">📋</button>
+                    <button id="video-laser-toggle" title="Laser Show">⚡</button>
+                </div>
+                <div id="video-player-wrapper">
+                    <!-- Video player will be dynamically inserted here -->
+                </div>
+            </div>
+            <div id="video-tracklist-container" class="video-tracklist-container collapsed">
+                <div class="video-tracklist-header">
+                    <h3>Tracklist</h3>
+                    <button id="video-tracklist-collapse" title="Collapse Tracklist">−</button>
+                </div>
+                <div class="video-tracklist-content">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Title</th>
+                            </tr>
+                        </thead>
+                        <tbody id="video-tracklist-body">
+                            <!-- Video tracks will be dynamically loaded here -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Audio Tracklist -->
+    <div id="audio-tracklist" class="tracklist">
         <table>
             <thead>
                 <tr>

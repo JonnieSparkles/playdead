@@ -41,30 +41,147 @@
     <link rel="stylesheet" href="./assets/style.css">
 </head>
 <body>
+    <!-- Header - Shared across all views -->
     <img id="app-logo" class="logo" src="./assets/app-logo.png" alt="Steal your face">
     <h1>ar://playdead</h1>
 
-    <!-- Load Tape Section -->
-    <div id="load-tape" class="manual-album-entry">
-        <input id="manual-txid" type="text" placeholder="Load Tape ID" />
-        <button id="load-album-button">
-            <img src="./assets/icon-insert.png" alt="Load Tape">
-        </button>
-        <button id="info-button" title="What is this?" onclick="window.location.href='contribute.html'">?</button>
-    </div>
+    <!-- CATALOG VIEW -->
+    <div id="catalog-view" class="view">
+        <!-- Load Tape Section -->
+        <div id="load-tape" class="manual-album-entry">
+            <input id="manual-txid" type="text" placeholder="Load Tape ID" />
+            <button id="load-album-button">
+                <img src="./assets/icon-insert.png" alt="Load Tape">
+            </button>
+            <button id="info-button" title="What is this?" onclick="window.location.href='contribute.html'">?</button>
+        </div>
 
-    <div id="album-list" class="cassette-grid">
-        <div class="loading-message">
-            <div class="loading-spinner"></div>
-            <p>Loading Albums...</p>
+        <div id="album-list" class="cassette-grid">
+            <div class="loading-message">
+                <div class="loading-spinner"></div>
+                <p>Loading Albums...</p>
+            </div>
         </div>
     </div>
 
+    <!-- PLAYER VIEW -->
+    <div id="player-view" class="view" style="display: none;">
+        <img id="album-cover" class="cover" src="" alt="Album Cover">
+        
+        <!-- Laser Mode Elements -->
+        <canvas id="laser-visualizer"></canvas>
+        <div class="controls">
+            <button id="toggle-visualizer" class="control-button">Laser Show</button>
+        </div>
+        
+        <div id="album-info" class="album-info">
+            <h1 id="album-band" class="band"></h1>
+            <h2 id="album-title" class="title"></h2>
+            <p id="album-date" class="date"><span id="date-value"></span></p>
+            <p id="album-source" class="source"><strong>Source:</strong> <span id="source-value"></span></p>
+        </div>
+       
+        <div class="media-player">
+            <h3 id="current-track-title">Select a Track</h3>
+            <audio id="audio-player" controls style="width: 100%; max-width: 600px;">
+                <source id="audio-source" src="" type="audio/mpeg">
+            </audio>
+            <!-- Video player will be dynamically inserted here when needed -->
+            <div class="controls">
+                <button id="prev-button" title="Back"><<</button>
+                <button id="play-button" title="Play/Pause">></button>
+                <button id="next-button" title="Forward">>></button>
+                <button id="eject-button" title="Eject">⏏</button>
+                <button id="player-info-button" title="Album Info">i</button>
+            </div>
+        </div>
+        <div class="tracklist">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Title</th>
+                    </tr>
+                </thead>
+                <tbody id="tracklist-body">
+                    <!-- Tracks will be dynamically loaded here -->
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Footer - Shared across all views -->
     <footer>
         <p><strong>ar://playdead</strong> by @JonnieSparkles</p>
         <a href="./changelog.txt" target="_blank">v5.3.1</a>
     </footer>
 
+    <!-- SPA Routing and State Management -->
+    <script>
+        // SPA State Management
+        let currentView = 'catalog';
+        let currentAlbum = null;
+        let playerInitialized = false;
+
+        // View Management
+        function showView(viewName) {
+            // Hide all views
+            document.querySelectorAll('.view').forEach(view => {
+                view.style.display = 'none';
+            });
+            
+            // Show target view
+            const targetView = document.getElementById(viewName + '-view');
+            if (targetView) {
+                targetView.style.display = 'block';
+                currentView = viewName;
+            }
+        }
+
+        // URL Hash Routing
+        function handleHashChange() {
+            const hash = window.location.hash.substring(1);
+            const params = new URLSearchParams(hash.split('?')[1] || '');
+            
+            if (hash.startsWith('player')) {
+                const albumId = params.get('album');
+                if (albumId) {
+                    currentAlbum = albumId;
+                    showView('player');
+                    if (!playerInitialized) {
+                        initializePlayer();
+                    } else {
+                        loadAlbum(albumId);
+                    }
+                } else {
+                    // No album specified, go back to catalog
+                    showView('catalog');
+                }
+            } else {
+                showView('catalog');
+            }
+        }
+
+        // Navigation functions
+        function navigateToPlayer(albumId) {
+            window.location.hash = `player?album=${albumId}`;
+        }
+
+        function navigateToCatalog() {
+            window.location.hash = 'catalog';
+        }
+
+        // Initialize routing
+        window.addEventListener('hashchange', handleHashChange);
+        window.addEventListener('load', () => {
+            handleHashChange();
+            if (currentView === 'catalog') {
+                loadAlbumList();
+            }
+        });
+    </script>
+
+    <!-- Catalog Functionality -->
     <script>
         async function loadAlbumList() {
             const catalogUrl = "catalog.json";
@@ -85,7 +202,7 @@
                         const manifestData = await manifestResponse.json();
                         
                         const cassette = document.createElement("a");
-                        cassette.href = `player.html?album=${album.id}`;
+                        cassette.href = `#player?album=${album.id}`;
                         cassette.className = "cassette";
                         
                         // Create cassette structure
@@ -117,21 +234,358 @@
             }
         }
 
+        // Manual album loading
         document.getElementById("load-album-button").onclick = () => {
             const txid = document.getElementById("manual-txid").value.trim();
             if (txid) {
-                window.location.href = `player.html?album=${txid}`;
+                navigateToPlayer(txid);
             } else {
                 alert("Please enter a valid ID.");
             }
         };
+    </script>
 
-        // Load the album list on page load
-        window.onload = async function() {
-            loadAlbumList();
-        };
+    <!-- Player Functionality -->
+    <script>
+        // Player state variables
+        let currentTrackIndex = 0;
+        let tracks = [];
+        let audioPlayer, audioSource, currentTrackTitle;
+        let originalTitle = document.title;
+
+        // Initialize player (called once)
+        function initializePlayer() {
+            if (playerInitialized) return;
+            
+            setupPlayer();
+            setupAlbumCoverModal();
+            playerInitialized = true;
+        }
+
+        // Load and set the current media
+        function loadTrack(index) {
+            currentTrackIndex = index;
+            const track = tracks[currentTrackIndex];
+            
+            // Update browser tab title
+            const albumBand = document.getElementById("album-band").textContent;
+            const trackTitle = track.title;
+            document.title = `${albumBand} - ${trackTitle}`;
+            
+            // Show loading state
+            const albumCover = document.getElementById('album-cover');
+            albumCover.classList.add('loading');
+            
+            // Remove active class from all rows
+            document.querySelectorAll('.tracklist tbody tr').forEach(row => {
+                row.classList.remove('active');
+            });
+            
+            // Add active class to current track row
+            document.querySelector(`.tracklist tbody tr:nth-child(${index + 1})`).classList.add('active');
+            
+            currentTrackTitle.classList.add('changing');
+            setTimeout(() => {
+                currentTrackTitle.textContent = track.title;
+                currentTrackTitle.classList.remove('changing');
+            }, 300);
+
+            // Handle video vs audio content
+            if (track.type === 'video') {
+                // Hide album cover for video content
+                const albumCover = document.getElementById('album-cover');
+                albumCover.style.display = 'none';
+                
+                // Switch to video player if not already present
+                if (!document.getElementById('video-player')) {
+                    const videoPlayer = document.createElement('video');
+                    videoPlayer.id = 'video-player';
+                    videoPlayer.controls = true;
+                    videoPlayer.style.maxWidth = '100%';
+                    // Add event listeners immediately after creating video player
+                    videoPlayer.addEventListener('play', updatePlayButton);
+                    videoPlayer.addEventListener('pause', updatePauseButton);
+                    audioPlayer.parentNode.replaceChild(videoPlayer, audioPlayer);
+                    audioPlayer = videoPlayer;
+                }
+                audioPlayer.src = track.url;
+                document.dispatchEvent(new Event('mediaTypeChanged'));
+            } else {
+                // Show album cover for audio content
+                const albumCover = document.getElementById('album-cover');
+                albumCover.style.display = 'block';
+                
+                // Switch back to audio player if needed
+                if (document.getElementById('video-player')) {
+                    const audioElement = document.createElement('audio');
+                    audioElement.id = 'audio-player';
+                    audioElement.controls = true;
+                    const videoPlayer = document.getElementById('video-player');
+                    videoPlayer.parentNode.replaceChild(audioElement, videoPlayer);
+                    audioPlayer = audioElement;
+                    // Add event listeners for audio player after it's created
+                    audioPlayer.addEventListener('play', updatePlayButton);
+                    audioPlayer.addEventListener('pause', updatePauseButton);
+                }
+                audioSource = audioPlayer.querySelector('source') || document.createElement('source');
+                audioSource.src = track.url;
+                if (!audioSource.parentNode) {
+                    audioPlayer.appendChild(audioSource);
+                }
+                document.dispatchEvent(new Event('mediaTypeChanged'));
+            }
+
+            audioPlayer.load();
+            
+            // Remove loading state when media is ready
+            audioPlayer.addEventListener('canplay', () => {
+                albumCover.classList.remove('loading');
+            }, { once: true });
+        }
+
+        // Play the current track
+        function playCurrentTrack() {
+            audioPlayer.play();
+            document.getElementById("play-button").textContent = "||";
+            if (document.getElementById("album-cover")) {
+                document.getElementById("album-cover").classList.add("is-playing");
+            }
+        }
+
+        // Load album metadata and tracks
+        async function loadAlbum(albumTxid) {
+            if (!albumTxid) {
+                console.error("No album specified.");
+                return;
+            }
+
+            try {
+                const gateway = detectGatewayDomain();
+                const albumJsonUrl = `${gateway}/${albumTxid}`;
+                const albumResponse = await fetch(albumJsonUrl);
+                const albumData = await albumResponse.json();
+
+                // Set album cover
+                const albumCover = document.getElementById("album-cover");
+                albumCover.style.animation = 'none';  // Reset animation
+                albumCover.offsetHeight;  // Trigger reflow
+                albumCover.style.animation = null;  // Re-enable animation
+                albumCover.src = albumData.cover
+                    ? `${gateway}/${albumData.cover}`
+                    : "./assets/default-cover.png";
+
+                // Set album metadata
+                document.getElementById("album-band").textContent = albumData.band || "Unknown Band";
+                document.getElementById("album-title").textContent = albumData.title || "Untitled Album";
+                document.getElementById("date-value").textContent = albumData.date || "Unknown Date";
+                document.getElementById("source-value").textContent = albumData.source || "Unknown Source";
+
+                // Handle info button
+                if (albumData.info) {
+                    const infoButton = document.getElementById("player-info-button");
+                    infoButton.style.display = "inline-block";
+                    infoButton.onclick = () => window.open(`${gateway}/${albumData.info}`, "_blank");
+                }
+
+                // Set up tracks/reels based on album type
+                const mediaList = albumData.type === 'video' ? albumData.reels : albumData.tracks;
+                tracks = mediaList.map(item => ({
+                    title: item.title,
+                    url: `${gateway}/${item.id}`,
+                    number: item.number,
+                    type: albumData.type || 'audio' // Use album type or default to audio
+                }));
+
+                // Populate tracklist
+                const tracklistBody = document.getElementById("tracklist-body");
+                tracklistBody.innerHTML = "";
+                tracks.forEach((track, index) => {
+                    const row = document.createElement("tr");
+                    row.className = "track";
+                    row.innerHTML = `<td>${track.number}</td><td>${track.title}</td>`;
+                    row.onclick = () => {
+                        loadTrack(index);
+                        playCurrentTrack();
+                    };
+                    tracklistBody.appendChild(row);
+                });
+
+                loadTrack(0);
+                
+                // Hide Farcaster splash screen after album is loaded
+                if (window.farcasterSDK && window.farcasterSDK.isAvailable()) {
+                    setTimeout(async () => {
+                        await window.farcasterSDK.hideSplash();
+                    }, 100);
+                }
+            } catch (error) {
+                console.error("Error loading album:", error.message);
+            }
+        }
+
+        // Set up the player controls
+        function setupPlayer() {
+            audioPlayer = document.getElementById("audio-player");
+            audioSource = document.getElementById("audio-source");
+            currentTrackTitle = document.getElementById("current-track-title");
+
+            // Add event listeners to sync play/pause state
+            audioPlayer.addEventListener('play', () => {
+                document.getElementById("play-button").textContent = "||";
+                const albumCover = document.getElementById("album-cover");
+                if (albumCover) {
+                    albumCover.classList.add("is-playing");
+                }
+            });
+
+            audioPlayer.addEventListener('pause', () => {
+                document.getElementById("play-button").textContent = ">";
+                const albumCover = document.getElementById("album-cover");
+                if (albumCover) {
+                    albumCover.classList.remove("is-playing");
+                }
+            });
+
+            document.getElementById("play-button").onclick = () => {
+                if (audioPlayer.paused) {
+                    playCurrentTrack();
+                } else {
+                    audioPlayer.pause();
+                    document.getElementById("play-button").textContent = ">";
+                    const albumCover = document.getElementById("album-cover");
+                    if (albumCover) {
+                        albumCover.classList.remove("is-playing");
+                    }
+                }
+            };
+
+            document.getElementById("prev-button").onclick = () => {
+                if (audioPlayer.currentTime > 2) audioPlayer.currentTime = 0;
+                else if (currentTrackIndex > 0) {
+                    loadTrack(--currentTrackIndex);
+                    playCurrentTrack();
+                }
+            };
+
+            document.getElementById("next-button").onclick = () => {
+                if (currentTrackIndex < tracks.length - 1) {
+                    loadTrack(++currentTrackIndex);
+                    playCurrentTrack();
+                }
+            };
+
+            audioPlayer.onended = () => {
+                if (currentTrackIndex < tracks.length - 1) {
+                    loadTrack(++currentTrackIndex);
+                    playCurrentTrack();
+                }
+            };
+
+            document.getElementById("eject-button").onclick = () => {
+                navigateToCatalog();
+            };
+
+            document.addEventListener('keydown', (e) => {
+                // Only handle keyboard events if not typing in an input
+                if (e.target.tagName === 'INPUT') return;
+                
+                switch(e.code) {
+                    case 'Space':
+                        e.preventDefault(); // Prevent page scroll
+                        if (audioPlayer.paused) {
+                            playCurrentTrack();
+                        } else {
+                            audioPlayer.pause();
+                            document.getElementById("play-button").textContent = ">";
+                            document.getElementById("album-cover").classList.remove("is-playing");
+                        }
+                        break;
+                    
+                    case 'ArrowLeft':
+                        e.preventDefault();
+                        if (currentTrackIndex > 0) {
+                            loadTrack(currentTrackIndex - 1);
+                            playCurrentTrack();
+                        }
+                        break;
+                    
+                    case 'ArrowRight':
+                        e.preventDefault();
+                        if (currentTrackIndex < tracks.length - 1) {
+                            loadTrack(currentTrackIndex + 1);
+                            playCurrentTrack();
+                        }
+                        break;
+                }
+            });
+
+            // Add event listener to restore title when playback ends
+            audioPlayer.addEventListener('ended', () => {
+                if (currentTrackIndex === tracks.length - 1) {
+                    // Restore original title at end of playlist
+                    document.title = originalTitle;
+                }
+            });
+
+            // Add event listener to update title on pause
+            audioPlayer.addEventListener('pause', () => {
+                document.title = originalTitle;
+            });
+
+            audioPlayer.addEventListener('play', () => {
+                const track = tracks[currentTrackIndex];
+                const albumBand = document.getElementById("album-band").textContent;
+                document.title = `${albumBand} - ${track.title}`;
+            });
+        }
+
+        // Helper functions
+        function updatePlayButton() {
+            document.getElementById("play-button").textContent = "||";
+        }
+
+        function updatePauseButton() {
+            document.getElementById("play-button").textContent = ">";
+        }
+
+        // Album cover modal
+        function setupAlbumCoverModal() {
+            const albumCover = document.getElementById('album-cover');
+            
+            // Create modal elements if they don't exist
+            if (!document.getElementById('cover-modal')) {
+                const modal = document.createElement('div');
+                modal.id = 'cover-modal';
+                modal.className = 'modal';
+                modal.innerHTML = `
+                    <div class="modal-content">
+                        <span class="close-modal">&times;</span>
+                        <img id="modal-cover-image" src="" alt="Full size album cover">
+                    </div>
+                `;
+                
+                // Add click handlers
+                modal.querySelector('.close-modal').onclick = () => modal.style.display = 'none';
+                modal.onclick = (e) => {
+                    if (e.target === modal) modal.style.display = 'none';
+                };
+                
+                document.body.appendChild(modal);
+            }
+            
+            // Add click handler to album cover
+            albumCover.onclick = () => {
+                const modal = document.getElementById('cover-modal');
+                const modalImg = document.getElementById('modal-cover-image');
+                modalImg.src = albumCover.src;
+                modal.style.display = 'block';
+            };
+        }
     </script>
     
+    <!-- External Scripts -->
+    <script src="./scripts/utils.js" defer></script>
+    <script src="./scripts/laser-show.js" defer></script>
     <script src="./scripts/farcaster-sdk.js" defer></script>
 </body>
 </html>

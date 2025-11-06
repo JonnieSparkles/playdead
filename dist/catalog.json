@@ -1,21 +1,27 @@
 [
     {
+        "type": "video",
+        "band": "Grateful Dead",
+        "title": "Live at The Capitol Theatre on 1976-06-19",
+        "id": "FK99lQ1jTCREui-QuYVl2kIw9RtJfqBOOeZNWnxuP3U"
+    },   
+    {
         "type": "audio",
         "band": "Joe Russo's Almost Dead",
         "title": "Live at The Wellmont Theatre on 2022-09-29",
-        "id": "7Zfi1ts6VnB907Qib3SgYjm-Mn9ama2UpmxVeo0AoUk"
+        "id": "36h-UK827kYFq6br1M3SGm2xPnQM-cjY-p4uEoLytOI"
     },   
     {
         "type": "audio",
         "band": "Grateful Dub",
         "title": "Live at Broad Brook on 2023-03-24",
-        "id": "4U7TOtaiLachWXH23OMCn_GyB53h_-wz_DTZVHQO0zc"
+        "id": "dJjTc0aYwIN54cAch8bykuqlqMjQaqVlXDbaK9OHjP4"
     },      
     {
         "type": "audio",
         "band": "Disco Biscuits",
         "title": "Live at Gathering of The Vibes on 2014-08-02",
-        "id": "Qnqzl_WI5K8pGwODHapQ3tNTOKOFFgWdyJwriIgp5Tw"
+        "id": "HcHwf2EU3_xCfRqaClew7buy76MadlU0-tQDuY3mdlA"
     },   
     {
         "type": "audio",

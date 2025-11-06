@@ -67,13 +67,36 @@
 
     <script>
         async function loadAlbumList() {
-            const catalogUrl = "catalog.json";
+            // Build gateway host from current hostname (e.g., arweave.net from playdead.arweave.net)
+            const hostParts = window.location.hostname.split(".");
+            const gatewayHost = hostParts.length >= 3
+                ? hostParts.slice(-2).join(".")
+                : window.location.hostname;
+            
+            // Try ArNS undername first (catalog_playdead.<gateway-host>), then fallback to local file
+            const arnsUrl = `${window.location.protocol}//catalog_playdead.${gatewayHost}`;
+            
+            let albums = null;
+            let lastError = null;
+            
+            // Try ArNS URL first, then fallback to local catalog.json
+            for (const url of [arnsUrl, "catalog.json"]) {
+                try {
+                    const response = await fetch(url, { cache: "no-store" });
+                    if (response.ok) {
+                        albums = await response.json();
+                        break;
+                    }
+                } catch (error) {
+                    lastError = error;
+                }
+            }
+            
+            if (!albums) {
+                throw new Error(`Failed to load catalog from ArNS (${arnsUrl}) or local file: ${lastError?.message || "Unknown error"}`);
+            }
             
             try {
-                const response = await fetch(catalogUrl);
-                if (!response.ok) throw new Error(`Failed to fetch catalog.json`);
-                
-                const albums = await response.json();
                 const albumList = document.getElementById("album-list");
                 albumList.innerHTML = ""; // Clear loading message
                 

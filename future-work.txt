@@ -18,7 +18,7 @@ Features/Improvements:
 -Custom themes, "BYO CSS" for albums.
 -Finalize tagging schema.
 -Add support to load albums via **ArNS** (Arweave Name System) name.
--catalog.json linked via ArNS.
+
 
 
 Maintenance:

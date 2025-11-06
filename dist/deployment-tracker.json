@@ -1,8 +1,8 @@
 {
   "trackerVersion": "1.0.0",
-  "lastDeployCommit": "4e561ed79b10ed80",
-  "lastDeployed": "2025-11-06T01:19:58.680Z",
-  "deploymentCount": 7,
+  "lastDeployCommit": "1ac9a63b494997e9",
+  "lastDeployed": "2025-11-06T02:02:57.273Z",
+  "deploymentCount": 8,
   "fileHashes": {
     ".well-known/farcaster.json": "d4b619d36d5fb7b37d14dc442a3bdd9132b1a41b",
     "assets/app-logo-large.png": "30a3b3f579444b12a565742f3bbb1042072b1ac5",
@@ -14,8 +14,8 @@
     "assets/icon-recorder.png": "f785e11e80bdbb33df370734dbb6397b16b57cb7",
     "assets/style.css": "853b70ae5be4b111e0c2aa54a0603b170dc12c17",
     "assets/tg-logo.png": "cad22c00f7b54408351152d4f5f867a3b406ef21",
-    "catalog.json": "88d624447a332e16837aefceb7056e081efc1d7e",
-    "changelog.txt": "436b84db574436a4364eb9ba6d5841e44563533f",
+    "catalog.json": "b4dc95d3a4809e712a6defd0b9d0a0da962c125c",
+    "changelog.txt": "78b25d59db6094df45d8b155a888a980ea549fe9",
     "contribute.html": "7ac3052e2fedc47555c74e6905493146ea12f062",
     "examples/audio-album/album-audio-v2.0.0.json": "a4645b5314795f1e19f2688d9b31c5eafd637775",
     "examples/audio-album/album_cover.png": "7866f02ce79a10136dac6a2c4de3afbbdd7482c1",
@@ -37,6 +37,15 @@
   },
   "recentDeployments": [
     {
+      "commit": "1ac9a63b494997e9",
+      "manifestTxId": "PDHKZokIiQ-79gdl10doZ1xq9CxJrwJf_gGH0idb_cI",
+      "changedFiles": [
+        "catalog.json",
+        "changelog.txt"
+      ],
+      "deployed": "2025-11-06T02:02:57.273Z"
+    },
+    {
       "commit": "4e561ed79b10ed80",
       "manifestTxId": "CFq0YCmDp9mTkbCwmphRMkIqpnnfMCyHrvzSKYLqdHU",
       "changedFiles": [
@@ -53,16 +62,6 @@
         "player.html"
       ],
       "deployed": "2025-10-17T20:40:58.159Z"
-    },
-    {
-      "commit": "3a0b82619f38d873",
-      "manifestTxId": "6RjGLHp7U1H9CLxdOcPA43h7a6_rrJvRIHB5UaYuPd8",
-      "changedFiles": [
-        "changelog.txt",
-        "index.html",
-        "player.html"
-      ],
-      "deployed": "2025-10-17T20:05:57.041Z"
     }
   ]
 }

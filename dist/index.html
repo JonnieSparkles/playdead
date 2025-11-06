@@ -100,7 +100,7 @@
                 const albumList = document.getElementById("album-list");
                 albumList.innerHTML = ""; // Clear loading message
                 
-                // Load each album's manifest to get cover and date
+                // Load each album's manifest to get cover and metadata
                 for (const album of albums) {
                     try {
                         const manifestUrl = `https://arweave.net/${album.id}`;
@@ -113,17 +113,17 @@
                         
                         // Create cassette structure
                         cassette.innerHTML = `
-                            <div class="cassette-body ${album.type === 'video' ? 'video-cassette' : 'audio-cassette'}">
+                            <div class="cassette-body ${manifestData.type === 'video' ? 'video-cassette' : 'audio-cassette'}">
                                 <div class="cassette-window">
-                                    <img src="https://arweave.net/${manifestData.cover}" alt="${album.band} - ${album.title}">
-                                    ${album.type === 'video' ? 
+                                    <img src="https://arweave.net/${manifestData.cover}" alt="${manifestData.band} - ${manifestData.title}">
+                                    ${manifestData.type === 'video' ? 
                                         '<div class="media-icon video-icon">🎥</div>' : 
                                         '<div class="media-icon audio-icon">🎵</div>'
                                     }
                                 </div>
                                 <div class="cassette-label">
-                                    <div class="cassette-band">${album.band}</div>
-                                    <div class="cassette-title">${album.title}</div>
+                                    <div class="cassette-band">${manifestData.band}</div>
+                                    <div class="cassette-title">${manifestData.title}</div>
                                     <div class="cassette-date">${manifestData.date}</div>
                                 </div>
                                 <div class="cassette-reels"></div>

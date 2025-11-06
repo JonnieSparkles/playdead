@@ -1,8 +1,8 @@
 {
   "trackerVersion": "1.0.0",
-  "lastDeployCommit": "384e8a5fd0d093c0",
-  "lastDeployed": "2025-11-06T02:24:19.023Z",
-  "deploymentCount": 10,
+  "lastDeployCommit": "954f484650860929",
+  "lastDeployed": "2025-11-06T02:29:18.168Z",
+  "deploymentCount": 11,
   "fileHashes": {
     ".well-known/farcaster.json": "d4b619d36d5fb7b37d14dc442a3bdd9132b1a41b",
     "assets/app-logo-large.png": "30a3b3f579444b12a565742f3bbb1042072b1ac5",
@@ -26,8 +26,8 @@
     "examples/video-album/album_cover.png": "7866f02ce79a10136dac6a2c4de3afbbdd7482c1",
     "examples/video-album/more_info.txt": "5de416e8bb68a9356be824a5a90b456916d82269",
     "examples/video-album/Reels/place-reels-here.txt": "d7319ccd7d7181bc471537c50c57888bd69fb332",
-    "index.html": "1352cc8ccb12a34259e71d2b3d095c5216a56e4c",
-    "player.html": "2e3ebd385f2806c96335c48e4556bb713a1da261",
+    "index.html": "0a7213413e19ac64dd53080d29eedbc781e9895e",
+    "player.html": "fed622cf16af4d7acbee4c3b8a1dcd73aa177701",
     "scripts/laser-show.js": "656f75494fcb8378c689a7eee803398b31aa8f3d",
     "scripts/player.js": "6d30e9c7f834828a27ffe5a70d4e9ee56f40efa5",
     "scripts/utils.js": "0d81e7bf7b66c61aee5b1fd33a17f6afedf243db",
@@ -36,6 +36,15 @@
     "scripts/farcaster-sdk.js": "e424184d699946eb0ca51b3daa7170150de4877e"
   },
   "recentDeployments": [
+    {
+      "commit": "954f484650860929",
+      "manifestTxId": "76-RQqifCsZaSxJ485kd_GSabep0WNG1_q4HntRATHY",
+      "changedFiles": [
+        "index.html",
+        "player.html"
+      ],
+      "deployed": "2025-11-06T02:29:18.168Z"
+    },
     {
       "commit": "384e8a5fd0d093c0",
       "manifestTxId": "lU0h27FF_AOvyZ0I45D3oGViUpaDVJXoEpUHKhu1_9c",
@@ -53,15 +62,6 @@
         "index.html"
       ],
       "deployed": "2025-11-06T02:22:18.039Z"
-    },
-    {
-      "commit": "1ac9a63b494997e9",
-      "manifestTxId": "PDHKZokIiQ-79gdl10doZ1xq9CxJrwJf_gGH0idb_cI",
-      "changedFiles": [
-        "catalog.json",
-        "changelog.txt"
-      ],
-      "deployed": "2025-11-06T02:02:57.273Z"
     }
   ]
 }

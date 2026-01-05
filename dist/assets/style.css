@@ -10,6 +10,17 @@ body {
     min-height: 100vh;
 }
 
+/* SPA View Management */
+.view {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.view[style*="display: none"] {
+    display: none !important;
+}
+
 .logo {
     max-width: 200px;
     margin: 20px auto;
@@ -795,34 +806,253 @@ pre {
     border: 1px solid #444;
 }
 
-@media (max-width: 600px) {
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+    body {
+        padding: 10px;
+    }
+    
+    .logo {
+        max-width: 150px;
+        margin: 10px auto;
+    }
+    
+    h1 {
+        font-size: 2em;
+        margin: 5px 0;
+    }
+    
+    h2 {
+        font-size: 1.2em;
+    }
+    
+    /* Catalog View Mobile */
     .cassette-grid {
         gap: 0.75rem;
         padding: 0.5rem;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
     }
+    
     .cassette-body {
         padding: 8px;
     }
+    
     .cassette-window {
         padding: 4px;
         margin-bottom: 7px;
     }
+    
     .cassette-label {
         padding: 6px;
         margin-bottom: 5px;
     }
+    
     .cassette-band {
-        font-size: 1em;
+        font-size: 0.9em;
     }
+    
     .cassette-title {
-        font-size: 0.85em;
+        font-size: 0.8em;
     }
+    
     .cassette-date {
         font-size: 0.7em;
     }
+    
     .media-icon {
-        width: 36px;
-        height: 36px;
+        width: 32px;
+        height: 32px;
+        font-size: 1.3em;
+    }
+    
+    /* Manual Entry Mobile */
+    .manual-album-entry {
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px;
+    }
+    
+    .manual-album-entry input {
+        width: 100%;
+        max-width: 300px;
+        margin: 0 auto;
+    }
+    
+    /* Player View Mobile */
+    .album-info {
+        margin: 10px 0;
+        padding: 10px;
+    }
+    
+    .band {
         font-size: 1.5em;
+    }
+    
+    .title {
+        font-size: 1.2em;
+    }
+    
+    .media-player {
+        margin: 15px 0;
+    }
+    
+    .media-player audio,
+    .media-player video {
+        width: 100%;
+        max-width: 100%;
+    }
+    
+    .controls {
+        flex-wrap: wrap;
+        gap: 8px;
+        justify-content: center;
+    }
+    
+    .control-button {
+        padding: 8px 12px;
+        font-size: 0.9em;
+    }
+    
+    .tracklist {
+        margin: 10px 0;
+        font-size: 0.9em;
+    }
+    
+    .tracklist table {
+        width: 100%;
+    }
+    
+    .tracklist th,
+    .tracklist td {
+        padding: 8px 4px;
+    }
+    
+    /* Laser Visualizer Mobile */
+    #laser-visualizer {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 1000;
+        pointer-events: none;
+    }
+    
+    /* Modal Mobile */
+    .modal-content {
+        margin: 5% auto;
+        width: 95%;
+        max-width: 400px;
+    }
+    
+    .modal-content img {
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 5px;
+    }
+    
+    .logo {
+        max-width: 120px;
+    }
+    
+    h1 {
+        font-size: 1.8em;
+    }
+    
+    .cassette-grid {
+        grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+        gap: 0.5rem;
+    }
+    
+    .cassette-body {
+        padding: 6px;
+    }
+    
+    .cassette-window {
+        padding: 3px;
+        margin-bottom: 5px;
+    }
+    
+    .cassette-label {
+        padding: 4px;
+        margin-bottom: 3px;
+    }
+    
+    .cassette-band {
+        font-size: 0.8em;
+    }
+    
+    .cassette-title {
+        font-size: 0.75em;
+    }
+    
+    .cassette-date {
+        font-size: 0.65em;
+    }
+    
+    .media-icon {
+        width: 28px;
+        height: 28px;
+        font-size: 1.1em;
+    }
+    
+    .manual-album-entry {
+        padding: 10px;
+    }
+    
+    .manual-album-entry input {
+        font-size: 16px; /* Prevents zoom on iOS */
+    }
+    
+    .band {
+        font-size: 1.3em;
+    }
+    
+    .title {
+        font-size: 1.1em;
+    }
+    
+    .controls {
+        gap: 6px;
+    }
+    
+    .control-button {
+        padding: 6px 10px;
+        font-size: 0.8em;
+    }
+    
+    .tracklist {
+        font-size: 0.8em;
+    }
+    
+    .tracklist th,
+    .tracklist td {
+        padding: 6px 2px;
+    }
+}
+
+/* SPA-specific styles */
+.view {
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* Ensure proper spacing for mobile */
+@media (max-width: 768px) {
+    .view {
+        padding: 0 5px;
+    }
+    
+    footer {
+        margin-top: 20px;
+        font-size: 0.9em;
+    }
+    
+    footer p {
+        margin: 5px 0;
     }
 }

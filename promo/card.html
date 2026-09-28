@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<link rel="stylesheet" href="./assets/style.css">
+<style>
+  html, body { height: 100%; overflow: hidden; }
+  body { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 0; }
+  .big-logo { width: 420px; animation: spinIn 1.4s cubic-bezier(.2,.8,.2,1) both; filter: drop-shadow(0 10px 30px rgba(0,0,0,.5)); }
+  h1 { font-size: 120px; margin: 30px 0 10px; text-shadow: 5px 5px 0 #000; animation: rise .8s .7s both; }
+  .sub { font-size: 46px; font-weight: bold; text-shadow: 3px 3px 0 #000; animation: rise .8s 1.2s both; }
+  .url { margin-top: 36px; font-family: 'Courier New', monospace; font-size: 44px; font-weight: bold; color: #ffd700;
+         background: rgba(0,0,0,.45); padding: 12px 34px; border-radius: 12px; border: 3px solid #ff4500; animation: rise .8s 1.7s both; }
+  /* Held at frame 0 until the recorder adds .go */
+  body:not(.go) * { animation-play-state: paused !important; }
+  @keyframes spinIn { from { transform: rotate(-360deg) scale(.2); opacity: 0; } to { transform: none; opacity: 1; } }
+  @keyframes rise { from { transform: translateY(30px); opacity: 0; } to { transform: none; opacity: 1; } }
+</style>
+</head>
+<body>
+  <img class="big-logo" src="./assets/app-logo-large.png" alt="">
+  <h1>ar://playdead</h1>
+  <div class="sub" id="sub"></div>
+  <div class="url" id="url" hidden></div>
+  <script>
+    const q = new URLSearchParams(location.search);
+    document.getElementById('sub').textContent = q.get('sub') || '';
+    if (q.get('url')) { const u = document.getElementById('url'); u.textContent = q.get('url'); u.hidden = false; }
+  </script>
+</body>
+</html>
